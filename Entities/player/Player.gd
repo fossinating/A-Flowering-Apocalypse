@@ -7,6 +7,7 @@ const ACCEL = 15.0
 
 @export var camera: Camera3D
 @export var mesh: MeshInstance3D
+@export var block_indicator: MeshInstance3D
 
 const swim_blocks = [4,5]
 
@@ -46,7 +47,12 @@ func _unhandled_input(event):
 
 
 func _process(_delta):
-	pass
+	var tool = $"../VoxelTerrain".get_voxel_tool()
+	
+	var facing_raycast_result = tool.raycast(camera.global_transform.origin, -camera.global_transform.basis.z, 5, 1)
+	if facing_raycast_result != null:
+		block_indicator.global_transform.origin = Vector3(facing_raycast_result.position) + Vector3(.5, 0, .5)
+	block_indicator.visible = facing_raycast_result != null
 
 
 func _is_in_water(tool: VoxelTool):
@@ -111,8 +117,6 @@ func _physics_process(delta):
 		h_vel = h_vel.normalized() * lerp(h_vel.length(), MAX_VELOCITY*factor, min(0.3/factor, 1.0))
 	velocity.x = h_vel.x
 	velocity.z = h_vel.y
-	
-	var facing_raycast_result = tool.raycast(camera.global_transform.origin, -camera.global_transform.basis.z, 5)
 	
 	var was_on_floor = is_on_floor()
 	move_and_slide()

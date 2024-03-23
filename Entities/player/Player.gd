@@ -5,6 +5,8 @@ const mouse_sensitivity = 0.002  # radians/pixel
 const MAX_VELOCITY = 7.0
 const ACCEL = 15.0
 
+const swim_blocks = [4,5]
+
 # physics material factors
 const AIR_FACTOR = 1.5
 const GROUND_FACTOR = 1
@@ -40,11 +42,12 @@ func _unhandled_input(event):
 		$Camera3D.rotation.x = clamp($Camera3D.rotation.x, -1.5, 1.5)
 
 
-func _process(delta):
+func _process(_delta):
 	pass
 
 
 func _physics_process(delta):
+	var tool = $"../VoxelTerrain".get_voxel_tool()
 	
 	# Add the gravity.
 	if not is_on_floor():
@@ -84,8 +87,6 @@ func _physics_process(delta):
 		h_vel = h_vel.normalized() * lerp(h_vel.length(), MAX_VELOCITY*factor, min(0.3/factor, 1.0))
 	velocity.x = h_vel.x
 	velocity.z = h_vel.y
-	
-	var tool = $"../VoxelTerrain".get_voxel_tool()
 	
 	var facing_raycast_result = tool.raycast($Camera3D.global_transform.origin, -$Camera3D.global_transform.basis.z, 5)
 	

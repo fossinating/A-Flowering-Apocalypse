@@ -3,7 +3,7 @@
 [ext_resource type="VoxelBlockyLibrary" uid="uid://saonctilrpa5" path="res://World/Blocks/BlockLibrary.tres" id="1_7t3me"]
 [ext_resource type="VoxelGeneratorScript" uid="uid://bl28ecwd7utms" path="res://generator/world_generator.tres" id="1_bqr6u"]
 [ext_resource type="PackedScene" uid="uid://blftoq73i1tqq" path="res://world/chunk.tscn" id="1_mxp6x"]
-[ext_resource type="PackedScene" uid="uid://c31lpmqgtydwq" path="res://entities/Player.tscn" id="2_2ur0n"]
+[ext_resource type="PackedScene" path="res://entities/player/Player.tscn" id="4_2m84j"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fvce7"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -42,5 +42,5 @@ run_stream_in_editor = false
 
 [node name="Chunk" parent="." instance=ExtResource("1_mxp6x")]
 
-[node name="Player" parent="." instance=ExtResource("2_2ur0n")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 41.6386, 0)
+[node name="Player" parent="." instance=ExtResource("4_2m84j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 0)

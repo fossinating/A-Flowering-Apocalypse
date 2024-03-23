@@ -1,6 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://dtqci11hd2hru"]
 
 [ext_resource type="VoxelBlockyLibrary" uid="uid://dauhxikcefsac" path="res://World/Blocks/BlockLibrary.tres" id="1_7t3me"]
+[ext_resource type="VoxelGeneratorScript" uid="uid://bl28ecwd7utms" path="res://generator/world_generator.tres" id="1_bqr6u"]
 [ext_resource type="PackedScene" uid="uid://blftoq73i1tqq" path="res://World/chunk.tscn" id="1_mxp6x"]
 [ext_resource type="PackedScene" uid="uid://c31lpmqgtydwq" path="res://Entities/Player.tscn" id="2_2ur0n"]
 
@@ -19,11 +20,6 @@ glow_enabled = true
 
 [sub_resource type="VoxelStreamRegionFiles" id="VoxelStreamRegionFiles_25hma"]
 
-[sub_resource type="VoxelGeneratorWaves" id="VoxelGeneratorWaves_6jm1i"]
-channel = 0
-height_start = 0.0
-height_range = 5.0
-
 [sub_resource type="VoxelMesherBlocky" id="VoxelMesherBlocky_y01nc"]
 library = ExtResource("1_7t3me")
 
@@ -38,12 +34,13 @@ shadow_enabled = true
 
 [node name="VoxelTerrain" type="VoxelTerrain" parent="."]
 stream = SubResource("VoxelStreamRegionFiles_25hma")
-generator = SubResource("VoxelGeneratorWaves_6jm1i")
+generator = ExtResource("1_bqr6u")
 mesher = SubResource("VoxelMesherBlocky_y01nc")
 gi_mode = 1
 collision_mask = 15
+run_stream_in_editor = false
 
 [node name="Chunk" parent="." instance=ExtResource("1_mxp6x")]
 
 [node name="Player" parent="." instance=ExtResource("2_2ur0n")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.0739, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 41.6386, 0)

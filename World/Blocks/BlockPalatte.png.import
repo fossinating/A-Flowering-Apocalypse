@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bq870fjtvy0dc"
-path="res://.godot/imported/BlockPalatte.png-3673f7e25d3fa69cb495a19acb8b8507.ctex"
+path="res://.godot/imported/BlockPalatte.png-f3722a1982f1f611341cd36feb67308f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://World/Blocks/BlockPalatte.png"
-dest_files=["res://.godot/imported/BlockPalatte.png-3673f7e25d3fa69cb495a19acb8b8507.ctex"]
+source_file="res://world/blocks/BlockPalatte.png"
+dest_files=["res://.godot/imported/BlockPalatte.png-f3722a1982f1f611341cd36feb67308f.ctex"]
 
 [params]
 

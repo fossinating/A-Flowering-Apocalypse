@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://blftoq73i1tqq"]
+
+[node name="Chunk" type="Node3D"]
+
+[node name="VoxelViewer" type="VoxelViewer" parent="."]
+view_distance = 8

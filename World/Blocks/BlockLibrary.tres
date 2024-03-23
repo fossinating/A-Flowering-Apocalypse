@@ -1,0 +1,10 @@
+[gd_resource type="VoxelBlockyLibrary" load_steps=5 format=3 uid="uid://dauhxikcefsac"]
+
+[ext_resource type="VoxelBlockyModelCube" uid="uid://cmws8ovwgt4ku" path="res://World/Blocks/Grass.tres" id="1_q3ebu"]
+[ext_resource type="VoxelBlockyModelCube" uid="uid://db3loph5ium5s" path="res://World/Blocks/Dirt.tres" id="2_j6ssf"]
+[ext_resource type="VoxelBlockyModelCube" uid="uid://dh23wvuneeqnm" path="res://World/Blocks/Stone.tres" id="3_ov8b7"]
+
+[sub_resource type="VoxelBlockyModelEmpty" id="VoxelBlockyModelEmpty_088fb"]
+
+[resource]
+models = Array[VoxelBlockyModel]([SubResource("VoxelBlockyModelEmpty_088fb"), ExtResource("1_q3ebu"), ExtResource("2_j6ssf"), ExtResource("3_ov8b7")])

@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://c31lpmqgtydwq"]
+
+[ext_resource type="Script" path="res://Entities/Player.gd" id="1_x5xck"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ss0sa"]
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_x5xck")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_ss0sa")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="Control" type="Control" parent="Camera3D"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="VoxelViewer" type="VoxelViewer" parent="."]

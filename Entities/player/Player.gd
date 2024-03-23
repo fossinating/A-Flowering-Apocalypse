@@ -5,6 +5,9 @@ const mouse_sensitivity = 0.002  # radians/pixel
 const MAX_VELOCITY = 7.0
 const ACCEL = 15.0
 
+@export var camera: Camera3D
+@export var mesh: MeshInstance3D
+
 const swim_blocks = [4,5]
 
 # physics material factors
@@ -37,24 +40,45 @@ func _init():
 
 func _unhandled_input(event):
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
-		rotate_y(-event.relative.x * mouse_sensitivity)
-		$Camera3D.rotate_x(-event.relative.y * mouse_sensitivity)
-		$Camera3D.rotation.x = clamp($Camera3D.rotation.x, -1.5, 1.5)
+		mesh.rotate_y(-event.relative.x * mouse_sensitivity)
+		camera.rotate_x(-event.relative.y * mouse_sensitivity)
+		camera.rotation.x = clamp(camera.rotation.x, -1.5, 1.5)
 
 
 func _process(_delta):
 	pass
 
 
+func _is_in_water(tool: VoxelTool):
+	for direction in [Vector3.UP, Vector3.DOWN]:
+		for offset in [Vector3(1, 0, 1), Vector3(1, 0, -1), Vector3(-1, 0, -1), Vector3(-1, 0, 1)]:
+			var result = tool.raycast(global_transform.origin + 0.475*offset - direction, direction, 2, 2)
+			if result != null:
+				return true
+	return false
+
+
 func _physics_process(delta):
 	var tool = $"../VoxelTerrain".get_voxel_tool()
+	var is_in_water = _is_in_water(tool)
+
 	
 	# Add the gravity.
 	if not is_on_floor():
-		velocity.y -= gravity * delta
+		if is_in_water:
+			if velocity.y < -gravity * .15:
+				velocity.y = lerp(velocity.y, -gravity*.1, 1*delta)
+			else:
+				velocity.y = max(velocity.y - (0 if Input.is_action_pressed("jump") else 0.5*gravity*delta), -gravity*.1)
+		else:		
+			velocity.y -= gravity * delta
 	# Handle Jump.
-	if Input.is_action_just_pressed("jump") and (is_on_floor() || not coyote_timer.is_stopped()):
+	if Input.is_action_pressed("jump") and not is_in_water and (is_on_floor()):# || not coyote_timer.is_stopped()):
 		velocity.y = JUMP_VELOCITY
+	
+	if Input.is_action_pressed("jump") and is_in_water:
+		velocity.y = clamp(velocity.y + 1.2*JUMP_VELOCITY*delta, -.25*JUMP_VELOCITY, 0.5*JUMP_VELOCITY)
+		print(velocity.y)
  
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
@@ -68,7 +92,7 @@ func _physics_process(delta):
 	
 	
 	
-	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	var direction = (mesh.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	var accel = Vector3()
 	if direction:
 		accel.x = direction.x * ACCEL / factor
@@ -88,7 +112,7 @@ func _physics_process(delta):
 	velocity.x = h_vel.x
 	velocity.z = h_vel.y
 	
-	var facing_raycast_result = tool.raycast($Camera3D.global_transform.origin, -$Camera3D.global_transform.basis.z, 5)
+	var facing_raycast_result = tool.raycast(camera.global_transform.origin, -camera.global_transform.basis.z, 5)
 	
 	var was_on_floor = is_on_floor()
 	move_and_slide()

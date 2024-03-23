@@ -2,18 +2,28 @@
 
 [ext_resource type="Script" path="res://entities/player/Player.gd" id="1_1jc5x"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ss0sa"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_ib0ka"]
+size = Vector3(0.95, 2, 0.95)
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "mesh")]
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
 script = ExtResource("1_1jc5x")
+camera = NodePath("Mesh/Camera3D")
+mesh = NodePath("Mesh")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("CapsuleShape3D_ss0sa")
+shape = SubResource("BoxShape3D_ib0ka")
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="VoxelViewer" type="VoxelViewer" parent="."]
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="Mesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
-[node name="Control" type="Control" parent="Camera3D"]
+[node name="Control" type="Control" parent="Mesh/Camera3D"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -21,5 +31,3 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-
-[node name="VoxelViewer" type="VoxelViewer" parent="."]

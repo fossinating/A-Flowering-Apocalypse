@@ -1,8 +1,8 @@
 [gd_resource type="VoxelBlockyLibrary" load_steps=7 format=3 uid="uid://saonctilrpa5"]
 
-[ext_resource type="VoxelBlockyModelCube" uid="uid://cmws8ovwgt4ku" path="res://World/Blocks/Grass.tres" id="1_q3ebu"]
-[ext_resource type="VoxelBlockyModelCube" uid="uid://db3loph5ium5s" path="res://World/Blocks/Dirt.tres" id="2_j6ssf"]
-[ext_resource type="VoxelBlockyModelCube" uid="uid://dh23wvuneeqnm" path="res://World/Blocks/Stone.tres" id="3_ov8b7"]
+[ext_resource type="VoxelBlockyModelCube" uid="uid://cmws8ovwgt4ku" path="res://world/blocks/Grass.tres" id="1_q3ebu"]
+[ext_resource type="VoxelBlockyModelCube" uid="uid://db3loph5ium5s" path="res://world/blocks/Dirt.tres" id="2_j6ssf"]
+[ext_resource type="VoxelBlockyModelCube" uid="uid://dh23wvuneeqnm" path="res://world/blocks/Stone.tres" id="3_ov8b7"]
 [ext_resource type="VoxelBlockyModelCube" uid="uid://b6j64x3m6p0w5" path="res://world/blocks/WaterTop.tres" id="4_17c4o"]
 [ext_resource type="VoxelBlockyModelCube" uid="uid://dcrjpdjqi1ns2" path="res://world/blocks/Water.tres" id="5_pbc6n"]
 

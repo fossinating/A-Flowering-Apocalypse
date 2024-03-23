@@ -5,7 +5,6 @@
 [resource]
 transparent = true
 transparency_index = 1
-collision_aabbs = Array[AABB]([])
 collision_mask = 2
 material_override_0 = ExtResource("1_ai0cq")
 collision_enabled_0 = false

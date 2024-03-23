@@ -1,9 +1,9 @@
 [gd_scene load_steps=10 format=3 uid="uid://dtqci11hd2hru"]
 
-[ext_resource type="VoxelBlockyLibrary" uid="uid://dauhxikcefsac" path="res://World/Blocks/BlockLibrary.tres" id="1_7t3me"]
+[ext_resource type="VoxelBlockyLibrary" uid="uid://saonctilrpa5" path="res://World/Blocks/BlockLibrary.tres" id="1_7t3me"]
 [ext_resource type="VoxelGeneratorScript" uid="uid://bl28ecwd7utms" path="res://generator/world_generator.tres" id="1_bqr6u"]
-[ext_resource type="PackedScene" uid="uid://blftoq73i1tqq" path="res://World/chunk.tscn" id="1_mxp6x"]
-[ext_resource type="PackedScene" uid="uid://c31lpmqgtydwq" path="res://Entities/Player.tscn" id="2_2ur0n"]
+[ext_resource type="PackedScene" uid="uid://blftoq73i1tqq" path="res://world/chunk.tscn" id="1_mxp6x"]
+[ext_resource type="PackedScene" uid="uid://c31lpmqgtydwq" path="res://entities/Player.tscn" id="2_2ur0n"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fvce7"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)

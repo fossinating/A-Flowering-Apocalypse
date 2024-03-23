@@ -1,10 +1,11 @@
 [gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://c5f5fcypyahxl"]
 
-[ext_resource type="Texture2D" uid="uid://bq870fjtvy0dc" path="res://World/Blocks/BlockPalatte.png" id="1_8ce1o"]
+[ext_resource type="Texture2D" uid="uid://bq870fjtvy0dc" path="res://world/blocks/BlockPalatte.png" id="1_8ce1o"]
 
 [resource]
 vertex_color_use_as_albedo = true
 albedo_texture = ExtResource("1_8ce1o")
+metallic_specular = 0.0
 clearcoat = 0.97
 anisotropy = -0.65
 texture_filter = 0

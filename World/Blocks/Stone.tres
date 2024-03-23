@@ -1,6 +1,6 @@
 [gd_resource type="VoxelBlockyModelCube" load_steps=2 format=3 uid="uid://dh23wvuneeqnm"]
 
-[ext_resource type="Material" uid="uid://c5f5fcypyahxl" path="res://World/Blocks/BlockPalatte.tres" id="1_rykwk"]
+[ext_resource type="Material" uid="uid://c5f5fcypyahxl" path="res://world/blocks/BlockPalatte.tres" id="1_rykwk"]
 
 [resource]
 material_override_0 = ExtResource("1_rykwk")

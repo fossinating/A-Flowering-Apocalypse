@@ -1,7 +1,7 @@
 # Initial version stolen from https://github.com/Zylann/voxelgame/tree/master
 
 #tool
-extends VoxelGeneratorScript
+extends VoxelGeneratorMultipassCB
 class_name WorldGenerator
 
 const Structure = preload("./structure.gd")
@@ -9,18 +9,17 @@ const TreeGenerator = preload("./tree_generator.gd")
 const HeightmapCurve = preload("./heightmap_curve.tres")
 var world_seed: int
 
+var water_level: int = 50
+
 # TODO Don't hardcode, get by name from library somehow
 const AIR = 0
 const GRASS = 1
 const DIRT = 2
-const WATER_FULL = 5
-const WATER_TOP = 4
 const STONE = 3
+const WATER_TOP = 4
+const WATER_FULL = 5
 const LOG = 4
 const LEAVES = 25
-const TALL_GRASS = 8
-const DEAD_SHRUB = 26
-#const STONE = 8
 
 const _CHANNEL = VoxelBuffer.CHANNEL_TYPE
 
@@ -38,32 +37,34 @@ const _moore_dirs = [
 
 var _tree_structures := []
 
+const _chunk_size = 16
+
 var _heightmap_min_y := int(HeightmapCurve.min_value)
 var _heightmap_max_y := int(HeightmapCurve.max_value)
 var _heightmap_range := 0
 var _heightmap_noise := FastNoiseLite.new()
-var _trees_min_y := 0
-var _trees_max_y := 0
+var _trees_min_y := 60
+var _trees_max_y := 90
 
 
 func _init():
 	world_seed = hash(Globals.shared_data.world_seed)
 
 	# TODO Even this must be based on a seed, but I'm lazy
-	var tree_generator = TreeGenerator.new()
-	tree_generator.log_type = LOG
-	tree_generator.leaves_type = LEAVES
-	for i in 16:
-		var s = tree_generator.generate()
-		_tree_structures.append(s)
+	#var tree_generator = TreeGenerator.new()
+	#tree_generator.log_type = LOG
+	#tree_generator.leaves_type = LEAVES
+	#for i in 16:
+	#	var s = tree_generator.generate()
+	#	_tree_structures.append(s)
 
-	var tallest_tree_height = 0
-	for structure in _tree_structures:
-		var h = int(structure.voxels.get_size().y)
-		if tallest_tree_height < h:
-			tallest_tree_height = h
-	_trees_min_y = _heightmap_min_y
-	_trees_max_y = _heightmap_max_y + tallest_tree_height
+	#var tallest_tree_height = 0
+	#for structure in _tree_structures:
+	#	var h = int(structure.voxels.get_size().y)
+	#	if tallest_tree_height < h:
+	#		tallest_tree_height = h
+	#_trees_min_y = _heightmap_min_y
+	#_trees_max_y = _heightmap_max_y + tallest_tree_height
 
 	_heightmap_noise.seed = world_seed
 	_heightmap_noise.frequency = 1.0 / 128.0
@@ -79,123 +80,69 @@ func _get_used_channels_mask() -> int:
 	return 1 << _CHANNEL
 
 
-func _generate_block(buffer: VoxelBuffer, origin_in_voxels: Vector3i, _lod: int):
-	# TODO There is an issue doing this, need to investigate why because it should be supported
-	# Saves from this demo used 8-bit, which is no longer the default
-	# buffer.set_channel_depth(_CHANNEL, VoxelBuffer.DEPTH_8_BIT)
+func _generate_pass(voxel_tool: VoxelToolMultipassGenerator, pass_index: int):
+	var min_pos := voxel_tool.get_main_area_min()
+	var max_pos := voxel_tool.get_main_area_max()
 
-	# Assuming input is cubic in our use case (it doesn't have to be!)
-	var block_size := int(buffer.get_size().x)
-	var oy := origin_in_voxels.y
-	# TODO This hardcodes a cubic block size of 16, find a non-ugly way...
-	# Dividing is a false friend because of negative values
-	var chunk_pos := Vector3(
-		origin_in_voxels.x >> 4,
-		origin_in_voxels.y >> 4,
-		origin_in_voxels.z >> 4)
-
-	_heightmap_range = _heightmap_max_y - _heightmap_min_y
-
-	# Ground
-
-	if origin_in_voxels.y > _heightmap_max_y:
-		buffer.fill(AIR, _CHANNEL)
-
-	elif origin_in_voxels.y + block_size < _heightmap_min_y:
-		buffer.fill(DIRT, _CHANNEL)
-
-	else:
-		var rng := RandomNumberGenerator.new()
-		rng.seed = WorldGenerator._get_chunk_seed_2d(world_seed, chunk_pos)
-		
-		var gx : int
-		var gz := origin_in_voxels.z
-
-		for z in block_size:
-			gx = origin_in_voxels.x
-
-			for x in block_size:
+	if pass_index == 0:
+		# Base terrain
+		for gz in range(min_pos.z, max_pos.z):
+			for gx in range(min_pos.x, max_pos.x):
 				var height := _get_height_at(gx, gz)
-				var relative_height := height - oy
 				
-				# Dirt and grass
-				if relative_height > block_size:
-					buffer.fill_area(DIRT,
-						Vector3(x, 0, z), Vector3(x + 1, block_size, z + 1), _CHANNEL)
-				elif relative_height > 0:
-					buffer.fill_area(DIRT,
-						Vector3(x, 0, z), Vector3(x + 1, relative_height, z + 1), _CHANNEL)
-					if height >= 0:
-						buffer.set_voxel(GRASS, x, relative_height - 1, z, _CHANNEL)
-						#if relative_height < block_size and rng.randf() < 0.2:
-							#var foliage = TALL_GRASS
-							#if rng.randf() < 0.1:
-							#	foliage = DEAD_SHRUB
-							#buffer.set_voxel(foliage, x, relative_height, z, _CHANNEL)
+				
+				for y in range(0, height-3):
+					voxel_tool.set_voxel(Vector3(gx,y,gz), STONE)
+				for y in range(height-3, height):
+					voxel_tool.set_voxel(Vector3(gx,y,gz), DIRT)
+				voxel_tool.set_voxel(Vector3(gx,height,gz), GRASS)
 				
 				# Water
-				if height < 0 and oy < 0:
-					var start_relative_height := 0
-					if relative_height > 0:
-						start_relative_height = relative_height
-					buffer.fill_area(WATER_FULL,
-						Vector3(x, start_relative_height, z), 
-						Vector3(x + 1, block_size, z + 1), _CHANNEL)
-					if oy + block_size == 0:
-						# Surface block
-						buffer.set_voxel(WATER_TOP, x, block_size - 1, z, _CHANNEL)
-						
-				gx += 1
+				if height < water_level:
+					for y in range(height + 1, water_level):
+						voxel_tool.set_voxel(Vector3(gx,y,gz), WATER_FULL)
+					
+					voxel_tool.set_voxel(Vector3i(gx, height, gz), DIRT)
+					voxel_tool.set_voxel(Vector3i(gx, water_level, gz), WATER_TOP)
 
-			gz += 1
+	elif pass_index == 1:
+		# Attempt to make a tree 4 times in each chunk
 
-	# Trees
-	return
-
-	if origin_in_voxels.y <= _trees_max_y and origin_in_voxels.y + block_size >= _trees_min_y:
-		var voxel_tool := buffer.get_voxel_tool()
-		var structure_instances := []
-			
-		_get_tree_instances_in_chunk(chunk_pos, origin_in_voxels, block_size, structure_instances)
+		# If the location picked is too close to another tree or the y level isnt right, it can fail
+		# TODO: Fix the fact that trees from other chunks can still be too close
 	
-		# Relative to current block
-		var block_aabb := AABB(Vector3(), buffer.get_size() + Vector3i(1, 1, 1))
+		var rng := RandomNumberGenerator.new()
+		rng.seed = WorldGenerator._get_chunk_seed_2d(world_seed, min_pos / _chunk_size)
+		var tree_locations = []
 
-		for dir in _moore_dirs:
-			var ncpos : Vector3 = (chunk_pos + dir).round()
-			_get_tree_instances_in_chunk(ncpos, origin_in_voxels, block_size, structure_instances)
+		for cx_off in range(-1,2):
+			for cz_off in range(-1,2):
+				for i in 4:
+					var pos := min_pos + _chunk_size*Vector3i(cx_off, 0, cz_off) + Vector3i(rng.randi() % _chunk_size, 0, rng.randi() % _chunk_size)
+					pos.y = _get_height_at(pos.x, pos.y)
+					var valid_pos = true
+					for tree_location in tree_locations:
+						if abs(pos.x - tree_location.x) < 2 and abs(pos.y - tree_location.y) < 10 and abs(pos.z - tree_location.z) < 2:
+							if pos.x < tree_location.x or pos.x == tree_location.x and pos.z < tree_location.z:
+								tree_locations.erase(tree_location)
+							else:
+								valid_pos = false
+								break
 
-		for structure_instance in structure_instances:
-			var pos : Vector3 = structure_instance[0]
-			var structure : Structure = structure_instance[1]
-			var lower_corner_pos := pos - structure.offset
-			var aabb := AABB(lower_corner_pos, structure.voxels.get_size() + Vector3i(1, 1, 1))
+					if valid_pos:
+						tree_locations.append(pos)
+		var tree_generator = TreeGenerator.new()
+		tree_generator.log_type = LOG
+		tree_generator.leaves_type = LEAVES
+		print(tree_locations)
 
-			if aabb.intersects(block_aabb):
-				voxel_tool.paste_masked(lower_corner_pos, 
+		for tree_location in tree_locations:
+			if tree_location.x >= min_pos.x and tree_location.x <= max_pos.x and tree_location.z >= min_pos.z and tree_location.z <= max_pos.z:
+				var structure = tree_generator.generate()
+				voxel_tool.paste_masked(tree_location, 
 					structure.voxels, 1 << VoxelBuffer.CHANNEL_TYPE,
 					# Masking
 					VoxelBuffer.CHANNEL_TYPE, AIR)
-
-	buffer.compress_uniform_channels()
-
-
-func _get_tree_instances_in_chunk(
-	cpos: Vector3, offset: Vector3, chunk_size: int, tree_instances: Array):
-		
-	var rng := RandomNumberGenerator.new()
-	rng.seed = WorldGenerator._get_chunk_seed_2d(world_seed, cpos)
-
-	for i in 4:
-		var pos := Vector3(rng.randi() % chunk_size, 0, rng.randi() % chunk_size)
-		pos += cpos * chunk_size
-		pos.y = _get_height_at(int(pos.x), int(pos.z))
-		
-		if pos.y > 0:
-			pos -= offset
-			var si := rng.randi() % len(_tree_structures)
-			var structure : Structure = _tree_structures[si]
-			tree_instances.append([pos.round(), structure])
 
 
 #static func get_chunk_seed(cpos: Vector3) -> int:

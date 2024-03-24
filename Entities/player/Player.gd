@@ -70,7 +70,7 @@ func _process(_delta):
 func _is_in_water(tool: VoxelTool):
 	for direction in [Vector3.UP, Vector3.DOWN]:
 		for offset in [Vector3(1, 0, 1), Vector3(1, 0, -1), Vector3(-1, 0, -1), Vector3(-1, 0, 1)]:
-			var result = tool.raycast(global_transform.origin + 0.475*offset - direction, direction, 2, 2)
+			var result = tool.raycast(global_transform.origin + 0.3*offset, direction, 1, 2)
 			if result != null:
 				return true
 	return false

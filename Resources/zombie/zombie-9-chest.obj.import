@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://1ntb6pdgi122"
+path="res://.godot/imported/zombie-9-chest.obj-b20e73a53114afa6a2d2597b5b65ad7a.mesh"
+
+[deps]
+
+files=["res://.godot/imported/zombie-9-chest.obj-b20e73a53114afa6a2d2597b5b65ad7a.mesh"]
+
+source_file="res://Entities/zombie/zombie-9-chest.obj"
+dest_files=["res://.godot/imported/zombie-9-chest.obj-b20e73a53114afa6a2d2597b5b65ad7a.mesh", "res://.godot/imported/zombie-9-chest.obj-b20e73a53114afa6a2d2597b5b65ad7a.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

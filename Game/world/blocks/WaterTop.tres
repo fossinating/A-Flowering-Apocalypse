@@ -1,0 +1,19 @@
+[gd_resource type="VoxelBlockyModelCube" load_steps=2 format=3 uid="uid://b6j64x3m6p0w5"]
+
+[ext_resource type="Material" uid="uid://cislc0dihq8op" path="res://world/blocks/BlockPalatteTransparent.tres" id="1_a1ej4"]
+
+[resource]
+transparent = true
+transparency_index = 1
+collision_aabbs = Array[AABB]([AABB(0, 0, 0, 1, 0.9, 1)])
+collision_mask = 2
+material_override_0 = ExtResource("1_a1ej4")
+collision_enabled_0 = false
+height = 0.9
+atlas_size_in_tiles = Vector2i(8, 8)
+tile_left = Vector2i(3, 0)
+tile_right = Vector2i(3, 0)
+tile_bottom = Vector2i(3, 0)
+tile_top = Vector2i(3, 0)
+tile_back = Vector2i(3, 0)
+tile_front = Vector2i(3, 0)

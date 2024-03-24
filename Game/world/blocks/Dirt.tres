@@ -1,0 +1,13 @@
+[gd_resource type="VoxelBlockyModelCube" load_steps=2 format=3 uid="uid://db3loph5ium5s"]
+
+[ext_resource type="Material" uid="uid://c5f5fcypyahxl" path="res://world/blocks/BlockPalatte.tres" id="1_skh00"]
+
+[resource]
+material_override_0 = ExtResource("1_skh00")
+atlas_size_in_tiles = Vector2i(8, 8)
+tile_left = Vector2i(1, 0)
+tile_right = Vector2i(1, 0)
+tile_bottom = Vector2i(1, 0)
+tile_top = Vector2i(1, 0)
+tile_back = Vector2i(1, 0)
+tile_front = Vector2i(1, 0)

@@ -1,0 +1,68 @@
+[gd_scene load_steps=8 format=3 uid="uid://54w7q676m52k"]
+
+[ext_resource type="Script" path="res://entities/player/Player.gd" id="1_1jc5x"]
+[ext_resource type="ArrayMesh" uid="uid://bgva3f2h3ugs7" path="res://ui/arm-1-arm.obj" id="2_qqy8n"]
+[ext_resource type="ArrayMesh" uid="uid://di3gpn34yc8o1" path="res://ui/arm-0-hand.obj" id="3_1i8fn"]
+[ext_resource type="PackedScene" uid="uid://dltn2snfed3b2" path="res://ui/block_indicator.tscn" id="4_4abch"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ib0ka"]
+size = Vector3(0.6, 1.8, 0.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n8yfk"]
+albedo_color = Color(0.164706, 0.447059, 0, 1)
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_t0q5i"]
+
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "mesh", "block_indicator")]
+collision_layer = 16
+collision_mask = 2147483709
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+script = ExtResource("1_1jc5x")
+camera = NodePath("Mesh/Camera3D")
+mesh = NodePath("Mesh")
+block_indicator = NodePath("Block Indicator")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+shape = SubResource("BoxShape3D_ib0ka")
+
+[node name="VoxelViewer" type="VoxelViewer" parent="."]
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="Mesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+
+[node name="Control" type="Control" parent="Mesh/Camera3D"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Node3D" type="Node3D" parent="Mesh/Camera3D"]
+transform = Transform3D(0.0692351, -0.0686338, 0.0222691, 0.00202784, -0.0289994, -0.0956814, 0.0721276, 0.0666966, -0.018686, 0.42, -0.395, -0.393)
+
+[node name="Arm" type="MeshInstance3D" parent="Mesh/Camera3D/Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
+cast_shadow = 0
+mesh = ExtResource("2_qqy8n")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_n8yfk")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mesh/Camera3D/Node3D/Arm"]
+cast_shadow = 0
+mesh = ExtResource("3_1i8fn")
+
+[node name="Block Indicator" parent="." instance=ExtResource("4_4abch")]
+visible = false
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_t0q5i")
+anim_player = NodePath("../AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]

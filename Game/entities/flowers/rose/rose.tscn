@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://cpouh81x005ly"]
+
+[ext_resource type="PackedScene" uid="uid://dhjhj6a8ijeqt" path="res://entities/flowers/Flower.tscn" id="1_2tgo7"]
+[ext_resource type="ArrayMesh" uid="uid://b3w86jpx80orn" path="res://entities/flowers/rose/rose.obj" id="2_1a310"]
+[ext_resource type="PackedScene" uid="uid://3phcqmumd2p8" path="res://entities/EntitySaver.tscn" id="3_dkwol"]
+
+[node name="Rose" instance=ExtResource("1_2tgo7")]
+
+[node name="MeshInstance3D" parent="." index="0"]
+mesh = ExtResource("2_1a310")
+
+[node name="EntitySaver" parent="." index="1" instance=ExtResource("3_dkwol")]
+id = "rose"

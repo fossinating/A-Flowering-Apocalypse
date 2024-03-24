@@ -18,8 +18,8 @@ const DIRT = 2
 const STONE = 3
 const WATER_TOP = 4
 const WATER_FULL = 5
-const LOG = 4
-const LEAVES = 25
+const LOG = 6
+const LEAVES = 7
 
 const _CHANNEL = VoxelBuffer.CHANNEL_TYPE
 
@@ -34,8 +34,6 @@ const _moore_dirs = [
 	Vector3(1, 0, 1)
 ]
 
-
-var _tree_structures := []
 
 const _chunk_size = 16
 
@@ -119,7 +117,9 @@ func _generate_pass(voxel_tool: VoxelToolMultipassGenerator, pass_index: int):
 			for cz_off in range(-1,2):
 				for i in 4:
 					var pos := min_pos + _chunk_size*Vector3i(cx_off, 0, cz_off) + Vector3i(rng.randi() % _chunk_size, 0, rng.randi() % _chunk_size)
-					pos.y = _get_height_at(pos.x, pos.y)
+					pos.y = _get_height_at(pos.x, pos.z)
+					if pos.y < _trees_min_y or pos.y > _trees_max_y:
+						continue
 					var valid_pos = true
 					for tree_location in tree_locations:
 						if abs(pos.x - tree_location.x) < 2 and abs(pos.y - tree_location.y) < 10 and abs(pos.z - tree_location.z) < 2:
@@ -134,7 +134,6 @@ func _generate_pass(voxel_tool: VoxelToolMultipassGenerator, pass_index: int):
 		var tree_generator = TreeGenerator.new()
 		tree_generator.log_type = LOG
 		tree_generator.leaves_type = LEAVES
-		print(tree_locations)
 
 		for tree_location in tree_locations:
 			if tree_location.x >= min_pos.x and tree_location.x <= max_pos.x and tree_location.z >= min_pos.z and tree_location.z <= max_pos.z:

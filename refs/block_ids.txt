@@ -6,7 +6,10 @@ Block IDS:
 3 - Stone
 4 - Water (Top)
 5 - Water (Full)
+6 - Logs
+7 - Leaves
 
 Transparency Indices
 
 1 - water
+2 - foliage

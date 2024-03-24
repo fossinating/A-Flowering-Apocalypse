@@ -17,9 +17,11 @@ static var data = [
 	BlockData.new(0, "air", "Air", -1),
 	BlockData.new(1, "grass", "Grass", 5),
 	BlockData.new(2, "dirt", "Dirt", 5),
-	BlockData.new(3, "stone", "Stone", 10),
+	BlockData.new(3, "stone", "Stone", 15),
 	BlockData.new(4, "water_top", "Water", -1),
-	BlockData.new(5, "water", "Water", -1)
+	BlockData.new(5, "water", "Water", -1),
+	BlockData.new(6, "log", "Log", 10),
+	BlockData.new(7, "leaves", "Leaves", 3),
 ]
 
 static func get_block_data(id: int):

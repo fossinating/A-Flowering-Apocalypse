@@ -1,12 +1,14 @@
-[gd_resource type="VoxelBlockyLibrary" load_steps=7 format=3 uid="uid://saonctilrpa5"]
+[gd_resource type="VoxelBlockyLibrary" load_steps=9 format=3 uid="uid://saonctilrpa5"]
 
 [ext_resource type="VoxelBlockyModelCube" uid="uid://cmws8ovwgt4ku" path="res://world/blocks/Grass.tres" id="1_q3ebu"]
 [ext_resource type="VoxelBlockyModelCube" uid="uid://db3loph5ium5s" path="res://world/blocks/Dirt.tres" id="2_j6ssf"]
 [ext_resource type="VoxelBlockyModelCube" uid="uid://dh23wvuneeqnm" path="res://world/blocks/Stone.tres" id="3_ov8b7"]
 [ext_resource type="VoxelBlockyModelCube" uid="uid://b6j64x3m6p0w5" path="res://world/blocks/WaterTop.tres" id="4_17c4o"]
 [ext_resource type="VoxelBlockyModelCube" uid="uid://dcrjpdjqi1ns2" path="res://world/blocks/Water.tres" id="5_pbc6n"]
+[ext_resource type="VoxelBlockyModelCube" uid="uid://c3iuwh2hr1su8" path="res://world/blocks/Log.tres" id="6_matc4"]
+[ext_resource type="VoxelBlockyModelCube" uid="uid://ca0yyalhfiitj" path="res://world/blocks/Leaves.tres" id="7_1xjtp"]
 
 [sub_resource type="VoxelBlockyModelEmpty" id="VoxelBlockyModelEmpty_088fb"]
 
 [resource]
-models = Array[VoxelBlockyModel]([SubResource("VoxelBlockyModelEmpty_088fb"), ExtResource("1_q3ebu"), ExtResource("2_j6ssf"), ExtResource("3_ov8b7"), ExtResource("4_17c4o"), ExtResource("5_pbc6n")])
+models = Array[VoxelBlockyModel]([SubResource("VoxelBlockyModelEmpty_088fb"), ExtResource("1_q3ebu"), ExtResource("2_j6ssf"), ExtResource("3_ov8b7"), ExtResource("4_17c4o"), ExtResource("5_pbc6n"), ExtResource("6_matc4"), ExtResource("7_1xjtp")])

@@ -1,5 +1,4 @@
 extends Node
-class_name EntitySaver
 
 @export var id: String
 

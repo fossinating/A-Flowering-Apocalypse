@@ -1,6 +1,17 @@
-[gd_scene format=3 uid="uid://blftoq73i1tqq"]
+[gd_scene load_steps=3 format=3 uid="uid://blftoq73i1tqq"]
 
-[node name="Chunk" type="Node3D"]
+[ext_resource type="Script" path="res://world/chunk.gd" id="1_t2olu"]
 
-[node name="VoxelViewer" type="VoxelViewer" parent="."]
-view_distance = 8
+[sub_resource type="BoxShape3D" id="BoxShape3D_6hu6n"]
+size = Vector3(16, 500, 16)
+
+[node name="Chunk" type="Node3D" node_paths=PackedStringArray("object_carrier")]
+script = ExtResource("1_t2olu")
+object_carrier = NodePath("Objects")
+
+[node name="Entry Detection" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entry Detection"]
+shape = SubResource("BoxShape3D_6hu6n")
+
+[node name="Objects" type="Node3D" parent="."]

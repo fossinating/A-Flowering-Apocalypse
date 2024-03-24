@@ -2,10 +2,12 @@
 
 #tool
 extends VoxelGeneratorScript
+class_name WorldGenerator
 
 const Structure = preload("./structure.gd")
 const TreeGenerator = preload("./tree_generator.gd")
 const HeightmapCurve = preload("./heightmap_curve.tres")
+var world_seed: int
 
 # TODO Don't hardcode, get by name from library somehow
 const AIR = 0
@@ -45,6 +47,8 @@ var _trees_max_y := 0
 
 
 func _init():
+	world_seed = hash(Globals.shared_data.world_seed)
+
 	# TODO Even this must be based on a seed, but I'm lazy
 	var tree_generator = TreeGenerator.new()
 	tree_generator.log_type = LOG
@@ -61,7 +65,7 @@ func _init():
 	_trees_min_y = _heightmap_min_y
 	_trees_max_y = _heightmap_max_y + tallest_tree_height
 
-	#_heightmap_noise.seed = 131183
+	_heightmap_noise.seed = world_seed
 	_heightmap_noise.frequency = 1.0 / 128.0
 	_heightmap_noise.fractal_octaves = 4
 
@@ -75,7 +79,7 @@ func _get_used_channels_mask() -> int:
 	return 1 << _CHANNEL
 
 
-func _generate_block(buffer: VoxelBuffer, origin_in_voxels: Vector3i, lod: int):
+func _generate_block(buffer: VoxelBuffer, origin_in_voxels: Vector3i, _lod: int):
 	# TODO There is an issue doing this, need to investigate why because it should be supported
 	# Saves from this demo used 8-bit, which is no longer the default
 	# buffer.set_channel_depth(_CHANNEL, VoxelBuffer.DEPTH_8_BIT)
@@ -102,7 +106,7 @@ func _generate_block(buffer: VoxelBuffer, origin_in_voxels: Vector3i, lod: int):
 
 	else:
 		var rng := RandomNumberGenerator.new()
-		rng.seed = _get_chunk_seed_2d(chunk_pos)
+		rng.seed = WorldGenerator._get_chunk_seed_2d(world_seed, chunk_pos)
 		
 		var gx : int
 		var gz := origin_in_voxels.z
@@ -180,12 +184,12 @@ func _get_tree_instances_in_chunk(
 	cpos: Vector3, offset: Vector3, chunk_size: int, tree_instances: Array):
 		
 	var rng := RandomNumberGenerator.new()
-	rng.seed = _get_chunk_seed_2d(cpos)
+	rng.seed = WorldGenerator._get_chunk_seed_2d(world_seed, cpos)
 
 	for i in 4:
 		var pos := Vector3(rng.randi() % chunk_size, 0, rng.randi() % chunk_size)
 		pos += cpos * chunk_size
-		pos.y = _get_height_at(pos.x, pos.z)
+		pos.y = _get_height_at(int(pos.x), int(pos.z))
 		
 		if pos.y > 0:
 			pos -= offset
@@ -198,8 +202,8 @@ func _get_tree_instances_in_chunk(
 #	return cpos.x ^ (13 * int(cpos.y)) ^ (31 * int(cpos.z))
 
 
-static func _get_chunk_seed_2d(cpos: Vector3) -> int:
-	return int(cpos.x) ^ (31 * int(cpos.z))
+static func _get_chunk_seed_2d(_world_seed: int, cpos: Vector3) -> int:
+	return _world_seed ^ int(cpos.x) ^ (31 * int(cpos.z))
 
 
 func _get_height_at(x: int, z: int) -> int:

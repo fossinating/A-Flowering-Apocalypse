@@ -1,4 +1,5 @@
 extends VoxelCharacterBody3D
+class_name Player
 
 const JUMP_VELOCITY = 4.5
 const mouse_sensitivity = 0.002  # radians/pixel
@@ -95,10 +96,8 @@ func _physics_process(delta):
 	
 	if Input.is_action_pressed("jump") and is_in_water:
 		velocity.y = clamp(velocity.y + 1.2*JUMP_VELOCITY*delta, -.25*JUMP_VELOCITY, 0.5*JUMP_VELOCITY)
-		print(velocity.y)
  
 	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 	
 	

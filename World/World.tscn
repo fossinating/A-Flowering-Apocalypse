@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://world/WorldManager.gd" id="1_7re28"]
 [ext_resource type="VoxelBlockyLibrary" uid="uid://saonctilrpa5" path="res://world/blocks/BlockLibrary.tres" id="1_7t3me"]
 [ext_resource type="VoxelGeneratorScript" uid="uid://bl28ecwd7utms" path="res://generator/world_generator.tres" id="1_bqr6u"]
-[ext_resource type="PackedScene" uid="uid://blftoq73i1tqq" path="res://world/chunk.tscn" id="1_mxp6x"]
 [ext_resource type="PackedScene" uid="uid://54w7q676m52k" path="res://entities/player/Player.tscn" id="4_2m84j"]
+[ext_resource type="Script" path="res://world/Chunk Manager.gd" id="5_7m3dc"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fvce7"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -24,8 +24,10 @@ glow_enabled = true
 [sub_resource type="VoxelMesherBlocky" id="VoxelMesherBlocky_y01nc"]
 library = ExtResource("1_7t3me")
 
-[node name="World" type="Node3D"]
+[node name="World" type="Node3D" node_paths=PackedStringArray("voxel_terrain", "chunk_manager")]
 script = ExtResource("1_7re28")
+voxel_terrain = NodePath("VoxelTerrain")
+chunk_manager = NodePath("Chunk Manager")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_05j8i")
@@ -42,7 +44,9 @@ gi_mode = 1
 collision_mask = 15
 run_stream_in_editor = false
 
-[node name="Chunk" parent="." instance=ExtResource("1_mxp6x")]
-
 [node name="Player" parent="." instance=ExtResource("4_2m84j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 35.7171, 0)
+
+[node name="Chunk Manager" type="Node3D" parent="."]
+script = ExtResource("5_7m3dc")
+render_distance = 5

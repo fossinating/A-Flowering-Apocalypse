@@ -11,13 +11,14 @@ config_version=5
 [application]
 
 config/name="A Flowering Apocalypse"
-run/main_scene="res://world/World.tscn"
+run/main_scene="res://Main Menu.tscn"
 config/features=PackedStringArray("4.1", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 Signals="*res://events/Signals.gd"
+Globals="*res://Globals.gd"
 
 [input]
 
@@ -66,6 +67,12 @@ use={
 
 3d_physics/layer_1="Solids"
 3d_physics/layer_2="Fluids"
+3d_physics/layer_3="Entities"
+3d_physics/layer_4="Enemies"
+3d_physics/layer_5="Player"
+3d_physics/layer_6="Objects"
+3d_physics/layer_31="Scent Detection"
+3d_physics/layer_32="Chunk Detection"
 
 [rendering]
 

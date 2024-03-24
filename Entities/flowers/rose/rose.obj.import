@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://b3w86jpx80orn"
+path="res://.godot/imported/rose.obj-b7a7eeaa0d99f9853459862d3cc0d22e.mesh"
+
+[deps]
+
+files=["res://.godot/imported/rose.obj-b7a7eeaa0d99f9853459862d3cc0d22e.mesh"]
+
+source_file="res://Entities/flowers/rose/rose.obj"
+dest_files=["res://.godot/imported/rose.obj-b7a7eeaa0d99f9853459862d3cc0d22e.mesh", "res://.godot/imported/rose.obj-b7a7eeaa0d99f9853459862d3cc0d22e.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

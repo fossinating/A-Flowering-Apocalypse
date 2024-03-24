@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://di144vp25x7f7"
+path="res://.godot/imported/zombie-4-leg.obj-e64711340df13c44e4ff8ceed8d991f8.mesh"
+
+[deps]
+
+files=["res://.godot/imported/zombie-4-leg.obj-e64711340df13c44e4ff8ceed8d991f8.mesh"]
+
+source_file="res://Entities/zombie/zombie-4-leg.obj"
+dest_files=["res://.godot/imported/zombie-4-leg.obj-e64711340df13c44e4ff8ceed8d991f8.mesh", "res://.godot/imported/zombie-4-leg.obj-e64711340df13c44e4ff8ceed8d991f8.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

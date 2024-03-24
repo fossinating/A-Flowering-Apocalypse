@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://5nn7tbgeqmpo"
+path="res://.godot/imported/zombie-6-arm.obj-5ba9bd67492b4b741dba0e95ce466920.mesh"
+
+[deps]
+
+files=["res://.godot/imported/zombie-6-arm.obj-5ba9bd67492b4b741dba0e95ce466920.mesh"]
+
+source_file="res://Entities/zombie/zombie-6-arm.obj"
+dest_files=["res://.godot/imported/zombie-6-arm.obj-5ba9bd67492b4b741dba0e95ce466920.mesh", "res://.godot/imported/zombie-6-arm.obj-5ba9bd67492b4b741dba0e95ce466920.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://dvkuyk7kpqm3e"]
+
+[ext_resource type="Script" path="res://Entities/VoxelCharacterBody3D.gd" id="1_0kdcb"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_82hdd"]
+size = Vector3(0.6, 1.7, 0.6)
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_6xl76"]
+
+[node name="Zombie" type="CharacterBody3D"]
+script = ExtResource("1_0kdcb")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_82hdd")
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_6xl76")
+anim_player = NodePath("../AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]

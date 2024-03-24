@@ -49,11 +49,13 @@ transform = Transform3D(0.0692351, -0.0686338, 0.0222691, 0.00202784, -0.0289994
 
 [node name="Arm" type="MeshInstance3D" parent="Mesh/Camera3D/Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
+cast_shadow = 0
 mesh = ExtResource("2_qqy8n")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_n8yfk")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Mesh/Camera3D/Node3D/Arm"]
+cast_shadow = 0
 mesh = ExtResource("3_1i8fn")
 
 [node name="Block Indicator" parent="." instance=ExtResource("4_4abch")]

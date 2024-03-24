@@ -7,7 +7,7 @@ const ACCEL = 15.0
 
 @export var camera: Camera3D
 @export var mesh: MeshInstance3D
-@export var block_indicator: MeshInstance3D
+@export var block_indicator: BlockIndicator
 
 const swim_blocks = [4,5]
 
@@ -24,12 +24,17 @@ var chill_rate = 2
 var warm_rate = -5
 var fire_rate = 20
 var coyote_timer = null
+var attack_timer = null
 
 func _ready():
 	coyote_timer = Timer.new()
 	coyote_timer.set_wait_time(.15)
 	coyote_timer.one_shot = true
 	add_child(coyote_timer)
+	attack_timer = Timer.new()
+	attack_timer.set_wait_time(.15)
+	attack_timer.one_shot = true
+	add_child(attack_timer)
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -49,10 +54,16 @@ func _unhandled_input(event):
 func _process(_delta):
 	var tool = $"../VoxelTerrain".get_voxel_tool()
 	
+	# Highlight the block the player is looking at
 	var facing_raycast_result = tool.raycast(camera.global_transform.origin, -camera.global_transform.basis.z, 5, 1)
-	if facing_raycast_result != null:
-		block_indicator.global_transform.origin = Vector3(facing_raycast_result.position) + Vector3(.5, 0, .5)
-	block_indicator.visible = facing_raycast_result != null
+	
+	block_indicator.set_block_position(tool, facing_raycast_result.position if facing_raycast_result != null else null)
+
+	# Give option for player to attack the block
+	if facing_raycast_result != null and Input.is_action_pressed("attack") and attack_timer.is_stopped():
+		Signals.block_damaged.emit(facing_raycast_result.position, self, 1)
+		attack_timer.start()
+
 
 
 func _is_in_water(tool: VoxelTool):

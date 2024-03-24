@@ -1,5 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://dtqci11hd2hru"]
+[gd_scene load_steps=11 format=3 uid="uid://dtqci11hd2hru"]
 
+[ext_resource type="Script" path="res://world/WorldManager.gd" id="1_7re28"]
 [ext_resource type="VoxelBlockyLibrary" uid="uid://saonctilrpa5" path="res://world/blocks/BlockLibrary.tres" id="1_7t3me"]
 [ext_resource type="VoxelGeneratorScript" uid="uid://bl28ecwd7utms" path="res://generator/world_generator.tres" id="1_bqr6u"]
 [ext_resource type="PackedScene" uid="uid://blftoq73i1tqq" path="res://world/chunk.tscn" id="1_mxp6x"]
@@ -23,7 +24,8 @@ glow_enabled = true
 [sub_resource type="VoxelMesherBlocky" id="VoxelMesherBlocky_y01nc"]
 library = ExtResource("1_7t3me")
 
-[node name="Node3D" type="Node3D"]
+[node name="World" type="Node3D"]
+script = ExtResource("1_7re28")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_05j8i")
@@ -43,4 +45,4 @@ run_stream_in_editor = false
 [node name="Chunk" parent="." instance=ExtResource("1_mxp6x")]
 
 [node name="Player" parent="." instance=ExtResource("4_2m84j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 35.7171, 0)

@@ -10,3 +10,85 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_v87a1")
+
+[node name="Main Menu" type="HBoxContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Main Menu"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+alignment = 1
+
+[node name="Play Singleplayer" type="Button" parent="Main Menu/VBoxContainer"]
+layout_mode = 2
+text = "Play Singleplayer"
+
+[node name="Play Multiplayer" type="Button" parent="Main Menu/VBoxContainer"]
+layout_mode = 2
+disabled = true
+text = "Play Multiplayer"
+
+[node name="Settings" type="Button" parent="Main Menu/VBoxContainer"]
+layout_mode = 2
+text = "Settings
+"
+
+[node name="Quit" type="Button" parent="Main Menu/VBoxContainer"]
+layout_mode = 2
+text = "Quit Game"
+
+[node name="Save Menu" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.05
+anchor_right = 0.95
+anchor_bottom = 0.95
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Saved Games Label" type="Label" parent="Save Menu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.1
+offset_left = -52.0
+offset_right = 52.0
+grow_horizontal = 2
+text = "Saved Games"
+vertical_alignment = 1
+
+[node name="Saves Games List" type="ItemList" parent="Save Menu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.02
+anchor_top = 0.1
+anchor_right = 0.98
+anchor_bottom = 0.85
+
+[node name="New Save" type="Button" parent="Save Menu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.03
+anchor_top = 0.88
+anchor_right = 0.49
+anchor_bottom = 0.96
+text = "New Save"
+
+[node name="Load Save" type="Button" parent="Save Menu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.51
+anchor_top = 0.88
+anchor_right = 0.97
+anchor_bottom = 0.96
+disabled = true
+text = "Load Save"

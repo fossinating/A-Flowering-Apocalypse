@@ -71,8 +71,9 @@ use={
 3d_physics/layer_4="Enemies"
 3d_physics/layer_5="Player"
 3d_physics/layer_6="Objects"
-3d_physics/layer_31="Scent Detection"
-3d_physics/layer_32="Chunk Detection"
+3d_physics/layer_7="EnemyBones"
+3d_physics/layer_31="Scent"
+3d_physics/layer_32="Chunk"
 
 [rendering]
 

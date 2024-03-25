@@ -9,6 +9,7 @@ const ACCEL = 15.0
 @export var camera: Camera3D
 @export var mesh: MeshInstance3D
 @export var block_indicator: BlockIndicator
+@export var scent_emitter: ScentEmitter
 
 const swim_blocks = [4,5]
 
@@ -52,8 +53,9 @@ func _unhandled_input(event):
 		camera.rotation.x = clamp(camera.rotation.x, -1.5, 1.5)
 
 
-func _process(_delta):
+func _process(delta):
 	var tool = $"../VoxelTerrain".get_voxel_tool()
+	scent_emitter.add_scent(delta)
 	
 	# Highlight the block the player is looking at
 	var facing_raycast_result = tool.raycast(camera.global_transform.origin, -camera.global_transform.basis.z, 5, 1)

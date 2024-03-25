@@ -110,11 +110,12 @@ func _generate_pass(voxel_tool: VoxelToolMultipassGenerator, pass_index: int):
 		# TODO: Fix the fact that trees from other chunks can still be too close
 	
 		var rng := RandomNumberGenerator.new()
-		rng.seed = WorldGenerator._get_chunk_seed_2d(world_seed, min_pos / _chunk_size)
 		var tree_locations = []
 
 		for cx_off in range(-1,2):
 			for cz_off in range(-1,2):
+				rng.seed = WorldGenerator._get_chunk_seed_2d(world_seed, (min_pos / _chunk_size) + Vector3i(cx_off, 0, cz_off))
+				seed(rng.seed)
 				for i in 4:
 					var pos := min_pos + _chunk_size*Vector3i(cx_off, 0, cz_off) + Vector3i(rng.randi() % _chunk_size, 0, rng.randi() % _chunk_size)
 					pos.y = _get_height_at(pos.x, pos.z)
@@ -135,6 +136,7 @@ func _generate_pass(voxel_tool: VoxelToolMultipassGenerator, pass_index: int):
 		tree_generator.log_type = LOG
 		tree_generator.leaves_type = LEAVES
 
+		seed(WorldGenerator._get_chunk_seed_2d(world_seed, min_pos / _chunk_size))
 		for tree_location in tree_locations:
 			if tree_location.x >= min_pos.x and tree_location.x <= max_pos.x and tree_location.z >= min_pos.z and tree_location.z <= max_pos.z:
 				var structure = tree_generator.generate()

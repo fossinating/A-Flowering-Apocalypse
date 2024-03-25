@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://54w7q676m52k"]
+[gd_scene load_steps=9 format=3 uid="uid://54w7q676m52k"]
 
 [ext_resource type="Script" path="res://entities/player/Player.gd" id="1_1jc5x"]
 [ext_resource type="ArrayMesh" uid="uid://bgva3f2h3ugs7" path="res://ui/arm-1-arm.obj" id="2_qqy8n"]
 [ext_resource type="ArrayMesh" uid="uid://di3gpn34yc8o1" path="res://ui/arm-0-hand.obj" id="3_1i8fn"]
 [ext_resource type="PackedScene" uid="uid://dltn2snfed3b2" path="res://ui/block_indicator.tscn" id="4_4abch"]
+[ext_resource type="PackedScene" uid="uid://df5ohce4gqyl0" path="res://entities/scent_emitter.tscn" id="5_cxg1r"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ib0ka"]
 size = Vector3(0.6, 1.8, 0.6)
@@ -13,7 +14,7 @@ albedo_color = Color(0.164706, 0.447059, 0, 1)
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_t0q5i"]
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "mesh", "block_indicator")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "mesh", "block_indicator", "scent_emitter")]
 collision_layer = 16
 collision_mask = 2147483709
 axis_lock_angular_x = true
@@ -23,6 +24,7 @@ script = ExtResource("1_1jc5x")
 camera = NodePath("Mesh/Camera3D")
 mesh = NodePath("Mesh")
 block_indicator = NodePath("Block Indicator")
+scent_emitter = NodePath("ScentEmitter")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
@@ -66,3 +68,5 @@ tree_root = SubResource("AnimationNodeStateMachine_t0q5i")
 anim_player = NodePath("../AnimationPlayer")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="ScentEmitter" parent="." instance=ExtResource("5_cxg1r")]

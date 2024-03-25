@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dtqci11hd2hru"]
+[gd_scene load_steps=13 format=3 uid="uid://dtqci11hd2hru"]
 
 [ext_resource type="Script" path="res://world/WorldManager.gd" id="1_7re28"]
 [ext_resource type="VoxelBlockyLibrary" uid="uid://saonctilrpa5" path="res://world/blocks/BlockLibrary.tres" id="1_7t3me"]
@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://54w7q676m52k" path="res://entities/player/Player.tscn" id="4_2m84j"]
 [ext_resource type="Script" path="res://world/Chunk Manager.gd" id="5_7m3dc"]
 [ext_resource type="PackedScene" uid="uid://dvkuyk7kpqm3e" path="res://entities/zombie/zombie.tscn" id="6_c60nn"]
-[ext_resource type="Script" path="res://entities/zombie/zombie.gd" id="7_wfbqj"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fvce7"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -60,4 +59,4 @@ script = ExtResource("5_7m3dc")
 render_distance = 5
 
 [node name="Zombie" parent="." instance=ExtResource("6_c60nn")]
-script = ExtResource("7_wfbqj")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 100, 0)

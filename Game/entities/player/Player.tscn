@@ -37,6 +37,7 @@ shape = SubResource("BoxShape3D_ib0ka")
 
 [node name="Camera3D" type="Camera3D" parent="Mesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+current = true
 
 [node name="Hit Detection" type="RayCast3D" parent="Mesh/Camera3D"]
 target_position = Vector3(0, 0, -4)

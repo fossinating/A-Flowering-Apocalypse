@@ -3,8 +3,9 @@ class_name Player
 
 const JUMP_VELOCITY = 4.5
 const mouse_sensitivity = 0.002  # radians/pixel
-const MAX_VELOCITY = 7.0
-const ACCEL = 15.0
+const MAX_WALK_SPEED = 6.0
+const SPRINT_MULT := 8.0
+const ACCEL = MAX_WALK_SPEED / 0.2
 
 @export var camera: Camera3D
 @export var mesh: MeshInstance3D
@@ -19,21 +20,10 @@ const AIR_FACTOR = 1.5
 const GROUND_FACTOR = 1
 
 
-const MAX_CHILL = 100.0
-const MAX_FIRE = 150.0
-var chill = 0.0
-var fire = MAX_FIRE
-var chill_rate = 2
-var warm_rate = -5
-var fire_rate = 20
-var coyote_timer = null
+
 var attack_timer = null
 
 func _ready():
-	coyote_timer = Timer.new()
-	coyote_timer.set_wait_time(.15)
-	coyote_timer.one_shot = true
-	add_child(coyote_timer)
 	attack_timer = Timer.new()
 	attack_timer.set_wait_time(.15)
 	attack_timer.one_shot = true
@@ -98,7 +88,7 @@ func _physics_process(delta):
 		else:		
 			velocity.y -= gravity * delta
 	# Handle Jump.
-	if Input.is_action_pressed("jump") and not is_in_water and (is_on_floor()):# || not coyote_timer.is_stopped()):
+	if Input.is_action_pressed("jump") and not is_in_water and (is_on_floor()):
 		velocity.y = JUMP_VELOCITY
 	
 	if Input.is_action_pressed("jump") and is_in_water:
@@ -106,36 +96,26 @@ func _physics_process(delta):
  
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
-	
-	
-	# friction 
-	var factor = AIR_FACTOR
-	if is_on_floor():
-		factor = GROUND_FACTOR
-	
-	
-	
-	var direction = (mesh.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	var accel = Vector3()
-	if direction:
-		accel.x = direction.x * ACCEL / factor
-		accel.z = direction.z * ACCEL / factor
-	else:
-		if is_on_floor:
-			var friction = 3*delta
-			velocity.x = lerp(velocity.x, 0.0, friction)
-			velocity.z = lerp(velocity.z, 0.0, friction)
 
+	# Calculate acceleration
+	var target_velocity = (mesh.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized() * MAX_WALK_SPEED
+	var flat_velocity = Vector3(velocity.x, 0, velocity.z)
+	var acceleration_vector = (target_velocity - flat_velocity).normalized() * ACCEL
+
+	# Apply acceleration
+	flat_velocity += acceleration_vector * delta
+
+	# Clamp velocity to max_speed
+	flat_velocity = flat_velocity.clamp(-MAX_WALK_SPEED*Vector3(1,0,1), MAX_WALK_SPEED*Vector3(1,0,1))
+
+	# Apply deceleration if no input
+	if input_dir == Vector2.ZERO and is_on_floor():
+		var deceleration_vector = -flat_velocity.normalized() * ACCEL
+		flat_velocity += deceleration_vector * delta
+
+	# TODO: convert flat_velocity to local coordinates, then make modifications including input + friction, then convert back to global and apply to velocity
+
+	velocity = Vector3(flat_velocity.x, velocity.y, flat_velocity.z)
 	
-	velocity += accel*delta
-	var h_vel = Vector2(velocity.x, velocity.z)
 	
-	if h_vel.length_squared() > pow(MAX_VELOCITY*factor, 2.0):
-		h_vel = h_vel.normalized() * lerp(h_vel.length(), MAX_VELOCITY*factor, min(0.3/factor, 1.0))
-	velocity.x = h_vel.x
-	velocity.z = h_vel.y
-	
-	var was_on_floor = is_on_floor()
 	move_and_slide()
-	if was_on_floor and not is_on_floor():
-		coyote_timer.start()

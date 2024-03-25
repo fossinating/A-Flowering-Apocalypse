@@ -14,7 +14,7 @@ albedo_color = Color(0.164706, 0.447059, 0, 1)
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_t0q5i"]
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "mesh", "block_indicator", "scent_emitter")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "mesh", "block_indicator", "scent_emitter", "hit_detection")]
 collision_layer = 16
 collision_mask = 2147483709
 axis_lock_angular_x = true
@@ -25,6 +25,7 @@ camera = NodePath("Mesh/Camera3D")
 mesh = NodePath("Mesh")
 block_indicator = NodePath("Block Indicator")
 scent_emitter = NodePath("ScentEmitter")
+hit_detection = NodePath("Mesh/Camera3D/Hit Detection")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
@@ -37,6 +38,10 @@ shape = SubResource("BoxShape3D_ib0ka")
 [node name="Camera3D" type="Camera3D" parent="Mesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
+[node name="Hit Detection" type="RayCast3D" parent="Mesh/Camera3D"]
+target_position = Vector3(0, 0, -4)
+collision_mask = 44
+
 [node name="Control" type="Control" parent="Mesh/Camera3D"]
 layout_mode = 3
 anchors_preset = 15
@@ -45,6 +50,20 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="Mesh/Camera3D/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Mesh/Camera3D/Control/CenterContainer"]
+custom_minimum_size = Vector2(5, 5)
+layout_mode = 2
+mouse_filter = 1
+color = Color(0, 0, 0, 1)
 
 [node name="Node3D" type="Node3D" parent="Mesh/Camera3D"]
 transform = Transform3D(0.0692351, -0.0686338, 0.0222691, 0.00202784, -0.0289994, -0.0956814, 0.0721276, 0.0666966, -0.018686, 0.42, -0.395, -0.393)

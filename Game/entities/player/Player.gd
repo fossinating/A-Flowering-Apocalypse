@@ -10,6 +10,7 @@ const ACCEL = 15.0
 @export var mesh: MeshInstance3D
 @export var block_indicator: BlockIndicator
 @export var scent_emitter: ScentEmitter
+@export var hit_detection: RayCast3D
 
 const swim_blocks = [4,5]
 
@@ -62,10 +63,14 @@ func _process(delta):
 	
 	block_indicator.set_block_position(tool, facing_raycast_result.position if facing_raycast_result != null else null)
 
-	# Give option for player to attack the block
-	if facing_raycast_result != null and Input.is_action_pressed("attack") and attack_timer.is_stopped():
-		Signals.block_damaged.emit(facing_raycast_result.position, self, 1)
-		attack_timer.start()
+	if attack_timer.is_stopped():
+		if hit_detection.is_colliding() and Input.is_action_just_pressed("attack"):
+			Signals.entity_attacked.emit(self, hit_detection.get_collider(), 1)
+			attack_timer.start()
+		# Give option for player to attack the block
+		if not hit_detection.is_colliding() and facing_raycast_result != null and Input.is_action_pressed("attack"):
+			Signals.block_damaged.emit(facing_raycast_result.position, self, 1)
+			attack_timer.start()
 
 
 

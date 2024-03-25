@@ -11,6 +11,22 @@ var idle_timer = null
 
 func _ready():
 	skeleton.physical_bones_start_simulation(["upperarm.L", "lowerarm.L", "hand.L", "upperarm.R", "lowerarm.R", "hand.R"])
+	# TODO: Move this to something where the signal manager sends this directly to the impacted entities if it has a SignalListener node (this will be part of a full rework to events rather than signals so that I can handle priority and canceling of events, will probably be done as part of the multiplayer implementation whenever that happens)
+	Signals.entity_attacked.connect(entity_attacked)
+
+
+func entity_attacked(attacker:Node, attacked: Node, _damage: float):
+	if attacked == self:
+		# knockback
+		# I really don't like this method since its kinda reaching in but eh
+		var collision_point = global_position
+		var attacker_position = attacker.global_position
+		if "hit_detection" in attacker:
+			collision_point= attacker.hit_detection.get_collision_point()
+		velocity = -(attacker_position - collision_point).normalized() * 10
+		velocity.y = 5
+		# TODO: maybe red tint?
+
 
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -58,24 +74,25 @@ func _physics_process(delta):
 	
 	#print("Scent Level: ", detected_scent_level)
 
-	var target_position: Vector3
-	var flat_velocity: Vector3
-	if detected_scent_level > 0:
-		# move towards scent
-		var target_vector = -global_position.direction_to(greatest_offender.global_position)
-		target_vector.y = 0
-		var target_basis = Basis.looking_at(target_vector)
-		rotator.basis = rotator.basis.slerp(target_basis, delta)
-		flat_velocity = rotator.basis * Vector3(0,0,1)
-		skeleton.rotation_degrees.x = 15
-		
-	else:
-		# state machine of wandering and standing still lol
-		
-		flat_velocity = Vector3.ZERO
-		
-	velocity.x = flat_velocity.x
-	velocity.z = flat_velocity.z
-	step_container.position.z = flat_velocity.length()
+	if is_on_floor():
+		var target_position: Vector3
+		var flat_velocity: Vector3
+		if detected_scent_level > 0:
+			# move towards scent
+			var target_vector = -global_position.direction_to(greatest_offender.global_position)
+			target_vector.y = 0
+			var target_basis = Basis.looking_at(target_vector)
+			rotator.basis = rotator.basis.slerp(target_basis, delta)
+			flat_velocity = rotator.basis * Vector3(0,0,1)
+			skeleton.rotation_degrees.x = 15
+			
+		else:
+			# state machine of wandering and standing still lol
+			
+			flat_velocity = Vector3.ZERO
+			
+		velocity.x = flat_velocity.x
+		velocity.z = flat_velocity.z
+		step_container.position.z = flat_velocity.length()
 	
 	move_and_slide()

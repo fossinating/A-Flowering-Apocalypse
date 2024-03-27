@@ -97,19 +97,13 @@ func _physics_process(delta):
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 
-	# Calculate acceleration
-	
-
-	# convert flat_velocity to local rotation
+	# Generate flat_velocity in terms of local rotation
 
 	var flat_velocity = Vector3(velocity.x, 0, velocity.z) * mesh.transform.basis
 
-	
-	var target_velocity = Vector3(input_dir.x, 0, input_dir.y).normalized() * MAX_WALK_SPEED
+	# Generate acceleration_vector from input)dir
+	var acceleration_vector = Vector3(input_dir.x, 0, input_dir.y).normalized() * ACCEL
 
-	var acceleration_vector = (target_velocity - flat_velocity).normalized() * ACCEL
-
-	# Apply acceleration
 	flat_velocity += acceleration_vector * delta
 
 	# Clamp velocity to max_speed

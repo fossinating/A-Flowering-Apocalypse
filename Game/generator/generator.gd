@@ -46,7 +46,7 @@ var _trees_max_y := 90
 
 
 func _init():
-	world_seed = hash(Globals.shared_data.world_seed)
+	world_seed = hash(WorldManager.get_world().world_seed)
 
 	# TODO Even this must be based on a seed, but I'm lazy
 	#var tree_generator = TreeGenerator.new()

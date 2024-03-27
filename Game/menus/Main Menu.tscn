@@ -85,7 +85,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Save Menu" type="Panel" parent="Rightside Menus"]
-visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.05
@@ -108,7 +107,7 @@ grow_horizontal = 2
 text = "Saved Games"
 vertical_alignment = 1
 
-[node name="Saves Games List" type="ItemList" parent="Rightside Menus/Save Menu"]
+[node name="Saved Games List" type="ItemList" parent="Rightside Menus/Save Menu"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.02
@@ -266,6 +265,7 @@ mouse_filter = 2
 [connection signal="pressed" from="Current Menu/Main Menu/VBoxContainer/Play Multiplayer" to="Current Menu/Main Menu" method="_on_play_multiplayer_pressed"]
 [connection signal="pressed" from="Current Menu/Main Menu/VBoxContainer/Settings" to="Current Menu/Main Menu" method="_on_settings_pressed"]
 [connection signal="pressed" from="Current Menu/Main Menu/VBoxContainer/Quit" to="Current Menu/Main Menu" method="_on_quit_pressed"]
+[connection signal="item_selected" from="Rightside Menus/Save Menu/Saved Games List" to="Rightside Menus/Save Menu" method="_on_saved_games_list_item_selected"]
 [connection signal="pressed" from="Rightside Menus/Save Menu/New Save" to="Rightside Menus/Save Menu" method="_on_new_save_pressed"]
 [connection signal="pressed" from="Rightside Menus/Save Menu/Load Save" to="Rightside Menus/Save Menu" method="_on_load_save_pressed"]
 [connection signal="pressed" from="Rightside Menus/Save Menu/Back Button" to="Rightside Menus/Save Menu" method="_on_back_button_pressed"]

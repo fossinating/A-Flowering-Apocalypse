@@ -5,7 +5,7 @@ extends Panel
 func get_save_name():
 	var save_name = $"Save Name Input".text
 	var regex = RegEx.new()
-	regex.compile("^([a-Z]|[0-9]| )+$")
+	regex.compile("^([A-z]|[0-9]| )+$")
 	if regex.search(save_name) == null:
 		return null
 	return save_name.replace(" ", "_").to_lower()
@@ -20,14 +20,15 @@ func _on_create_save_pressed():
 	# Make directory for the save
 	DirAccess.make_dir_recursive_absolute("user://saves/"+save_name)
 	# Write save file data
-	var save_file = FileAccess.open("user://saves/"+save_name+"/save.bin", FileAccess.WRITE)
+	var save_file = FileAccess.open("user://saves/"+save_name+"/world.dat", FileAccess.WRITE)
 	save_file.store_var({
 		"display_name": $"Save Name Input".text,
+		"save_name": save_name,
 		"seed": $"Seed Input".text if $"Seed Input".text != "" else str(randf())
 	})
 	save_file.close()
 	# Pass save file information to shared data buffer
-	Globals.shared_data = SaveInfo.new(save_name)
+	WorldManager.load_world(save_name)
 	# Switch scene to world
 	get_tree().change_scene_to_file("res://world/World.tscn")
 
@@ -36,7 +37,7 @@ func _on_back_button_pressed():
 	main_menu.change_page_to(main_menu.save_page)
 
 
-func _on_save_name_input_text_changed(new_text):
+func _on_save_name_input_text_changed(_new_text):
 	var save_name = get_save_name()
 	if save_name == null:
 		$"Save Name Message".text = "Invalid save name"

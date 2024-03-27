@@ -8,9 +8,9 @@ var chunk_coordinates: Vector2i
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var dir = DirAccess.open("user://")
-	if not dir.dir_exists("user://saves/" + Globals.shared_data.name + "/entities/"):
-		dir.make_dir_recursive("user://saves/" + Globals.shared_data.name + "/entities/")
-	var save_file = FileAccess.open("user://saves/" + Globals.shared_data.name + 
+	if not dir.dir_exists("user://saves/" + WorldManager.get_world().save_name + "/entities/"):
+		dir.make_dir_recursive("user://saves/" + WorldManager.get_world().save_name + "/entities/")
+	var save_file = FileAccess.open("user://saves/" + WorldManager.get_world().save_name + 
 		"/entities/chunk_"+str(chunk_coordinates.x)+"_" + str(chunk_coordinates.y), FileAccess.READ)
 
 	if save_file != null:
@@ -31,9 +31,9 @@ func generate():
 
 
 func save():
-	print("user://saves/" + Globals.shared_data.name + 
+	print("user://saves/" + WorldManager.get_world().save_name + 
 		"/entities/chunk_"+str(chunk_coordinates.x)+"_" + str(chunk_coordinates.y))
-	var save_file = FileAccess.open("user://saves/" + Globals.shared_data.name + 
+	var save_file = FileAccess.open("user://saves/" + WorldManager.get_world().save_name + 
 		"/entities/chunk_"+str(chunk_coordinates.x)+"_" + str(chunk_coordinates.y), FileAccess.WRITE)
 	push_error(FileAccess.get_open_error())
 

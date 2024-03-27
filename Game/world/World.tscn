@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://dtqci11hd2hru"]
 
-[ext_resource type="Script" path="res://world/WorldManager.gd" id="1_7re28"]
+[ext_resource type="Script" path="res://world/World.gd" id="1_7re28"]
 [ext_resource type="VoxelBlockyLibrary" uid="uid://saonctilrpa5" path="res://world/blocks/BlockLibrary.tres" id="1_7t3me"]
 [ext_resource type="Script" path="res://generator/generator.gd" id="2_64v6f"]
 [ext_resource type="PackedScene" uid="uid://54w7q676m52k" path="res://entities/player/Player.tscn" id="4_2m84j"]

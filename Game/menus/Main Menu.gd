@@ -48,4 +48,3 @@ func change_page_to(new_page: Control):
 				current_carrier.get_child(0).reparent(leftside)
 			new_page.reparent(current)
 	)
-

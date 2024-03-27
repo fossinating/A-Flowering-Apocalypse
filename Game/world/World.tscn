@@ -31,10 +31,11 @@ script = ExtResource("2_64v6f")
 [sub_resource type="VoxelMesherBlocky" id="VoxelMesherBlocky_y01nc"]
 library = ExtResource("1_7t3me")
 
-[node name="World" type="Node3D" node_paths=PackedStringArray("voxel_terrain", "chunk_manager")]
+[node name="World" type="Node3D" node_paths=PackedStringArray("voxel_terrain", "chunk_manager", "player")]
 script = ExtResource("1_7re28")
 voxel_terrain = NodePath("VoxelTerrain")
 chunk_manager = NodePath("Chunk Manager")
+player = NodePath("Player")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_05j8i")

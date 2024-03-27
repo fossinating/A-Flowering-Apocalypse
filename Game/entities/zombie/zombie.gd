@@ -26,8 +26,8 @@ func entity_attacked(attacker:Node, attacked: Node, _damage: float):
 		var attacker_position = attacker.global_position
 		if "hit_detection" in attacker:
 			collision_point= attacker.hit_detection.get_collision_point()
-		velocity = -(attacker_position - collision_point).normalized() * 10
-		velocity.y = 5
+		velocity = -(attacker_position - collision_point).normalized() * 5
+		velocity.y = 3.5
 		# TODO: maybe red tint?
 
 
@@ -121,4 +121,5 @@ func _physics_process(delta):
 
 	velocity = Vector3(flat_velocity.x, velocity.y, flat_velocity.z)
 	
-	move_and_slide()
+	if WorldManager.get_world_node().is_position_loaded(global_position):
+		move_and_slide()

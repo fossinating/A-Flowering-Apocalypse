@@ -28,6 +28,18 @@ func _ready():
 	attack_timer.set_wait_time(.15)
 	attack_timer.one_shot = true
 	add_child(attack_timer)
+	
+	if FileAccess.file_exists("user://saves/" + WorldManager.get_world().save_name + "/player.dat"):
+		var save_file = FileAccess.open("user://saves/" + WorldManager.get_world().save_name + "/player.dat", FileAccess.READ)
+		var data = save_file.get_var()
+		if data == null:
+			return
+		if "position" in data:
+			global_position = data["position"]
+		if "children_data" in data:
+			for child_name in data["children_data"]:
+				var child = find_child(child_name)
+				child.load_data(data["children_data"][child_name])
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -119,4 +131,17 @@ func _physics_process(delta):
 
 	#print(flat_velocity.length())
 	
-	move_and_slide()
+	if WorldManager.get_world_node().is_position_loaded(global_position):
+		move_and_slide()
+
+func save():
+	var save_file = FileAccess.open("user://saves/" + WorldManager.get_world().save_name + "/player.dat", FileAccess.WRITE)
+	var data = {
+		"position": global_position,
+		"child_data": {}
+	}
+	for child in get_children():
+		if child.has_method("save_data"):
+			data["child_data"][child.name] = child.save_data()
+	save_file.store_var(data)
+	save_file.close()

@@ -3,6 +3,7 @@ extends Node3D
 
 @export var voxel_terrain: VoxelTerrain
 @export var chunk_manager: ChunkManager
+@export var player: Player
 
 
 # Called when the node enters the scene tree for the first time.
@@ -12,6 +13,7 @@ func _ready():
 	voxel_terrain.stream = stream
 	Signals.block_damaged.connect(block_damaged)
 	Signals.block_broken.connect(block_broken)
+	WorldManager.register_world(self)
 
 
 func block_damaged(block_position: Vector3i, damager: Node, damage: int):
@@ -36,7 +38,7 @@ func block_damaged(block_position: Vector3i, damager: Node, damage: int):
 
 
 func block_broken(block_position: Vector3i, _breaker: Node):
-	var tool = $VoxelTerrain.get_voxel_tool()
+	var tool = voxel_terrain.get_voxel_tool()
 	tool.set_voxel(block_position, 0)
 
 func _notification(what: int):
@@ -48,3 +50,8 @@ func _notification(what: int):
 func _save_world():
 	voxel_terrain.save_modified_blocks()
 	chunk_manager.save_all()
+	player.save()
+	
+func is_position_loaded(position: Vector3):
+	return voxel_terrain.is_area_meshed(AABB(position, Vector3.ONE))
+	

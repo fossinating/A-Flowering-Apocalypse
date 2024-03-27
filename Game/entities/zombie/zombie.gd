@@ -6,6 +6,9 @@ extends VoxelCharacterBody3D
 @export var scent_detector: Area3D
 @export var rotator: Node3D
 const JUMP_VELOCITY = 4.5
+const MAX_WALK_SPEED = 2.0
+const SPRINT_MULT = 1.5
+const ACCEL = MAX_WALK_SPEED / 0.2
 
 var idle_timer = null
 
@@ -58,9 +61,13 @@ func _physics_process(delta):
 				velocity.y = max(velocity.y - (0 if Input.is_action_pressed("jump") else 0.5*gravity*delta), -gravity*.1)
 		else:		
 			velocity.y -= gravity * delta
-
+	
 	if is_on_floor() and jump_ray.is_colliding():
 		velocity.y = JUMP_VELOCITY
+ 
+	
+
+	# Apply velocity
 
 	var detected_scent_level := 0
 	var greatest_offender = null
@@ -72,28 +79,46 @@ func _physics_process(delta):
 		if greatest_observed_scent < detected_scent_level:
 			greatest_observed_scent = detected_scent_level
 			greatest_offender = scent_emitter
-	
-	#print("Scent Level: ", detected_scent_level)
+
+	# Generate flat_velocity
+
+	var flat_velocity = Vector3(velocity.x, 0, velocity.z)
+	var sprinting = false
+
+
 
 	if is_on_floor():
-		var target_position: Vector3
-		var flat_velocity: Vector3
 		if detected_scent_level > 0:
 			# move towards scent
 			var target_vector = -global_position.direction_to(greatest_offender.global_position)
 			target_vector.y = 0
 			var target_basis = Basis.looking_at(target_vector)
-			rotator.basis = rotator.basis.slerp(target_basis, delta)
-			flat_velocity = rotator.basis * Vector3(0,0,1)
-			skeleton.rotation_degrees.x = 15
-			
+			rotator.basis = rotator.basis.slerp(target_basis, 2*delta)
+
+			#print((target_basis.x - rotator.basis.x).length_squared(), " | ",( target_basis.z - rotator.basis.z).length_squared())
+
+			# Make zombie slump a bit
+			skeleton.rotation_degrees.x = lerp(skeleton.rotation_degrees.x, 15.0, 0.5)
+
+			# Only move the zombie if it is looking vaguely at target
+			if (target_basis.x - rotator.basis.x).length_squared() < .08 and (target_basis.z - rotator.basis.z).length_squared() < .08:
+				# Generate acceleration_vector from current facing direction, converted into global coordinates
+				var acceleration_vector = rotator.basis * Vector3(0, 0, 1) * ACCEL * (SPRINT_MULT if sprinting else 1.0)
+				
+				# apply the acceleration but reduced if in air / water
+				flat_velocity += acceleration_vector * min(delta * (0.6 if is_in_water else (1.0 if is_on_floor() else 0.4)), max(MAX_WALK_SPEED - flat_velocity.length(), 0))
 		else:
-			# state machine of wandering and standing still lol
+			# Make zombie slump a lot
+			skeleton.rotation_degrees.x = lerp(skeleton.rotation_degrees.x, 30.0, 0.5)
 			
-			flat_velocity = Vector3.ZERO
-			
-		velocity.x = flat_velocity.x
-		velocity.z = flat_velocity.z
-		step_container.position.z = flat_velocity.length()
+		step_container.position.z = min(flat_velocity.length(), 1)
+
+	# Apply friction
+	flat_velocity += -flat_velocity.normalized() * min(flat_velocity.length(), delta * MAX_WALK_SPEED * 3) * (2.0 if is_in_water else (1.0 if is_on_floor() else 0.5))
+
+	# Clamp velocity to max_speed
+	#flat_velocity = flat_velocity.normalized() * min(flat_velocity.length(), MAX_WALK_SPEED * (SPRINT_MULT if sprinting else 1.0))
+
+	velocity = Vector3(flat_velocity.x, velocity.y, flat_velocity.z)
 	
 	move_and_slide()

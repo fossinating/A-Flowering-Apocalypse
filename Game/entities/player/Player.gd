@@ -3,7 +3,7 @@ class_name Player
 
 const JUMP_VELOCITY = 4.5
 const mouse_sensitivity = 0.002  # radians/pixel
-const MAX_WALK_SPEED = 5.0
+const MAX_WALK_SPEED = 3.0
 const SPRINT_MULT := 1.5
 const ACCEL = MAX_WALK_SPEED / 0.2
 
@@ -108,7 +108,7 @@ func _physics_process(delta):
 	flat_velocity += acceleration_vector * delta * (0.6 if is_in_water else (1.0 if is_on_floor() else 0.4))
 
 	# Apply friction
-	flat_velocity += -flat_velocity.normalized() * min(flat_velocity.length(), delta * 15) * (2.0 if is_in_water else (1.0 if is_on_floor() else 0.5))
+	flat_velocity += -flat_velocity.normalized() * min(flat_velocity.length(), delta * MAX_WALK_SPEED * 3) * (2.0 if is_in_water else (1.0 if is_on_floor() else 0.5))
 
 	# Clamp velocity to max_speed
 	flat_velocity = flat_velocity.normalized() * min(flat_velocity.length(), MAX_WALK_SPEED * (SPRINT_MULT if Input.is_action_pressed("sprint") else 1.0))
@@ -116,7 +116,7 @@ func _physics_process(delta):
 	# Apply velocity
 
 	velocity = Vector3(flat_velocity.x, velocity.y, flat_velocity.z)
-	
-	print(velocity, " ", velocity.length())
+
+	#print(flat_velocity.length())
 	
 	move_and_slide()

@@ -18,7 +18,11 @@ func step():
     var target_pos = step_target.global_position
     var halfway = (global_position + step_target.global_position) / 2
 
+    var sec_per_step = min(1.0 / Vector2(owner.velocity.x, owner.velocity.z).length(), 1)
+
+    print(sec_per_step)
+
     var t = get_tree().create_tween()
-    t.tween_property(self, "global_position", target_pos+basis.y, 0.6)
-    t.tween_property(self, "global_position", target_pos, 0.2)
+    t.tween_property(self, "global_position", target_pos+basis.y, 0.8 * sec_per_step)
+    t.tween_property(self, "global_position", target_pos, 0.2 * sec_per_step)
     t.tween_callback(func(): is_stepping = false)

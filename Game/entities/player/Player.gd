@@ -3,8 +3,8 @@ class_name Player
 
 const JUMP_VELOCITY = 4.5
 const mouse_sensitivity = 0.002  # radians/pixel
-const MAX_WALK_SPEED = 6.0
-const SPRINT_MULT := 8.0
+const MAX_WALK_SPEED = 5.0
+const SPRINT_MULT := 1.5
 const ACCEL = MAX_WALK_SPEED / 0.2
 
 @export var camera: Camera3D
@@ -97,26 +97,26 @@ func _physics_process(delta):
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 
-	# Generate flat_velocity in terms of local rotation
+	# Generate flat_velocity
 
-	var flat_velocity = Vector3(velocity.x, 0, velocity.z) * mesh.transform.basis
+	var flat_velocity = Vector3(velocity.x, 0, velocity.z)
 
-	# Generate acceleration_vector from input)dir
-	var acceleration_vector = Vector3(input_dir.x, 0, input_dir.y).normalized() * ACCEL
+	# Generate acceleration_vector from input dir, converted into global coordinates
+	var acceleration_vector = mesh.global_transform.basis * Vector3(input_dir.x, 0, input_dir.y).normalized() * ACCEL * (SPRINT_MULT if Input.is_action_pressed("sprint") else 1.0)
 
-	flat_velocity += acceleration_vector * delta
+	# apply the acceleration but reduced if in air
+	flat_velocity += acceleration_vector * delta * (0.6 if is_in_water else (1.0 if is_on_floor() else 0.4))
+
+	# Apply friction
+	flat_velocity += -flat_velocity.normalized() * min(flat_velocity.length(), delta * 15) * (2.0 if is_in_water else (1.0 if is_on_floor() else 0.5))
 
 	# Clamp velocity to max_speed
-	flat_velocity = flat_velocity.clamp(-MAX_WALK_SPEED*Vector3(1,0,1), MAX_WALK_SPEED*Vector3(1,0,1))
+	flat_velocity = flat_velocity.normalized() * min(flat_velocity.length(), MAX_WALK_SPEED * (SPRINT_MULT if Input.is_action_pressed("sprint") else 1.0))
 
-	# Apply deceleration if no input
-	if input_dir == Vector2.ZERO and is_on_floor():
-		var deceleration_vector = -flat_velocity.normalized() * ACCEL
-		flat_velocity += deceleration_vector * delta
-
-	# TODO: convert flat_velocity to local coordinates, then make modifications including input + friction, then convert back to global and apply to velocity
+	# Apply velocity
 
 	velocity = Vector3(flat_velocity.x, velocity.y, flat_velocity.z)
 	
+	print(velocity, " ", velocity.length())
 	
 	move_and_slide()

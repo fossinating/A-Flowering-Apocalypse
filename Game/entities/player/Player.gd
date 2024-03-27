@@ -1,10 +1,10 @@
 extends VoxelCharacterBody3D
 class_name Player
 
-const JUMP_VELOCITY = 4.5
+const JUMP_VELOCITY = 5
 const mouse_sensitivity = 0.002  # radians/pixel
 const MAX_WALK_SPEED = 3.0
-const SPRINT_MULT := 1.5
+const SPRINT_MULT := 2.0
 const ACCEL = MAX_WALK_SPEED / 0.2
 
 @export var camera: Camera3D
@@ -79,7 +79,7 @@ func _process(delta):
 func _is_in_water(tool: VoxelTool):
 	for direction in [Vector3.UP, Vector3.DOWN]:
 		for offset in [Vector3(1, 0, 1), Vector3(1, 0, -1), Vector3(-1, 0, -1), Vector3(-1, 0, 1)]:
-			var result = tool.raycast(global_transform.origin + 0.3*offset, direction, 1, 2)
+			var result = tool.raycast(global_transform.origin + 0.3*offset - 0.95*direction, direction, 1, 2)
 			if result != null:
 				return true
 	return false
@@ -117,10 +117,10 @@ func _physics_process(delta):
 	var acceleration_vector = mesh.global_transform.basis * Vector3(input_dir.x, 0, input_dir.y).normalized() * ACCEL * (SPRINT_MULT if Input.is_action_pressed("sprint") else 1.0)
 
 	# apply the acceleration but reduced if in air
-	flat_velocity += acceleration_vector * delta * (0.6 if is_in_water else (1.0 if is_on_floor() else 0.4))
+	flat_velocity += acceleration_vector * delta * (0.8 if is_in_water else (1.0 if is_on_floor() else 0.4))
 
 	# Apply friction
-	flat_velocity += -flat_velocity.normalized() * min(flat_velocity.length(), delta * MAX_WALK_SPEED * 3) * (2.0 if is_in_water else (1.0 if is_on_floor() else 0.5))
+	flat_velocity += -flat_velocity.normalized() * min(flat_velocity.length(), delta * MAX_WALK_SPEED * 3) * (1.0 if is_on_floor() else 0.5)
 
 	# Clamp velocity to max_speed
 	flat_velocity = flat_velocity.normalized() * min(flat_velocity.length(), MAX_WALK_SPEED * (SPRINT_MULT if Input.is_action_pressed("sprint") else 1.0))
@@ -131,7 +131,7 @@ func _physics_process(delta):
 
 	#print(flat_velocity.length())
 	
-	if WorldManager.get_world_node().is_position_loaded(global_position):
+	if WorldManager.get_world_node() != null and WorldManager.get_world_node().is_position_loaded(global_position):
 		move_and_slide()
 
 func save():

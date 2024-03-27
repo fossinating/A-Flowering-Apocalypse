@@ -5,7 +5,7 @@ extends VoxelCharacterBody3D
 @export var skeleton: Skeleton3D
 @export var scent_detector: Area3D
 @export var rotator: Node3D
-const JUMP_VELOCITY = 4.5
+const JUMP_VELOCITY = 5
 const MAX_WALK_SPEED = 2.0
 const SPRINT_MULT = 1.5
 const ACCEL = MAX_WALK_SPEED / 0.2
@@ -13,7 +13,7 @@ const ACCEL = MAX_WALK_SPEED / 0.2
 var idle_timer = null
 
 func _ready():
-	skeleton.physical_bones_start_simulation(["upperarm.L", "lowerarm.L", "hand.L", "upperarm.R", "lowerarm.R", "hand.R"])
+	skeleton.physical_bones_start_simulation(["upperarm.L", "lowerarm.L", "hand.L", "upperarm.R", "lowerarm.R", "hand.R", "upperleg.L", "lowerleg.L", "upperleg.R", "lowerleg.R", "lowerleg.R.001", "lowerleg.L.001"])
 	# TODO: Move this to something where the signal manager sends this directly to the impacted entities if it has a SignalListener node (this will be part of a full rework to events rather than signals so that I can handle priority and canceling of events, will probably be done as part of the multiplayer implementation whenever that happens)
 	Signals.entity_attacked.connect(entity_attacked)
 
@@ -36,11 +36,13 @@ func entity_attacked(attacker:Node, attacked: Node, _damage: float):
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 
+var was_on_floor = true
+
 
 func _is_in_water(tool: VoxelTool):
 	for direction in [Vector3.UP, Vector3.DOWN]:
 		for offset in [Vector3(1, 0, 1), Vector3(1, 0, -1), Vector3(-1, 0, -1), Vector3(-1, 0, 1)]:
-			var result = tool.raycast(global_transform.origin + 0.3*offset, direction, 1, 2)
+			var result = tool.raycast(global_transform.origin + 0.3*offset - 0.95*direction, direction, 1, 2)
 			if result != null:
 				return true
 	return false
@@ -86,38 +88,44 @@ func _physics_process(delta):
 	var sprinting = false
 
 
+	if detected_scent_level > 0:
+		# move towards scent
+		var target_vector = -global_position.direction_to(greatest_offender.global_position)
+		target_vector.y = 0
+		var target_basis = Basis.looking_at(target_vector)
+		rotator.basis = rotator.basis.slerp(target_basis, 2*delta)
 
-	if is_on_floor():
-		if detected_scent_level > 0:
-			# move towards scent
-			var target_vector = -global_position.direction_to(greatest_offender.global_position)
-			target_vector.y = 0
-			var target_basis = Basis.looking_at(target_vector)
-			rotator.basis = rotator.basis.slerp(target_basis, 2*delta)
+		#print((target_basis.x - rotator.basis.x).length_squared(), " | ",( target_basis.z - rotator.basis.z).length_squared())
 
-			#print((target_basis.x - rotator.basis.x).length_squared(), " | ",( target_basis.z - rotator.basis.z).length_squared())
+		# Make zombie slump a bit
+		skeleton.rotation_degrees.x = lerp(skeleton.rotation_degrees.x, 15.0, 0.5)
 
-			# Make zombie slump a bit
-			skeleton.rotation_degrees.x = lerp(skeleton.rotation_degrees.x, 15.0, 0.5)
-
-			# Only move the zombie if it is looking vaguely at target
-			if (target_basis.x - rotator.basis.x).length_squared() < .08 and (target_basis.z - rotator.basis.z).length_squared() < .08:
-				# Generate acceleration_vector from current facing direction, converted into global coordinates
-				var acceleration_vector = rotator.basis * Vector3(0, 0, 1) * ACCEL * (SPRINT_MULT if sprinting else 1.0)
-				
-				# apply the acceleration but reduced if in air / water
-				flat_velocity += acceleration_vector * min(delta * (0.6 if is_in_water else (1.0 if is_on_floor() else 0.4)), max(MAX_WALK_SPEED - flat_velocity.length(), 0))
-		else:
-			# Make zombie slump a lot
-			skeleton.rotation_degrees.x = lerp(skeleton.rotation_degrees.x, 30.0, 0.5)
+		# Only move the zombie if it is looking vaguely at target
+		if (target_basis.x - rotator.basis.x).length_squared() < .08 and (target_basis.z - rotator.basis.z).length_squared() < .08:
+			# Generate acceleration_vector from current facing direction, converted into global coordinates
+			var acceleration_vector = rotator.basis * Vector3(0, 0, 1) * ACCEL * (SPRINT_MULT if sprinting else 1.0)
 			
+			# apply the acceleration but reduced if in air / water
+			flat_velocity += acceleration_vector * min(delta * (0.6 if is_in_water else (1.0 if is_on_floor() else 0.4)), max(MAX_WALK_SPEED - flat_velocity.length(), 0))
+	else:
+		# Make zombie slump a lot
+		skeleton.rotation_degrees.x = lerp(skeleton.rotation_degrees.x, 30.0, 0.5)
+		
+	if is_on_floor():
 		step_container.position.z = min(flat_velocity.length(), 1)
+	if is_on_floor() != was_on_floor:
+		if is_on_floor():
+			step_container.position.z = 0
+			$LeftIKTarget.quick_step()
+			$RightIKTarget.quick_step()
+		was_on_floor = is_on_floor()
 
 	# Apply friction
 	flat_velocity += -flat_velocity.normalized() * min(flat_velocity.length(), delta * MAX_WALK_SPEED * 3) * (2.0 if is_in_water else (1.0 if is_on_floor() else 0.5))
 
 	# Clamp velocity to max_speed
 	#flat_velocity = flat_velocity.normalized() * min(flat_velocity.length(), MAX_WALK_SPEED * (SPRINT_MULT if sprinting else 1.0))
+
 
 	velocity = Vector3(flat_velocity.x, velocity.y, flat_velocity.z)
 	

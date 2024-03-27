@@ -10,7 +10,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.223529)
+color = Color(0, 0, 0, 0.32549)
 script = ExtResource("1_dfjaj")
 
 [node name="Main Pause Page" type="Control" parent="."]

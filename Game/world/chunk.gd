@@ -31,10 +31,9 @@ func _ready():
 
 
 func generate():
-	print(get_parent().get_zombie_map_at(chunk_coordinates))
 	if get_parent().get_zombie_map_at(chunk_coordinates) > 0:
 		var rand = RandomNumberGenerator.new()
-		rand.seed = hash(WorldManager.get_world().world_seed)
+		rand.seed = hash(WorldManager.get_world().world_seed) ^ 13*chunk_coordinates.x ^ 31 * chunk_coordinates.z
 		var zombie = zombie_scene.instantiate()
 		object_carrier.add_child(zombie)
 		zombie.position = Vector3(rand.randi_range(0, 15), 0, rand.randi_range(0,15))
@@ -46,7 +45,8 @@ func generate():
 func save():
 	var save_file = FileAccess.open("user://saves/" + WorldManager.get_world().save_name + 
 		"/entities/chunk_"+str(chunk_coordinates.x)+"_" + str(chunk_coordinates.z), FileAccess.WRITE)
-	push_error(FileAccess.get_open_error())
+	if FileAccess.get_open_error():
+		push_error(FileAccess.get_open_error())
 
 	var entity_data = []
 

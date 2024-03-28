@@ -46,7 +46,7 @@ func on_entity_leave_chunk(entity, left_chunk):
 			var entity_chunk = Vector3i(floor(entity.global_position.x / 16), floor(entity.global_position.y / 16), floor(entity.global_position.z / 16))
 			var new_chunk = find_child("Chunk"+str(entity_chunk.x)+","+str(entity_chunk.z), false, false)
 			if new_chunk != null:
-				entity.reparent(new_chunk.object_carrier)
+				entity.reparent.call_deferred(new_chunk.object_carrier)
 			else:
 				push_error("Entity walked into unloaded chunks!")
 

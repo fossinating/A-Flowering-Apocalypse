@@ -29,9 +29,10 @@ func _ready():
 	else:
 		generate()
 
-
+# TODO: change this to be something that only generates zombies at certain structures or something like that?
 func generate():
-	if get_parent().get_zombie_map_at(chunk_coordinates) > 0:
+	print(get_parent().get_zombie_map_at(chunk_coordinates))
+	if abs(get_parent().get_zombie_map_at(chunk_coordinates)) > .75:
 		var rand = RandomNumberGenerator.new()
 		rand.seed = hash(WorldManager.get_world().world_seed) ^ 13*chunk_coordinates.x ^ 31 * chunk_coordinates.z
 		var zombie = zombie_scene.instantiate()

@@ -106,7 +106,7 @@ func _physics_process(delta):
 			var acceleration_vector = rotator.basis * Vector3(0, 0, 1) * ACCEL * (SPRINT_MULT if sprinting else 1.0)
 			
 			# apply the acceleration but reduced if in air / water
-			flat_velocity += acceleration_vector * min(delta * (0.6 if is_in_water else (1.0 if is_on_floor() else 0.4)), max(MAX_WALK_SPEED - flat_velocity.length(), 0))
+			flat_velocity += acceleration_vector * min(delta * (0.8 if is_in_water else (1.0 if is_on_floor() else 0.4)), max(MAX_WALK_SPEED - flat_velocity.length(), 0))
 	else:
 		# Make zombie slump a lot
 		skeleton.rotation_degrees.x = lerp(skeleton.rotation_degrees.x, 30.0, 0.5)
@@ -121,7 +121,7 @@ func _physics_process(delta):
 		was_on_floor = is_on_floor()
 
 	# Apply friction
-	flat_velocity += -flat_velocity.normalized() * min(flat_velocity.length(), delta * MAX_WALK_SPEED * 3) * (2.0 if is_in_water else (1.0 if is_on_floor() else 0.5))
+	flat_velocity += -flat_velocity.normalized() * min(flat_velocity.length(), delta * MAX_WALK_SPEED * 3) * (1.0 if is_on_floor() else 0.5)
 
 	# Clamp velocity to max_speed
 	#flat_velocity = flat_velocity.normalized() * min(flat_velocity.length(), MAX_WALK_SPEED * (SPRINT_MULT if sprinting else 1.0))

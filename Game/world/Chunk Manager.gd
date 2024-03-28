@@ -4,14 +4,12 @@ class_name ChunkManager
 @export var render_distance: int
 @export var player: Player
 @onready var chunk_source = preload("res://world/chunk.tscn")
-var zombie_map := FastNoiseLite.new()
+var zombie_map = preload("res://generator/zombie_map_noise.tres")
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	zombie_map.seed = 13 ^ hash(WorldManager.get_world().world_seed)
-	zombie_map.frequency = 1.0 / 128.0
-	zombie_map.fractal_octaves = 4
 	load_around_player()
 
 

@@ -1,0 +1,109 @@
+[gd_scene load_steps=7 format=3 uid="uid://b6trf5i13tu8b"]
+
+[ext_resource type="VoxelBlockyLibrary" uid="uid://saonctilrpa5" path="res://world/blocks/BlockLibrary.tres" id="1_ghkyc"]
+[ext_resource type="Script" path="res://sprite_generator.gd" id="1_ye63k"]
+
+[sub_resource type="VoxelGeneratorGraph" id="VoxelGeneratorGraph_ck4ec"]
+graph_data = {
+"connections": [[9, 0, 11, 1], [1, 0, 7, 0], [10, 0, 6, 0], [2, 0, 8, 0], [3, 0, 9, 0], [7, 0, 12, 0], [8, 0, 12, 1], [11, 0, 10, 2], [12, 0, 11, 0]],
+"nodes": {
+"1": {
+"gui_position": Vector2(240, 60),
+"type": "InputX"
+},
+"10": {
+"a": 1.0,
+"b": 0.0,
+"gui_position": Vector2(800, 100),
+"threshold": 1.0,
+"type": "Select"
+},
+"11": {
+"gui_position": Vector2(620, 140),
+"type": "Add"
+},
+"12": {
+"gui_position": Vector2(460, 60),
+"type": "Add"
+},
+"2": {
+"gui_position": Vector2(240, 120),
+"type": "InputY"
+},
+"3": {
+"gui_position": Vector2(240, 180),
+"type": "InputZ"
+},
+"6": {
+"gui_position": Vector2(980, 140),
+"type": "OutputType"
+},
+"7": {
+"gui_position": Vector2(320, 60),
+"type": "Abs"
+},
+"8": {
+"gui_position": Vector2(320, 120),
+"type": "Abs"
+},
+"9": {
+"gui_position": Vector2(320, 180),
+"type": "Abs"
+}
+},
+"version": 2
+}
+
+[sub_resource type="VoxelMesherBlocky" id="VoxelMesherBlocky_cjski"]
+library = ExtResource("1_ghkyc")
+
+[sub_resource type="SphereMesh" id="SphereMesh_vthns"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_as71s"]
+viewport_path = NodePath("SubViewport")
+
+[node name="Sprite Generator" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ye63k")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(256, 256)
+
+[node name="VoxelTerrain" type="VoxelTerrain" parent="SubViewport"]
+generator = SubResource("VoxelGeneratorGraph_ck4ec")
+mesher = SubResource("VoxelMesherBlocky_cjski")
+cast_shadow = 0
+
+[node name="Node3D" type="Node3D" parent="SubViewport"]
+transform = Transform3D(0.866025, -0.12941, 0.482963, 0, 0.965926, 0.258819, -0.5, -0.224144, 0.836516, 0.5, 0.5, 0.5)
+
+[node name="Camera3D" type="Camera3D" parent="SubViewport/Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+projection = 1
+current = true
+size = 2.0
+
+[node name="OmniLight3D" type="OmniLight3D" parent="SubViewport/Node3D/Camera3D"]
+light_energy = 1.162
+omni_range = 360.376
+omni_attenuation = 0.203064
+
+[node name="VoxelViewer" type="VoxelViewer" parent="SubViewport"]
+requires_collisions = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+visible = false
+mesh = SubResource("SphereMesh_vthns")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = SubResource("ViewportTexture_as71s")

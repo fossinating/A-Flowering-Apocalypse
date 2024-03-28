@@ -37,9 +37,19 @@ func block_damaged(block_position: Vector3i, damager: Node, damage: int):
 		tool.set_voxel_metadata(block_position, block_meta)
 
 
+@onready var dropped_item_scene = preload("res://items/dropped_item.tscn")
+
+
 func block_broken(block_position: Vector3i, _breaker: Node):
 	var tool = voxel_terrain.get_voxel_tool()
+	var block_data = BlockDataRegistry.get_block_data(tool.get_voxel(block_position))
 	tool.set_voxel(block_position, 0)
+	var chunk_coordinates = floor(block_position / 16)
+	for drop in block_data.item_drops:
+		var dropped_item = dropped_item_scene.instantiate()
+		dropped_item.item_stack = drop
+		get_node("Chunk Manager/Chunk" + chunk_coordinates.x + "," + chunk_coordinates.z).add_child(dropped_item)
+
 
 func _notification(what: int):
 	match what:

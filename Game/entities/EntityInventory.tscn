@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://ccgwyw4r8mvar"]
+
+[ext_resource type="Script" path="res://entities/EntityInventory.gd" id="1_6d3dr"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ojrev"]
+radius = 1.5
+
+[node name="EntityInventory" type="Area3D"]
+collision_layer = 0
+collision_mask = 128
+script = ExtResource("1_6d3dr")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_ojrev")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -31,14 +31,14 @@ func _ready():
 
 # TODO: change this to be something that only generates zombies at certain structures or something like that?
 func generate():
-	print(get_parent().get_zombie_map_at(chunk_coordinates))
+	#print(get_parent().get_zombie_map_at(chunk_coordinates))
 	if abs(get_parent().get_zombie_map_at(chunk_coordinates)) > .75:
 		var rand = RandomNumberGenerator.new()
 		rand.seed = hash(WorldManager.get_world().world_seed) ^ 13*chunk_coordinates.x ^ 31 * chunk_coordinates.z
 		var zombie = zombie_scene.instantiate()
 		object_carrier.add_child(zombie)
 		zombie.position = Vector3(rand.randi_range(0, 15), 0, rand.randi_range(0,15))
-		print(WorldManager.get_world().get_height_at(zombie.global_position.x, zombie.global_position.z))
+		#print(WorldManager.get_world().get_height_at(zombie.global_position.x, zombie.global_position.z))
 		zombie.global_position.y = WorldManager.get_world().get_height_at(zombie.global_position.x, zombie.global_position.z) + 2
 	save()
 

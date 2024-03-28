@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://8gsxp3jawidx"]
+
+[ext_resource type="Script" path="res://items/dropped_item.gd" id="1_0mvbw"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_374om"]
+size = Vector3(0.5, 0.5, 0.5)
+
+[node name="Dropped Item" type="RigidBody3D"]
+collision_layer = 132
+collision_mask = 3
+script = ExtResource("1_0mvbw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_374om")

@@ -10,8 +10,12 @@ script = ExtResource("1_t2olu")
 object_carrier = NodePath("Objects")
 
 [node name="Entry Detection" type="Area3D" parent="."]
+collision_layer = 2147483648
+collision_mask = 20
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Entry Detection"]
 shape = SubResource("BoxShape3D_6hu6n")
 
 [node name="Objects" type="Node3D" parent="."]
+
+[connection signal="body_exited" from="Entry Detection" to="." method="_on_entry_detection_body_exited"]

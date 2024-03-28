@@ -22,8 +22,6 @@ func step():
 
 	var sec_per_step = min(1.0 / Vector2(owner.velocity.x, owner.velocity.z).length(), 1)
 
-	print(sec_per_step)
-
 	if t != null:
 		t.kill()
 	t = get_tree().create_tween()

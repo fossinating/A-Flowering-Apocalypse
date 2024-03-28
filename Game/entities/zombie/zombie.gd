@@ -50,7 +50,7 @@ func _is_in_water(tool: VoxelTool):
 # TODO: make it so that when the zombie is in the air for > .5 second, ragdoll legs, then restore legs to below body when touching the ground again
 
 func _physics_process(delta):
-	var tool = $"../VoxelTerrain".get_voxel_tool()
+	var tool = WorldManager.get_world_node().voxel_terrain.get_voxel_tool()
 	var is_in_water = _is_in_water(tool)
 
 	

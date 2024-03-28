@@ -1,8 +1,9 @@
 extends Node3D
 
 
-var chunk_coordinates: Vector2i
+var chunk_coordinates: Vector3i
 @export var object_carrier: Node
+@onready var zombie_scene = preload("res://entities/zombie/zombie.tscn")
 
 
 # Called when the node enters the scene tree for the first time.
@@ -11,15 +12,18 @@ func _ready():
 	if not dir.dir_exists("user://saves/" + WorldManager.get_world().save_name + "/entities/"):
 		dir.make_dir_recursive("user://saves/" + WorldManager.get_world().save_name + "/entities/")
 	var save_file = FileAccess.open("user://saves/" + WorldManager.get_world().save_name + 
-		"/entities/chunk_"+str(chunk_coordinates.x)+"_" + str(chunk_coordinates.y), FileAccess.READ)
+		"/entities/chunk_"+str(chunk_coordinates.x)+"_" + str(chunk_coordinates.z), FileAccess.READ)
+
+	global_position = 16 * Vector3(chunk_coordinates.x, 0, chunk_coordinates.z)
 
 	if save_file != null:
 		var saved_entities = save_file.get_var()
 
 		for entity_data in saved_entities:
-			var entity = EntityRegistry.get_entity(entity_data["id"]).packed_scene.instantiate()
-			object_carrier.add_child(entity)
-			entity.find_child("EntitySaver").load_data(entity_data)
+			if "id" in entity_data:
+				var entity = EntityRegistry.get_entity(entity_data["id"]).packed_scene.instantiate()
+				object_carrier.add_child(entity)
+				entity.find_child("EntitySaver").load_data(entity_data)
 
 		save_file.close()
 	else:
@@ -27,14 +31,21 @@ func _ready():
 
 
 func generate():
+	print(get_parent().get_zombie_map_at(chunk_coordinates))
+	if get_parent().get_zombie_map_at(chunk_coordinates) > 0:
+		var rand = RandomNumberGenerator.new()
+		rand.seed = hash(WorldManager.get_world().world_seed)
+		var zombie = zombie_scene.instantiate()
+		object_carrier.add_child(zombie)
+		zombie.position = Vector3(rand.randi_range(0, 15), 0, rand.randi_range(0,15))
+		print(WorldManager.get_world().get_height_at(zombie.global_position.x, zombie.global_position.z))
+		zombie.global_position.y = WorldManager.get_world().get_height_at(zombie.global_position.x, zombie.global_position.z) + 2
 	save()
 
 
 func save():
-	print("user://saves/" + WorldManager.get_world().save_name + 
-		"/entities/chunk_"+str(chunk_coordinates.x)+"_" + str(chunk_coordinates.y))
 	var save_file = FileAccess.open("user://saves/" + WorldManager.get_world().save_name + 
-		"/entities/chunk_"+str(chunk_coordinates.x)+"_" + str(chunk_coordinates.y), FileAccess.WRITE)
+		"/entities/chunk_"+str(chunk_coordinates.x)+"_" + str(chunk_coordinates.z), FileAccess.WRITE)
 	push_error(FileAccess.get_open_error())
 
 	var entity_data = []
@@ -45,10 +56,15 @@ func save():
 		if entity_saver != null:
 			entity_data.append(entity_saver.save_data())
 
-	save_file.store_var(object_carrier.get_children())
+	save_file.store_var(entity_data)
 
 	save_file.close()
 
 
 func unload():
 	save()
+	get_parent().remove_child(self)
+
+
+func _on_entry_detection_body_exited(body:Node3D):
+	get_parent().on_entity_leave_chunk(body, self)

@@ -9,7 +9,8 @@ class EntitySpawnData:
         self.packed_scene = packed_scene
 
 static var entities = {
-    "rose": EntitySpawnData.new("rose", preload("res://entities/flowers/rose/rose.tscn"))
+    "rose": EntitySpawnData.new("rose", preload("res://entities/flowers/rose/rose.tscn")),
+    "zombie": EntitySpawnData.new("zombie", preload("res://entities/zombie/zombie.tscn")),
 }
 
 static func get_entity(id: String):

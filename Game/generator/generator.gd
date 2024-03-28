@@ -6,7 +6,6 @@ class_name WorldGenerator
 
 const Structure = preload("./structure.gd")
 const TreeGenerator = preload("./tree_generator.gd")
-const HeightmapCurve = preload("./heightmap_curve.tres")
 var world_seed: int
 
 var water_level: int = 50
@@ -36,11 +35,6 @@ const _moore_dirs = [
 
 
 const _chunk_size = 16
-
-var _heightmap_min_y := int(HeightmapCurve.min_value)
-var _heightmap_max_y := int(HeightmapCurve.max_value)
-var _heightmap_range := 0
-var _heightmap_noise := FastNoiseLite.new()
 var _trees_min_y := 60
 var _trees_max_y := 90
 
@@ -64,15 +58,6 @@ func _init():
 	#_trees_min_y = _heightmap_min_y
 	#_trees_max_y = _heightmap_max_y + tallest_tree_height
 
-	_heightmap_noise.seed = world_seed
-	_heightmap_noise.frequency = 1.0 / 128.0
-	_heightmap_noise.fractal_octaves = 4
-
-	# IMPORTANT
-	# If we don't do this `Curve` could bake itself when interpolated,
-	# and this causes crashes when used in multiple threads
-	HeightmapCurve.bake()
-
 
 func _get_used_channels_mask() -> int:
 	return 1 << _CHANNEL
@@ -86,7 +71,7 @@ func _generate_pass(voxel_tool: VoxelToolMultipassGenerator, pass_index: int):
 		# Base terrain
 		for gz in range(min_pos.z, max_pos.z):
 			for gx in range(min_pos.x, max_pos.x):
-				var height := _get_height_at(gx, gz)
+				var height := WorldManager.get_world().get_height_at(gx, gz)
 				
 				
 				for y in range(0, height-3):
@@ -118,7 +103,7 @@ func _generate_pass(voxel_tool: VoxelToolMultipassGenerator, pass_index: int):
 				seed(rng.seed)
 				for i in 4:
 					var pos := min_pos + _chunk_size*Vector3i(cx_off, 0, cz_off) + Vector3i(rng.randi() % _chunk_size, 0, rng.randi() % _chunk_size)
-					pos.y = _get_height_at(pos.x, pos.z)
+					pos.y = WorldManager.get_world().get_height_at(pos.x, pos.z)
 					if pos.y < _trees_min_y or pos.y > _trees_max_y:
 						continue
 					var valid_pos = true
@@ -152,8 +137,3 @@ func _generate_pass(voxel_tool: VoxelToolMultipassGenerator, pass_index: int):
 
 static func _get_chunk_seed_2d(_world_seed: int, cpos: Vector3) -> int:
 	return _world_seed ^ int(cpos.x) ^ (31 * int(cpos.z))
-
-
-func _get_height_at(x: int, z: int) -> int:
-	var t = 0.5 + 0.5 * _heightmap_noise.get_noise_2d(x, z)
-	return int(HeightmapCurve.sample_baked(t))

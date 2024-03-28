@@ -12,7 +12,9 @@ func save_data():
 		if sibling == self:
 			continue
 		if sibling.has_method("save_data"):
-			data["sibling_data"][sibling.name] = sibling.save_data()
+			var sibling_data = sibling.save_data()
+			if sibling_data != null:
+				data["sibling_data"][sibling.name] = sibling_data
 	return data
 
 

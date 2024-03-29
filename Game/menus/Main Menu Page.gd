@@ -19,3 +19,7 @@ func _on_settings_pressed():
 func _on_quit_pressed():
 	print("quit pressed!")
 	get_tree().quit()
+
+
+func _on_credits_pressed():
+	main_menu.change_page_to(main_menu.credits_page)

@@ -3,6 +3,7 @@ extends Control
 @export var main_page: Control
 @export var save_page: Control
 @export var new_save_page: Control
+@export var credits_page: Control
 
 
 @export var leftside: Control

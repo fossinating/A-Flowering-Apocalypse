@@ -11,6 +11,7 @@ class EntitySpawnData:
 static var entities = {
     "rose": EntitySpawnData.new("rose", preload("res://entities/flowers/rose/rose.tscn")),
     "zombie": EntitySpawnData.new("zombie", preload("res://entities/zombie/zombie.tscn")),
+    "item": EntitySpawnData.new("item", preload("res://items/dropped_item.tscn")),
 }
 
 static func get_entity(id: String):

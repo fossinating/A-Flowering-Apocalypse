@@ -1,9 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://8gsxp3jawidx"]
+[gd_scene load_steps=4 format=3 uid="uid://8gsxp3jawidx"]
 
 [ext_resource type="Script" path="res://items/dropped_item.gd" id="1_0mvbw"]
+[ext_resource type="PackedScene" uid="uid://3phcqmumd2p8" path="res://entities/EntitySaver.tscn" id="2_7jh77"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_374om"]
-size = Vector3(0.5, 0.5, 0.5)
+size = Vector3(0.3, 0.3, 0.3)
 
 [node name="Dropped Item" type="RigidBody3D"]
 collision_layer = 132
@@ -12,3 +13,6 @@ script = ExtResource("1_0mvbw")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_374om")
+
+[node name="EntitySaver" parent="." instance=ExtResource("2_7jh77")]
+id = "item"

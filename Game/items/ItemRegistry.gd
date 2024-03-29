@@ -29,11 +29,11 @@ func get_item(id: String):
 
 class ItemData:
 	var max_stack_size := 99
-	var item_id: String
+	var id: String
 
 	func _init(init_id: String, init_mss: int = 99):
 		max_stack_size = init_mss
-		item_id = init_id
+		id = init_id
 
 	func get_node():
 		var item_node = load("res://items/item.tscn").instantiate()

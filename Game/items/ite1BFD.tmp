@@ -4,5 +4,3 @@
 
 [node name="Item" type="Node3D"]
 script = ExtResource("1_wops7")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]

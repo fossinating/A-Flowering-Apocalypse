@@ -44,11 +44,14 @@ func block_broken(block_position: Vector3i, _breaker: Node):
 	var tool = voxel_terrain.get_voxel_tool()
 	var block_data = BlockDataRegistry.get_block_data(tool.get_voxel(block_position))
 	tool.set_voxel(block_position, 0)
-	var chunk_coordinates = floor(block_position / 16)
-	for drop in block_data.item_drops:
-		var dropped_item = dropped_item_scene.instantiate()
-		dropped_item.item_stack = drop
-		get_node("Chunk Manager/Chunk" + chunk_coordinates.x + "," + chunk_coordinates.z).add_child(dropped_item)
+	var chunk_coordinates := (block_position / 16)
+	var dropped_item_data = block_data.get_drop()
+	if dropped_item_data != null:
+		var dropped_item := dropped_item_scene.instantiate()
+		dropped_item.item_stack = dropped_item_data
+		print("Created item at " + str(chunk_coordinates.x) + "," + str(chunk_coordinates.z))
+		get_node("Chunk Manager/Chunk" + str(chunk_coordinates.x) + "," + str(chunk_coordinates.z) + "/Objects").add_child(dropped_item)
+		dropped_item.global_position = Vector3(block_position) + Vector3(0.5, 0.5, 0.5)
 
 
 func _notification(what: int):

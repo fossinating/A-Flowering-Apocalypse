@@ -1,47 +1,18 @@
-[gd_scene load_steps=6 format=3 uid="uid://dlh6pl4sn5it"]
+[gd_scene load_steps=5 format=3 uid="uid://dlh6pl4sn5it"]
 
 [ext_resource type="PackedScene" uid="uid://c7r0bjh800ky" path="res://items/item.tscn" id="1_cvf5m"]
 [ext_resource type="Script" path="res://items/block_item.gd" id="2_a7wdb"]
-[ext_resource type="VoxelBlockyLibrary" uid="uid://saonctilrpa5" path="res://world/blocks/BlockLibrary.tres" id="3_1oqmf"]
-
-[sub_resource type="VoxelGeneratorGraph" id="VoxelGeneratorGraph_c3557"]
-graph_data = {
-"connections": [[8, 0, 6, 0]],
-"nodes": {
-"1": {
-"gui_position": Vector2(440, 50),
-"type": "InputX"
-},
-"2": {
-"gui_position": Vector2(440, 150),
-"type": "InputY"
-},
-"3": {
-"gui_position": Vector2(440, 250),
-"type": "InputZ"
-},
-"6": {
-"gui_position": Vector2(920, 100),
-"type": "OutputType"
-},
-"8": {
-"gui_position": Vector2(660, 100),
-"type": "Constant",
-"value": 0.0
-}
-},
-"version": 2
-}
-
-[sub_resource type="VoxelMesherBlocky" id="VoxelMesherBlocky_hpkdf"]
-library = ExtResource("3_1oqmf")
+[ext_resource type="VoxelMesherBlocky" uid="uid://iqrl24ww33wf" path="res://world/worldmesher.tres" id="3_yv63x"]
+[ext_resource type="Material" uid="uid://c5f5fcypyahxl" path="res://world/blocks/BlockPalatte.tres" id="4_c2umi"]
 
 [node name="Block Item" instance=ExtResource("1_cvf5m")]
 script = ExtResource("2_a7wdb")
+mesher = ExtResource("3_yv63x")
+material = ExtResource("4_c2umi")
 
 [node name="VoxelTerrain" type="VoxelTerrain" parent="." index="0"]
-generator = SubResource("VoxelGeneratorGraph_c3557")
-mesher = SubResource("VoxelMesherBlocky_hpkdf")
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, -0.15, -0.15, -0.15)
+mesher = ExtResource("3_yv63x")
 bounds = AABB(0, 0, 0, 16, 16, 16)
 max_view_distance = 1
 collision_layer = 0
@@ -49,3 +20,6 @@ collision_mask = 0
 
 [node name="VoxelViewer" type="VoxelViewer" parent="." index="1"]
 view_distance = 1
+
+[node name="MeshInstance3D" parent="." index="2"]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, -0.15, -0.15, -0.15)

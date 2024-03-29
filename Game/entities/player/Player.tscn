@@ -18,7 +18,7 @@ albedo_color = Color(0.164706, 0.447059, 0, 1)
 
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "mesh", "block_indicator", "scent_emitter", "hit_detection")]
 collision_layer = 16
-collision_mask = 2147483709
+collision_mask = 2147483705
 axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
@@ -98,3 +98,4 @@ anim_player = NodePath("../AnimationPlayer")
 [node name="ScentEmitter" parent="." instance=ExtResource("5_cxg1r")]
 
 [node name="EntityInventory" parent="." instance=ExtResource("7_qj2r3")]
+inventory_slots = 25

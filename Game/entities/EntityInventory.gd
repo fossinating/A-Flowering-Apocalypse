@@ -6,6 +6,7 @@ var inventory = []
 
 
 func _on_body_entered(body:Node3D):
+	print("found item")
 	var item_stack = body.item_stack
 	# This should be almost 100% guaranteed true
 	if body is DroppedItem:

@@ -10,6 +10,7 @@ class WorldData:
 	var save_name: String
 	var world_seed: String
 	var heightmap_noise := FastNoiseLite.new()
+	var entity_randomizer := RandomNumberGenerator.new()
 
 	func _init(data):
 		display_name = data["display_name"]
@@ -20,10 +21,15 @@ class WorldData:
 		heightmap_noise.frequency = 1.0 / 128.0
 		heightmap_noise.fractal_octaves = 4
 		HeightmapCurve.bake()
+
+		entity_randomizer.seed = hash(world_seed)
 	
 	func get_height_at(x: int, z: int) -> int:
 		var t = 0.5 + 0.5 * heightmap_noise.get_noise_2d(x, z)
 		return int(HeightmapCurve.sample_baked(t))
+	
+	func get_entity_randomizer():
+		return entity_randomizer
 
 static func load_world(save_name: String):
 	var save_file = FileAccess.open("user://saves/" + save_name + "/world.dat", FileAccess.READ)

@@ -24,3 +24,5 @@ expand_mode = 2
 
 [node name="Item Icon" parent="." instance=ExtResource("2_cqnkw")]
 layout_mode = 2
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]

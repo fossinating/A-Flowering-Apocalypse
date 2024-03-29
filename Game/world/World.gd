@@ -4,6 +4,7 @@ extends Node3D
 @export var voxel_terrain: VoxelTerrain
 @export var chunk_manager: ChunkManager
 @export var player: Player
+@export var empty_checker: Area3D
 
 
 # Called when the node enters the scene tree for the first time.
@@ -13,7 +14,23 @@ func _ready():
 	voxel_terrain.stream = stream
 	Signals.block_damaged.connect(block_damaged)
 	Signals.block_broken.connect(block_broken)
+	Signals.block_placed.connect(block_placed)
 	WorldManager.register_world(self)
+
+
+func block_placed(block_position: Vector3i, block_id: int, _player: Player):
+	var tool := voxel_terrain.get_voxel_tool()
+	tool.set_voxel(block_position, block_id)
+	tool.set_voxel_metadata(block_position, null)
+
+
+func is_position_empty(block_position: Vector3i) -> bool:
+	var tool := voxel_terrain.get_voxel_tool()
+	if not BlockDataRegistry.get_registry().get_block_data(tool.get_voxel(block_position)).is_empty:
+		return false
+	empty_checker.global_position = block_position
+	await get_tree().physics_frame
+	return not empty_checker.has_overlapping_bodies()
 
 
 func block_damaged(block_position: Vector3i, damager: Node, damage: int):
@@ -49,9 +66,9 @@ func block_broken(block_position: Vector3i, _breaker: Node):
 	if dropped_item_data != null:
 		var dropped_item := dropped_item_scene.instantiate()
 		dropped_item.item_stack = dropped_item_data
-		print("Created item at " + str(chunk_coordinates.x) + "," + str(chunk_coordinates.z))
 		get_node("Chunk Manager/Chunk" + str(chunk_coordinates.x) + "," + str(chunk_coordinates.z) + "/Objects").add_child(dropped_item)
 		dropped_item.global_position = Vector3(block_position) + Vector3(0.5, 0.5, 0.5)
+	tool.set_voxel_metadata(block_position, null)
 
 
 func _notification(what: int):
@@ -64,6 +81,10 @@ func _save_world():
 	voxel_terrain.save_modified_blocks()
 	chunk_manager.save_all()
 	player.save()
+
+func get_chunk_for_coordinates(coordinates: Vector3):
+	var chunk_coordinates := Vector3i((coordinates / 16).floor())
+	return get_node("Chunk Manager/Chunk" + str(chunk_coordinates.x) + "," + str(chunk_coordinates.z))
 	
 func is_position_loaded(position: Vector3):
 	return voxel_terrain.is_area_meshed(AABB(position, Vector3.ONE))

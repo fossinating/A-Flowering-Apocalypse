@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://ctnbw0j6xrvdr"]
+[gd_scene load_steps=3 format=3 uid="uid://ctnbw0j6xrvdr"]
 
 [ext_resource type="Script" path="res://ui/inventory_display.gd" id="1_tl5ud"]
+[ext_resource type="PackedScene" uid="uid://cnawpwcwivk8p" path="res://items/item_icon.tscn" id="2_eqpp7"]
 
 [node name="InventoryDisplay" type="Control" node_paths=PackedStringArray("main_inventory", "hotbar")]
 layout_mode = 3
@@ -59,3 +60,8 @@ color = Color(0.592157, 0.592157, 0.592157, 1)
 layout_mode = 2
 size_flags_vertical = 3
 columns = 7
+
+[node name="Held Item Icon" parent="." instance=ExtResource("2_eqpp7")]
+visible = false
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 0

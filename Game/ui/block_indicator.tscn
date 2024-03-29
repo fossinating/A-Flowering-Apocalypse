@@ -1,16 +1,21 @@
-[gd_scene load_steps=4 format=3 uid="uid://dltn2snfed3b2"]
+[gd_scene load_steps=5 format=3 uid="uid://dltn2snfed3b2"]
 
 [ext_resource type="ArrayMesh" uid="uid://bmyctdf0m6vhl" path="res://ui/block_selection.obj" id="1_fw5jh"]
 [ext_resource type="Script" path="res://ui/Block Indicator.gd" id="2_y2w22"]
 [ext_resource type="Texture2D" uid="uid://b2jbgymlgcjqv" path="res://ui/BlockDamage.png" id="3_spsin"]
 
-[node name="Block Indicator" type="MeshInstance3D" node_paths=PackedStringArray("indicators")]
-transform = Transform3D(0.313, 0, 0, 0, 0.313, 0, 0, 0, 0.313, 0, -0.5, 0)
-mesh = ExtResource("1_fw5jh")
-script = ExtResource("2_y2w22")
-indicators = [NodePath("Sprite3D"), NodePath("Sprite3D2"), NodePath("Sprite3D3"), NodePath("Sprite3D4"), NodePath("Sprite3D5"), NodePath("Sprite3D6")]
+[sub_resource type="BoxShape3D" id="BoxShape3D_vt7wb"]
 
-[node name="Sprite3D" type="Sprite3D" parent="."]
+[node name="Block Indicator" type="Node3D" node_paths=PackedStringArray("indicators", "empty_checker")]
+script = ExtResource("2_y2w22")
+indicators = [NodePath("MeshInstance3D/Sprite3D"), NodePath("MeshInstance3D/Sprite3D2"), NodePath("MeshInstance3D/Sprite3D3"), NodePath("MeshInstance3D/Sprite3D4"), NodePath("MeshInstance3D/Sprite3D5"), NodePath("MeshInstance3D/Sprite3D6")]
+empty_checker = NodePath("Empty Checker")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.313, 0, 0, 0, 0.313, 0, 0, 0, 0.313, 0.5, 0, 0.5)
+mesh = ExtResource("1_fw5jh")
+
+[node name="Sprite3D" type="Sprite3D" parent="MeshInstance3D"]
 transform = Transform3D(9.6, 0, 0, 0, 9.6, 0, 0, 0, 9.6, 0, 1.6, 1.601)
 sorting_offset = 50.0
 texture_filter = 0
@@ -18,7 +23,7 @@ texture = ExtResource("3_spsin")
 hframes = 8
 frame = 7
 
-[node name="Sprite3D2" type="Sprite3D" parent="."]
+[node name="Sprite3D2" type="Sprite3D" parent="MeshInstance3D"]
 transform = Transform3D(9.6, 0, 0, 0, 9.6, 0, 0, 0, 9.6, 0, 1.6, -1.601)
 sorting_offset = 50.0
 texture_filter = 0
@@ -26,7 +31,7 @@ texture = ExtResource("3_spsin")
 hframes = 8
 frame = 7
 
-[node name="Sprite3D3" type="Sprite3D" parent="."]
+[node name="Sprite3D3" type="Sprite3D" parent="MeshInstance3D"]
 transform = Transform3D(-4.19629e-07, 0, -9.6, 0, 9.6, 0, 9.6, 0, -4.19629e-07, -1.601, 1.6, 0)
 sorting_offset = 50.0
 texture_filter = 0
@@ -34,7 +39,7 @@ texture = ExtResource("3_spsin")
 hframes = 8
 frame = 7
 
-[node name="Sprite3D4" type="Sprite3D" parent="."]
+[node name="Sprite3D4" type="Sprite3D" parent="MeshInstance3D"]
 transform = Transform3D(-4.19629e-07, 0, -9.6, 0, 9.6, 0, 9.6, 0, -4.19629e-07, 1.601, 1.6, 0)
 sorting_offset = 50.0
 texture_filter = 0
@@ -42,18 +47,27 @@ texture = ExtResource("3_spsin")
 hframes = 8
 frame = 7
 
-[node name="Sprite3D5" type="Sprite3D" parent="."]
-transform = Transform3D(9.6, 0, 0, 0, -4.19629e-07, -9.6, 0, 9.6, -4.19629e-07, 0, -0.001, 0)
+[node name="Sprite3D5" type="Sprite3D" parent="MeshInstance3D"]
+transform = Transform3D(9.6, 0, 0, 0, -4.19629e-07, -9.6, 0, 9.6, -4.19629e-07, 0, -0.000999928, 0)
 sorting_offset = 50.0
 texture_filter = 0
 texture = ExtResource("3_spsin")
 hframes = 8
 frame = 7
 
-[node name="Sprite3D6" type="Sprite3D" parent="."]
+[node name="Sprite3D6" type="Sprite3D" parent="MeshInstance3D"]
 transform = Transform3D(9.6, 0, 0, 0, -4.19629e-07, -9.6, 0, 9.6, -4.19629e-07, 0, 3.201, 0)
 sorting_offset = 50.0
 texture_filter = 0
 texture = ExtResource("3_spsin")
 hframes = 8
 frame = 7
+
+[node name="Empty Checker" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 20
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Empty Checker"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_vt7wb")

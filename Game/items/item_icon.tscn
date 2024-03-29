@@ -1,11 +1,14 @@
-[gd_scene load_steps=2 format=3 uid="uid://cnawpwcwivk8p"]
+[gd_scene load_steps=3 format=3 uid="uid://cnawpwcwivk8p"]
 
 [ext_resource type="Texture2D" uid="uid://cj0wjqb1abe1n" path="res://textures/dirt.png" id="1_apti3"]
+[ext_resource type="Script" path="res://items/item_icon.gd" id="2_tywl1"]
 
 [node name="Item Icon" type="TextureRect"]
+mouse_filter = 2
 texture = ExtResource("1_apti3")
 expand_mode = 2
 stretch_mode = 5
+script = ExtResource("2_tywl1")
 
 [node name="Item Count" type="Label" parent="."]
 layout_mode = 1

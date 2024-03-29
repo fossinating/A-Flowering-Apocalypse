@@ -6,13 +6,15 @@ class BlockData:
 	var display_name: String
 	var max_health: int
 	var item_drops: BlockDropTable
+	var is_empty: bool
 
-	func _init(init_id: int, init_text_id: String, init_display_name: String, init_max_health: int, init_item_drops: BlockDropTable = BlockDropTable.new([])):
+	func _init(init_id: int, init_text_id: String, init_display_name: String, init_max_health: int, init_item_drops: BlockDropTable = BlockDropTable.new([]), init_is_empty: bool = false):
 		self.id = init_id
 		self.text_id = init_text_id
 		self.display_name = init_display_name
 		self.max_health = init_max_health
 		self.item_drops = init_item_drops
+		self.is_empty = init_is_empty
 	
 	func get_drop():
 		return item_drops.get_result()
@@ -34,6 +36,8 @@ class BlockDropTable:
 	var options: Array[BlockDropOption]
 	var total_weight: float
 
+	static var EMPTY := BlockDropTable.new([])
+
 	func _init(init_options: Array[BlockDropOption]):
 		self.options = init_options
 		self.total_weight = 0.0
@@ -54,12 +58,12 @@ static var registry: BlockDataRegistry
 
 func _init():
 	data = [
-		BlockData.new(0, "air", "Air", -1),
+		BlockData.new(0, "air", "Air", -1, BlockDropTable.EMPTY, true),
 		BlockData.new(1, "grass", "Grass", 5, BlockDropTable.new([BlockDropOption.new("dirt")])),
 		BlockData.new(2, "dirt", "Dirt", 5, BlockDropTable.new([BlockDropOption.new("dirt")])),
 		BlockData.new(3, "stone", "Stone", 15, BlockDropTable.new([BlockDropOption.new("stone")])),
-		BlockData.new(4, "water_top", "Water", -1),
-		BlockData.new(5, "water", "Water", -1),
+		BlockData.new(4, "water_top", "Water", -1, BlockDropTable.EMPTY, true),
+		BlockData.new(5, "water", "Water", -1, BlockDropTable.EMPTY, true),
 		BlockData.new(6, "log", "Log", 10, BlockDropTable.new([BlockDropOption.new("log")])),
 		BlockData.new(7, "leaves", "Leaves", 3),
 	]

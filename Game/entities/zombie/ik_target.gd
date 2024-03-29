@@ -18,7 +18,6 @@ func _process(_delta):
 func step():
 	is_stepping = true
 	var target_pos = step_target.global_position
-	var halfway = (global_position + step_target.global_position) / 2
 
 	var sec_per_step = min(1.0 / Vector2(owner.velocity.x, owner.velocity.z).length(), 1)
 

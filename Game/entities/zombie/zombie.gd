@@ -5,15 +5,19 @@ extends VoxelCharacterBody3D
 @export var skeleton: Skeleton3D
 @export var scent_detector: Area3D
 @export var rotator: Node3D
-const JUMP_VELOCITY = 5
-const MAX_WALK_SPEED = 2.0
-const SPRINT_MULT = 1.5
+
+# Get the gravity from the project settings to be synced with RigidBody nodes.
+var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+
+var JUMP_VELOCITY = gravity * .4
+const MAX_WALK_SPEED = 4.0
+const SPRINT_MULT := 1.7
 const ACCEL = MAX_WALK_SPEED / 0.2
 
 var idle_timer = null
 
 func _ready():
-	skeleton.physical_bones_start_simulation(["upperarm.L", "lowerarm.L", "hand.L", "upperarm.R", "lowerarm.R", "hand.R", "upperleg.L", "lowerleg.L", "upperleg.R", "lowerleg.R", "lowerleg.R.001", "lowerleg.L.001"])
+	skeleton.physical_bones_start_simulation(["upperarm.L", "lowerarm.L", "hand.L", "upperarm.R", "lowerarm.R", "hand.R"])
 	# TODO: Move this to something where the signal manager sends this directly to the impacted entities if it has a SignalListener node (this will be part of a full rework to events rather than signals so that I can handle priority and canceling of events, will probably be done as part of the multiplayer implementation whenever that happens)
 	Signals.entity_attacked.connect(entity_attacked)
 
@@ -29,11 +33,6 @@ func entity_attacked(attacker:Node, attacked: Node, _damage: float):
 		velocity = -(attacker_position - collision_point).normalized() * 5
 		velocity.y = 3.5
 		# TODO: maybe red tint?
-
-
-
-# Get the gravity from the project settings to be synced with RigidBody nodes.
-var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 
 var was_on_floor = true

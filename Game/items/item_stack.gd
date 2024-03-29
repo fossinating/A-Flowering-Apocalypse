@@ -17,7 +17,7 @@ func copy():
 
 # Returns the number of items remaining in other_stack
 func try_merge(other_stack: ItemStack) -> int:
-	if item != other_stack.item:
+	if not item.equals(other_stack.item):
 		return other_stack.count
 	else:
 		var original_count = count

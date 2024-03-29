@@ -6,7 +6,9 @@ var item_stack: ItemStack
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	if item_stack != null:
-		add_child(item_stack.item.get_node())
+		var item_node = item_stack.item.get_node()
+		add_child(item_node)
+		item_node.scale = 0.3*Vector3.ONE
 		Signals.item_picked_up.connect(item_picked_up)
 
 

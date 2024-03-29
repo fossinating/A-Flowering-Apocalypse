@@ -1,10 +1,13 @@
 extends VoxelCharacterBody3D
 class_name Player
 
-const JUMP_VELOCITY = 5
+# Get the gravity from the project settings to be synced with RigidBody nodes.
+var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+
+var JUMP_VELOCITY = gravity * .4
 const mouse_sensitivity = 0.002  # radians/pixel
-const MAX_WALK_SPEED = 3.0
-const SPRINT_MULT := 2.0
+const MAX_WALK_SPEED = 4.0
+const SPRINT_MULT := 1.7
 const ACCEL = MAX_WALK_SPEED / 0.2
 
 @export var camera: Camera3D
@@ -13,6 +16,7 @@ const ACCEL = MAX_WALK_SPEED / 0.2
 @export var scent_emitter: ScentEmitter
 @export var hit_detection: RayCast3D
 @export var hotbar: Control
+var ui_open = false
 
 const swim_blocks = [4,5]
 
@@ -22,13 +26,18 @@ const GROUND_FACTOR = 1
 
 
 
-var attack_timer = null
+var attack_cooldown = null
+var interact_cooldown = null
 
 func _ready():
-	attack_timer = Timer.new()
-	attack_timer.set_wait_time(.15)
-	attack_timer.one_shot = true
-	add_child(attack_timer)
+	attack_cooldown = Timer.new()
+	attack_cooldown.set_wait_time(.3)
+	attack_cooldown.one_shot = true
+	add_child(attack_cooldown)
+	interact_cooldown = Timer.new()
+	interact_cooldown.set_wait_time(.15)
+	interact_cooldown.one_shot = true
+	add_child(interact_cooldown)
 	
 	if FileAccess.file_exists("user://saves/" + WorldManager.get_world().save_name + "/player.dat"):
 		var save_file = FileAccess.open("user://saves/" + WorldManager.get_world().save_name + "/player.dat", FileAccess.READ)
@@ -41,9 +50,6 @@ func _ready():
 			for child_name in data["children_data"]:
 				var child = find_child(child_name)
 				child.load_data(data["children_data"][child_name])
-
-# Get the gravity from the project settings to be synced with RigidBody nodes.
-var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 
 func _init():
@@ -64,16 +70,7 @@ func _process(delta):
 	# Highlight the block the player is looking at
 	var facing_raycast_result = tool.raycast(camera.global_transform.origin, -camera.global_transform.basis.z, 5, 1)
 	
-	block_indicator.set_block_position(tool, facing_raycast_result.position if facing_raycast_result != null else null)
-
-	if attack_timer.is_stopped():
-		if hit_detection.is_colliding() and Input.is_action_just_pressed("attack"):
-			Signals.entity_attacked.emit(self, hit_detection.get_collider(), 1)
-			attack_timer.start()
-		# Give option for player to attack the block
-		if not hit_detection.is_colliding() and facing_raycast_result != null and Input.is_action_pressed("attack"):
-			Signals.block_damaged.emit(facing_raycast_result.position, self, 1)
-			attack_timer.start()
+	block_indicator.show_raycast(tool, facing_raycast_result if not hit_detection.is_colliding() else null)
 
 
 
@@ -89,6 +86,24 @@ func _is_in_water(tool: VoxelTool):
 func _physics_process(delta):
 	var tool = $"../VoxelTerrain".get_voxel_tool()
 	var is_in_water = _is_in_water(tool)
+	
+	# Highlight the block the player is looking at
+	var facing_raycast_result = tool.raycast(camera.global_transform.origin, -camera.global_transform.basis.z, 5, 1)
+	
+	block_indicator.show_raycast(tool, facing_raycast_result if not hit_detection.is_colliding() else null)
+
+	if not ui_open:
+		if attack_cooldown.is_stopped():
+			if hit_detection.is_colliding() and Input.is_action_just_pressed("attack"):
+				Signals.entity_attacked.emit(self, hit_detection.get_collider(), 1)
+				attack_cooldown.start()
+			# Give option for player to attack the block
+			if not hit_detection.is_colliding() and facing_raycast_result != null and Input.is_action_pressed("attack"):
+				Signals.block_damaged.emit(facing_raycast_result.position, self, 1)
+				attack_cooldown.start()
+		if interact_cooldown.is_stopped() and not hit_detection.is_colliding() and facing_raycast_result != null and Input.is_action_pressed("interact"):
+			Signals.block_interacted.emit(facing_raycast_result, self)
+			interact_cooldown.start()
 
 	
 	# Add the gravity.

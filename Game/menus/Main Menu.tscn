@@ -238,6 +238,7 @@ text = "< Back"
 
 [node name="Current Carrier" type="Control" parent="."]
 layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2

@@ -40,6 +40,9 @@ class ItemData:
 		item_node.load_data(self)
 		return item_node
 
+	func equals(other: ItemData):
+		return id == other.id
+
 class BlockItemData extends ItemData:
 	var block_id: int
 

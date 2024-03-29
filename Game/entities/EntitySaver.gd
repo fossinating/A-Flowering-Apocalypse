@@ -21,7 +21,8 @@ func save_data():
 
 
 func load_data(entity_data):
-	get_parent().global_transform.origin = entity_data["position"]
+	if "position" in entity_data:
+		get_parent().global_transform.origin = entity_data["position"]
 
 	for sibling_name in entity_data["sibling_data"]:
 		var sibling = get_parent().find_child(sibling_name)

@@ -12,8 +12,8 @@ func set_scent(new_scent):
     if scent != 0:
         $CollisionShape3D.shape.radius = abs(scent)
 
-func add_scent(additional_scent):
-    set_scent(scent + additional_scent)
+func add_scent(additional_scent, bypass=false):
+    set_scent(scent + additional_scent if bypass else max(scent + additional_scent, 0))
 
 func save_data():
     if scent_modified:

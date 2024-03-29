@@ -1,0 +1,47 @@
+[gd_scene load_steps=10 format=3 uid="uid://dtqci11hd2hru"]
+
+[ext_resource type="Script" path="res://menus/Menu World.gd" id="1_2uk4h"]
+[ext_resource type="VoxelBlockyLibrary" uid="uid://saonctilrpa5" path="res://world/blocks/BlockLibrary.tres" id="3_75uk3"]
+[ext_resource type="PackedScene" uid="uid://54w7q676m52k" path="res://entities/player/Player.tscn" id="4_iypta"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fvce7"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_rtduc"]
+sky_material = SubResource("ProceduralSkyMaterial_fvce7")
+
+[sub_resource type="Environment" id="Environment_05j8i"]
+background_mode = 2
+sky = SubResource("Sky_rtduc")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="VoxelStreamRegionFiles" id="VoxelStreamRegionFiles_25hma"]
+
+[sub_resource type="VoxelGeneratorFlat" id="VoxelGeneratorFlat_lsqb3"]
+channel = 0
+
+[sub_resource type="VoxelMesherBlocky" id="VoxelMesherBlocky_y01nc"]
+library = ExtResource("3_75uk3")
+
+[node name="World" type="Node3D"]
+script = ExtResource("1_2uk4h")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_05j8i")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="VoxelTerrain" type="VoxelTerrain" parent="."]
+stream = SubResource("VoxelStreamRegionFiles_25hma")
+generator = SubResource("VoxelGeneratorFlat_lsqb3")
+mesher = SubResource("VoxelMesherBlocky_y01nc")
+gi_mode = 1
+collision_mask = 15
+run_stream_in_editor = false
+
+[node name="Player" parent="." instance=ExtResource("4_iypta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 128, 0)

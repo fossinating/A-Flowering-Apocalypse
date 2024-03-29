@@ -1,10 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://dn7205xehq047"]
+[gd_scene load_steps=13 format=3 uid="uid://dtqci11hd2hru"]
 
-[ext_resource type="Script" path="res://world/World.gd" id="1_7re28"]
-[ext_resource type="VoxelBlockyLibrary" uid="uid://saonctilrpa5" path="res://world/blocks/BlockLibrary.tres" id="1_7t3me"]
-[ext_resource type="Script" path="res://generator/generator.gd" id="2_64v6f"]
-[ext_resource type="PackedScene" uid="uid://54w7q676m52k" path="res://entities/player/Player.tscn" id="4_2m84j"]
-[ext_resource type="Script" path="res://world/Chunk Manager.gd" id="5_7m3dc"]
+[ext_resource type="Script" path="res://menus/Menu World.gd" id="1_2uk4h"]
+[ext_resource type="VoxelBlockyLibrary" uid="uid://saonctilrpa5" path="res://world/blocks/BlockLibrary.tres" id="3_75uk3"]
+[ext_resource type="Script" path="res://world/Chunk Manager.gd" id="4_5ith6"]
+[ext_resource type="PackedScene" uid="uid://54w7q676m52k" path="res://entities/player/Player.tscn" id="4_iypta"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fvce7"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -21,19 +20,18 @@ glow_enabled = true
 
 [sub_resource type="VoxelStreamRegionFiles" id="VoxelStreamRegionFiles_25hma"]
 
-[sub_resource type="VoxelGeneratorMultipassCB" id="VoxelGeneratorMultipassCB_kogjh"]
-column_base_y_blocks = 0
-pass_count = 2
-pass_1_extent = 1
-script = ExtResource("2_64v6f")
+[sub_resource type="VoxelGeneratorFlat" id="VoxelGeneratorFlat_lsqb3"]
+channel = 0
 
 [sub_resource type="VoxelMesherBlocky" id="VoxelMesherBlocky_y01nc"]
-library = ExtResource("1_7t3me")
+library = ExtResource("3_75uk3")
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_ycx4h"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_5hhsu"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_fdh8d"]
 
 [node name="World" type="Node3D" node_paths=PackedStringArray("voxel_terrain", "chunk_manager", "player", "empty_checker")]
-script = ExtResource("1_7re28")
+script = ExtResource("1_2uk4h")
 voxel_terrain = NodePath("VoxelTerrain")
 chunk_manager = NodePath("Chunk Manager")
 player = NodePath("Player")
@@ -48,19 +46,14 @@ shadow_enabled = true
 
 [node name="VoxelTerrain" type="VoxelTerrain" parent="."]
 stream = SubResource("VoxelStreamRegionFiles_25hma")
-generator = SubResource("VoxelGeneratorMultipassCB_kogjh")
+generator = SubResource("VoxelGeneratorFlat_lsqb3")
 mesher = SubResource("VoxelMesherBlocky_y01nc")
 gi_mode = 1
 collision_mask = 15
 run_stream_in_editor = false
 
-[node name="Player" parent="." instance=ExtResource("4_2m84j")]
+[node name="Player" parent="." instance=ExtResource("4_iypta")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 128, 0)
-
-[node name="Chunk Manager" type="Node3D" parent="." node_paths=PackedStringArray("player")]
-script = ExtResource("5_7m3dc")
-render_distance = 2
-player = NodePath("../Player")
 
 [node name="Empty Checker" type="Area3D" parent="."]
 collision_layer = 0
@@ -69,4 +62,19 @@ monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Empty Checker"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
-shape = SubResource("BoxShape3D_ycx4h")
+shape = SubResource("BoxShape3D_5hhsu")
+
+[node name="Chunk Manager" type="Node3D" parent="." node_paths=PackedStringArray("player")]
+script = ExtResource("4_5ith6")
+render_distance = 2
+player = NodePath("../Player")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 3)
+projection = 2
+current = true
+size = 0.1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(37.625, 0, 0, 0, 20.695, 0, 0, 0, 1, 0, 3, -8)
+mesh = SubResource("BoxMesh_fdh8d")

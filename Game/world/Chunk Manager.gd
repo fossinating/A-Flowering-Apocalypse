@@ -9,8 +9,9 @@ var zombie_map = preload("res://generator/zombie_map_noise.tres")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	zombie_map.seed = 13 ^ hash(WorldManager.get_world().world_seed)
-	load_around_player()
+	if visible:
+		zombie_map.seed = 13 ^ hash(WorldManager.get_world().world_seed)
+		load_around_player()
 
 
 func load_around_player():

@@ -33,7 +33,8 @@ func change_page_to(new_page: Control):
 	else:
 		push_error("New menu was not in either left or right side")
 	
-	current_carrier.position = Vector2.ZERO
+	current_carrier.anchor_left = 0
+	current_carrier.anchor_right = 1
 	new_page.reparent(new_carrier)
 	current.get_child(0).reparent(current_carrier)
 	for node in [new_page, current_carrier.get_child(0)]:

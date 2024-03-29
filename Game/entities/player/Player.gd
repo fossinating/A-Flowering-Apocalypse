@@ -16,6 +16,7 @@ const ACCEL = MAX_WALK_SPEED / 0.2
 @export var scent_emitter: ScentEmitter
 @export var hit_detection: RayCast3D
 @export var hotbar: Control
+@export var arm_animator: AnimationPlayer
 var ui_open = false
 
 const swim_blocks = [4,5]
@@ -46,6 +47,10 @@ func _ready():
 			return
 		if "position" in data:
 			global_position = data["position"]
+		if "mesh_transform" in data: 
+			mesh.transform = data["mesh_transform"]
+		if "camera_transform" in data:
+			camera.transform = data["camera_transform"]
 		if "children_data" in data:
 			for child_name in data["children_data"]:
 				var child = find_child(child_name)
@@ -63,9 +68,8 @@ func _unhandled_input(event):
 		camera.rotation.x = clamp(camera.rotation.x, -1.5, 1.5)
 
 
-func _process(delta):
+func _process(_delta):
 	var tool = $"../VoxelTerrain".get_voxel_tool()
-	scent_emitter.add_scent(delta)
 	
 	# Highlight the block the player is looking at
 	var facing_raycast_result = tool.raycast(camera.global_transform.origin, -camera.global_transform.basis.z, 5, 1)
@@ -93,16 +97,21 @@ func _physics_process(delta):
 	block_indicator.show_raycast(tool, facing_raycast_result if not hit_detection.is_colliding() else null)
 
 	if not ui_open:
-		if attack_cooldown.is_stopped():
-			if hit_detection.is_colliding() and Input.is_action_just_pressed("attack"):
-				Signals.entity_attacked.emit(self, hit_detection.get_collider(), 1)
-				attack_cooldown.start()
+		if not arm_animator.is_playing():
 			# Give option for player to attack the block
 			if not hit_detection.is_colliding() and facing_raycast_result != null and Input.is_action_pressed("attack"):
 				Signals.block_damaged.emit(facing_raycast_result.position, self, 1)
-				attack_cooldown.start()
+				arm_animator.play("swing")
+				scent_emitter.add_scent(0.1)
+			elif Input.is_action_just_pressed("attack"):
+				arm_animator.play("swing")
+				scent_emitter.add_scent(0.1)
+				if hit_detection.is_colliding():
+					Signals.entity_attacked.emit(self, hit_detection.get_collider(), 1)
+					attack_cooldown.start()
 		if interact_cooldown.is_stopped() and not hit_detection.is_colliding() and facing_raycast_result != null and Input.is_action_pressed("interact"):
 			Signals.block_interacted.emit(facing_raycast_result, self)
+			arm_animator.play("swing")
 			interact_cooldown.start()
 
 	
@@ -123,11 +132,11 @@ func _physics_process(delta):
 		velocity.y = clamp(velocity.y + 1.2*JUMP_VELOCITY*delta, -.25*JUMP_VELOCITY, 0.5*JUMP_VELOCITY)
  
 	# Get the input direction and handle the movement/deceleration.
-	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+	var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 
 	# Generate flat_velocity
 
-	var flat_velocity = Vector3(velocity.x, 0, velocity.z)
+	var flat_velocity := Vector3(velocity.x, 0, velocity.z)
 
 	# Generate acceleration_vector from input dir, converted into global coordinates
 	var acceleration_vector = mesh.global_transform.basis * Vector3(input_dir.x, 0, input_dir.y).normalized() * ACCEL * (SPRINT_MULT if Input.is_action_pressed("sprint") else 1.0)
@@ -145,6 +154,11 @@ func _physics_process(delta):
 
 	velocity = Vector3(flat_velocity.x, velocity.y, flat_velocity.z)
 
+	scent_emitter.add_scent(0.0002*pow(flat_velocity.length(), 4.3)*delta)
+	if is_in_water:
+		scent_emitter.add_scent(-1*delta)
+	print("Scent: ", scent_emitter.scent)
+
 	#print(flat_velocity.length())
 	
 	if WorldManager.get_world_node() != null and WorldManager.get_world_node().is_position_loaded(global_position):
@@ -154,6 +168,8 @@ func save():
 	var save_file = FileAccess.open("user://saves/" + WorldManager.get_world().save_name + "/player.dat", FileAccess.WRITE)
 	var data = {
 		"position": global_position,
+		"mesh_transform": mesh.transform,
+		"camera_transform": camera.transform,
 		"children_data": {}
 	}
 	for child in get_children():

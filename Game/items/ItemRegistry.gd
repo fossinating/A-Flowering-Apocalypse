@@ -16,6 +16,12 @@ func _init():
 	add_item(BlockItemData.new(1))
 	add_item(BlockItemData.new(2))
 	add_item(BlockItemData.new(3))
+	
+	# Water items, not possible to get
+	add_item(BlockItemData.new(4))
+	add_item(BlockItemData.new(5))
+
+
 	add_item(BlockItemData.new(6))
 	add_item(BlockItemData.new(7))
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://54w7q676m52k"]
+[gd_scene load_steps=17 format=3 uid="uid://54w7q676m52k"]
 
 [ext_resource type="Script" path="res://entities/player/Player.gd" id="1_1jc5x"]
 [ext_resource type="PackedScene" uid="uid://cc5uucrmplw6b" path="res://ui/inventory_slot.tscn" id="2_6uqo6"]
@@ -17,9 +17,47 @@ size = Vector3(0.6, 1.8, 0.6)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n8yfk"]
 albedo_color = Color(0.164706, 0.447059, 0, 1)
 
+[sub_resource type="Animation" id="Animation_i10c6"]
+resource_name = "swing"
+length = 0.3
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mesh/Camera3D/Node3D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.19, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(1.27584, 2.26893, 3.07178), Vector3(0.111701, 2.91645, 3.90954), Vector3(2.27591, 3.42608, 3.66519), Vector3(1.27584, 2.26893, 3.07178)]
+}
+
+[sub_resource type="Animation" id="Animation_eb43c"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mesh/Camera3D/Node3D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1.27584, 2.26893, 3.07178)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kq08w"]
+_data = {
+"RESET": SubResource("Animation_eb43c"),
+"swing": SubResource("Animation_i10c6")
+}
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_t0q5i"]
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "mesh", "block_indicator", "scent_emitter", "hit_detection", "hotbar")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "mesh", "block_indicator", "scent_emitter", "hit_detection", "hotbar", "arm_animator")]
 collision_layer = 16
 collision_mask = 2147483705
 axis_lock_angular_x = true
@@ -32,6 +70,7 @@ block_indicator = NodePath("Block Indicator")
 scent_emitter = NodePath("ScentEmitter")
 hit_detection = NodePath("Mesh/Camera3D/Hit Detection")
 hotbar = NodePath("Mesh/Camera3D/Control/Hotbar")
+arm_animator = NodePath("Mesh/Camera3D/Node3D/Arm Animator")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
@@ -119,7 +158,7 @@ visible = false
 layout_mode = 1
 
 [node name="Node3D" type="Node3D" parent="Mesh/Camera3D"]
-transform = Transform3D(0.0692351, -0.0686338, 0.0222691, 0.00202784, -0.0289994, -0.0956814, 0.0721276, 0.0666966, -0.018686, 0.42, -0.395, -0.393)
+transform = Transform3D(0.0692351, -0.0686337, 0.0222691, 0.00202784, -0.0289994, -0.0956814, 0.0721276, 0.0666967, -0.018686, 0.42, -0.395, -0.393)
 
 [node name="Arm" type="MeshInstance3D" parent="Mesh/Camera3D/Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
@@ -134,6 +173,12 @@ mesh = ExtResource("3_1i8fn")
 
 [node name="Node3D" type="Node3D" parent="Mesh/Camera3D/Node3D/Arm/Hand"]
 transform = Transform3D(1, 1.49012e-07, -1.49012e-07, 1.19209e-07, 1, -3.72529e-08, -1.49012e-07, 1.86265e-07, 1, -0.157222, -1.98328, -0.709604)
+
+[node name="Arm Animator" type="AnimationPlayer" parent="Mesh/Camera3D/Node3D"]
+root_node = NodePath("../../../..")
+libraries = {
+"": SubResource("AnimationLibrary_kq08w")
+}
 
 [node name="Block Indicator" parent="." instance=ExtResource("4_4abch")]
 visible = false

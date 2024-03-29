@@ -1,9 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://cc5uucrmplw6b"]
+[gd_scene load_steps=5 format=3 uid="uid://cc5uucrmplw6b"]
 
 [ext_resource type="Script" path="res://ui/inventory_slot.gd" id="1_13npq"]
+[ext_resource type="Texture2D" uid="uid://cgrwkjb820w51" path="res://ui/inventory/inventory_slot.png" id="2_2um0i"]
+[ext_resource type="Texture2D" uid="uid://dauvxp2vncfp3" path="res://ui/inventory/selected_inventory_slot.png" id="2_6a0hq"]
 [ext_resource type="PackedScene" uid="uid://cnawpwcwivk8p" path="res://items/item_icon.tscn" id="2_cqnkw"]
 
-[node name="Panel" type="PanelContainer"]
+[node name="Panel" type="AspectRatioContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -12,6 +14,16 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_13npq")
+selected_texture = ExtResource("2_6a0hq")
+unselected_texture = ExtResource("2_2um0i")
 
-[node name="Item Icon" parent="." instance=ExtResource("2_cqnkw")]
+[node name="Panel" type="TextureRect" parent="."]
 layout_mode = 2
+texture = ExtResource("2_2um0i")
+expand_mode = 2
+
+[node name="Item Icon" parent="Panel" instance=ExtResource("2_cqnkw")]
+layout_mode = 2
+offset_right = 648.0
+offset_bottom = 648.0
+expand_mode = 3

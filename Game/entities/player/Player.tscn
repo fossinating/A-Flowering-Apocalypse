@@ -1,7 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://54w7q676m52k"]
+[gd_scene load_steps=14 format=3 uid="uid://54w7q676m52k"]
 
 [ext_resource type="Script" path="res://entities/player/Player.gd" id="1_1jc5x"]
+[ext_resource type="PackedScene" uid="uid://cc5uucrmplw6b" path="res://ui/inventory_slot.tscn" id="2_6uqo6"]
 [ext_resource type="PackedScene" uid="uid://byaxij4bpww4o" path="res://menus/Pause Menu.tscn" id="2_23g2y"]
+[ext_resource type="Script" path="res://entities/player/Hotbar.gd" id="2_e1gav"]
 [ext_resource type="PackedScene" uid="uid://ctnbw0j6xrvdr" path="res://ui/inventory_display.tscn" id="2_gsy57"]
 [ext_resource type="ArrayMesh" uid="uid://bgva3f2h3ugs7" path="res://ui/arm-1-arm.obj" id="2_qqy8n"]
 [ext_resource type="ArrayMesh" uid="uid://di3gpn34yc8o1" path="res://ui/arm-0-hand.obj" id="3_1i8fn"]
@@ -17,7 +19,7 @@ albedo_color = Color(0.164706, 0.447059, 0, 1)
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_t0q5i"]
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "mesh", "block_indicator", "scent_emitter", "hit_detection")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "mesh", "block_indicator", "scent_emitter", "hit_detection", "hotbar")]
 collision_layer = 16
 collision_mask = 2147483705
 axis_lock_angular_x = true
@@ -29,6 +31,7 @@ mesh = NodePath("Mesh")
 block_indicator = NodePath("Block Indicator")
 scent_emitter = NodePath("ScentEmitter")
 hit_detection = NodePath("Mesh/Camera3D/Hit Detection")
+hotbar = NodePath("Mesh/Camera3D/Control/Hotbar")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
@@ -69,6 +72,45 @@ layout_mode = 2
 mouse_filter = 1
 color = Color(0, 0, 0, 1)
 
+[node name="Hotbar" type="Control" parent="Mesh/Camera3D/Control" node_paths=PackedStringArray("inventory")]
+layout_mode = 1
+anchor_left = 0.3
+anchor_top = 0.85
+anchor_right = 0.7
+anchor_bottom = 0.95
+script = ExtResource("2_e1gav")
+inventory = NodePath("../../../../EntityInventory")
+
+[node name="Hotbar Items" type="HBoxContainer" parent="Mesh/Camera3D/Control/Hotbar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Hotbar Slot 1" parent="Mesh/Camera3D/Control/Hotbar/Hotbar Items" instance=ExtResource("2_6uqo6")]
+layout_mode = 2
+
+[node name="Hotbar Slot 2" parent="Mesh/Camera3D/Control/Hotbar/Hotbar Items" instance=ExtResource("2_6uqo6")]
+layout_mode = 2
+
+[node name="Hotbar Slot 3" parent="Mesh/Camera3D/Control/Hotbar/Hotbar Items" instance=ExtResource("2_6uqo6")]
+layout_mode = 2
+
+[node name="Hotbar Slot 4" parent="Mesh/Camera3D/Control/Hotbar/Hotbar Items" instance=ExtResource("2_6uqo6")]
+layout_mode = 2
+
+[node name="Hotbar Slot 5" parent="Mesh/Camera3D/Control/Hotbar/Hotbar Items" instance=ExtResource("2_6uqo6")]
+layout_mode = 2
+
+[node name="Hotbar Slot 6" parent="Mesh/Camera3D/Control/Hotbar/Hotbar Items" instance=ExtResource("2_6uqo6")]
+layout_mode = 2
+
+[node name="Hotbar Slot 7" parent="Mesh/Camera3D/Control/Hotbar/Hotbar Items" instance=ExtResource("2_6uqo6")]
+layout_mode = 2
+
 [node name="InventoryDisplay" parent="Mesh/Camera3D/Control" node_paths=PackedStringArray("inventory") instance=ExtResource("2_gsy57")]
 visible = false
 layout_mode = 1
@@ -104,4 +146,4 @@ anim_player = NodePath("../AnimationPlayer")
 [node name="ScentEmitter" parent="." instance=ExtResource("5_cxg1r")]
 
 [node name="EntityInventory" parent="." instance=ExtResource("7_qj2r3")]
-inventory_slots = 30
+inventory_slots = 28

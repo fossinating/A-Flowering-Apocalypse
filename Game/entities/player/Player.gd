@@ -12,6 +12,7 @@ const ACCEL = MAX_WALK_SPEED / 0.2
 @export var block_indicator: BlockIndicator
 @export var scent_emitter: ScentEmitter
 @export var hit_detection: RayCast3D
+@export var hotbar: Control
 
 const swim_blocks = [4,5]
 
@@ -138,10 +139,10 @@ func save():
 	var save_file = FileAccess.open("user://saves/" + WorldManager.get_world().save_name + "/player.dat", FileAccess.WRITE)
 	var data = {
 		"position": global_position,
-		"child_data": {}
+		"children_data": {}
 	}
 	for child in get_children():
 		if child.has_method("save_data"):
-			data["child_data"][child.name] = child.save_data()
+			data["children_data"][child.name] = child.save_data()
 	save_file.store_var(data)
 	save_file.close()

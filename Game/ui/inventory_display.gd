@@ -9,14 +9,14 @@ extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	for i in 5:
+	for i in 7:
 		var inventory_slot = inventory_slot_scene.instantiate()
 		inventory_slot.slot = i
 		inventory_slot.inventory = inventory
 		hotbar.add_child(inventory_slot)
-	for i in 20:
+	for i in 21:
 		var inventory_slot = inventory_slot_scene.instantiate()
-		inventory_slot.slot = i + 10
+		inventory_slot.slot = i + 7
 		inventory_slot.inventory = inventory
 		main_inventory.add_child(inventory_slot)
 

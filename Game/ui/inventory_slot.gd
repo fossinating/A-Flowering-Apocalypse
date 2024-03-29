@@ -8,16 +8,13 @@ var selected := false
 @export var unselected_texture: Texture2D
 
 func update():
-	for child in get_child(0).get_children():
-		get_child(0).remove_child.call_deferred(child)
+	get_node("Item Icon").visible = inventory.inventory[slot] != null
 	if inventory.inventory[slot] != null:
-		var item_icon = load("res://items/item_icon.tscn").instantiate()
+		get_node("Item Icon").texture = load("res://textures/" + inventory.inventory[slot].item.id + ".png")
+		get_node("Item Icon").find_child("Item Count", true, false).text = str(inventory.inventory[slot].count)
 
-		item_icon.texture = load("res://textures/" + inventory.inventory[slot].item.id + ".png")
-		item_icon.find_child("Item Count", true, false).text = str(inventory.inventory[slot].count)
-		get_child(0).add_child(item_icon)
 
 func set_selected(new_selected: bool):
 	if selected != new_selected:
 		selected = new_selected
-		get_child(0).texture = selected_texture if selected else unselected_texture
+		get_node("Slot Background").texture = selected_texture if selected else unselected_texture

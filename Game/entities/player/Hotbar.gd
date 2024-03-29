@@ -16,6 +16,8 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
+	if Input.is_action_just_pressed("inventory"):
+		visible = !visible
 	for child in find_child("Hotbar Items").get_children():
 		child.set_selected(child.name == "Hotbar Slot " + str(selected_index+1))
 		child.update()

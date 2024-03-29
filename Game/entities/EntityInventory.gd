@@ -33,7 +33,6 @@ func _ready():
 
 
 func save_data():
-	print("saving")
 	var inventory_data = []
 
 	for slot in inventory:

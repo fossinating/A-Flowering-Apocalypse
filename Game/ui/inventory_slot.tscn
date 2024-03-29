@@ -17,13 +17,10 @@ script = ExtResource("1_13npq")
 selected_texture = ExtResource("2_6a0hq")
 unselected_texture = ExtResource("2_2um0i")
 
-[node name="Panel" type="TextureRect" parent="."]
+[node name="Slot Background" type="TextureRect" parent="."]
 layout_mode = 2
 texture = ExtResource("2_2um0i")
 expand_mode = 2
 
-[node name="Item Icon" parent="Panel" instance=ExtResource("2_cqnkw")]
+[node name="Item Icon" parent="." instance=ExtResource("2_cqnkw")]
 layout_mode = 2
-offset_right = 648.0
-offset_bottom = 648.0
-expand_mode = 3

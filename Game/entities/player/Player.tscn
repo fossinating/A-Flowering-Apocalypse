@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://54w7q676m52k"]
+[gd_scene load_steps=12 format=3 uid="uid://54w7q676m52k"]
 
 [ext_resource type="Script" path="res://entities/player/Player.gd" id="1_1jc5x"]
 [ext_resource type="PackedScene" uid="uid://byaxij4bpww4o" path="res://menus/Pause Menu.tscn" id="2_23g2y"]
+[ext_resource type="PackedScene" uid="uid://ctnbw0j6xrvdr" path="res://ui/inventory_display.tscn" id="2_gsy57"]
 [ext_resource type="ArrayMesh" uid="uid://bgva3f2h3ugs7" path="res://ui/arm-1-arm.obj" id="2_qqy8n"]
 [ext_resource type="ArrayMesh" uid="uid://di3gpn34yc8o1" path="res://ui/arm-0-hand.obj" id="3_1i8fn"]
 [ext_resource type="PackedScene" uid="uid://dltn2snfed3b2" path="res://ui/block_indicator.tscn" id="4_4abch"]
@@ -68,6 +69,11 @@ layout_mode = 2
 mouse_filter = 1
 color = Color(0, 0, 0, 1)
 
+[node name="InventoryDisplay" parent="Mesh/Camera3D/Control" node_paths=PackedStringArray("inventory") instance=ExtResource("2_gsy57")]
+visible = false
+layout_mode = 1
+inventory = NodePath("../../../../EntityInventory")
+
 [node name="Pause Menu" parent="Mesh/Camera3D/Control" instance=ExtResource("2_23g2y")]
 visible = false
 layout_mode = 1
@@ -98,4 +104,4 @@ anim_player = NodePath("../AnimationPlayer")
 [node name="ScentEmitter" parent="." instance=ExtResource("5_cxg1r")]
 
 [node name="EntityInventory" parent="." instance=ExtResource("7_qj2r3")]
-inventory_slots = 25
+inventory_slots = 30

@@ -17,4 +17,5 @@ func _on_settings_pressed():
 
 
 func _on_quit_pressed():
+	print("quit pressed!")
 	get_tree().quit()

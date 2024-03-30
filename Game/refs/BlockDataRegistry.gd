@@ -7,12 +7,15 @@ class BlockData:
 	var max_health: int
 	var item_drops: BlockDropTable
 	var is_empty: bool
+	var particle_color: Color
 
-	func _init(init_id: int, init_text_id: String, init_display_name: String, init_max_health: int, init_item_drops: BlockDropTable = BlockDropTable.new([]), init_is_empty: bool = false):
+	@warning_ignore("shadowed_variable")
+	func _init(init_id: int, init_text_id: String, init_display_name: String, init_max_health: int, particle_color: Color, init_item_drops: BlockDropTable = BlockDropTable.new([]), init_is_empty: bool = false):
 		self.id = init_id
 		self.text_id = init_text_id
 		self.display_name = init_display_name
 		self.max_health = init_max_health
+		self.particle_color = particle_color
 		self.item_drops = init_item_drops
 		self.is_empty = init_is_empty
 	
@@ -58,14 +61,14 @@ static var registry: BlockDataRegistry
 
 func _init():
 	data = [
-		BlockData.new(0, "air", "Air", -1, BlockDropTable.EMPTY, true),
-		BlockData.new(1, "grass", "Grass", 5, BlockDropTable.new([BlockDropOption.new("dirt")])),
-		BlockData.new(2, "dirt", "Dirt", 5, BlockDropTable.new([BlockDropOption.new("dirt")])),
-		BlockData.new(3, "stone", "Stone", 15, BlockDropTable.new([BlockDropOption.new("stone")])),
-		BlockData.new(4, "water_top", "Water", -1, BlockDropTable.EMPTY, true),
-		BlockData.new(5, "water", "Water", -1, BlockDropTable.EMPTY, true),
-		BlockData.new(6, "log", "Log", 10, BlockDropTable.new([BlockDropOption.new("log")])),
-		BlockData.new(7, "leaves", "Leaves", 3),
+		BlockData.new(0, "air", "Air", -1, Color(0,0,0,0), BlockDropTable.EMPTY, true),
+		BlockData.new(1, "grass", "Grass", 5, Color(0,76.0/255,5.0/255,0), BlockDropTable.new([BlockDropOption.new("dirt")])),
+		BlockData.new(2, "dirt", "Dirt", 5, Color(70.0/255,29.0/255,0,0), BlockDropTable.new([BlockDropOption.new("dirt")])),
+		BlockData.new(3, "stone", "Stone", 15, Color(122.0/255,122.0/255,122.0/255,0), BlockDropTable.new([BlockDropOption.new("stone")])),
+		BlockData.new(4, "water_top", "Water", -1, Color(0,0,1.0,0), BlockDropTable.EMPTY, true),
+		BlockData.new(5, "water", "Water", -1, Color(0,0,1.0,0), BlockDropTable.EMPTY, true),
+		BlockData.new(6, "log", "Log", 10, Color(255.0/255,202.0/255,147.0/255,0), BlockDropTable.new([BlockDropOption.new("log")])),
+		BlockData.new(7, "leaves", "Leaves", 3, Color(29.0/255,133.0/255,0,0)),
 	]
 
 

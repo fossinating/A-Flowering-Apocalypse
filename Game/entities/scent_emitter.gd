@@ -5,6 +5,7 @@ class_name ScentEmitter
 var scent_modified = false
 
 func _ready():
+    $CollisionShape3D.shape = $CollisionShape3D.shape.duplicate()
     $CollisionShape3D.shape.radius = abs(scent)
 
 func set_scent(new_scent):

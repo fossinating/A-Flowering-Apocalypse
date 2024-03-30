@@ -48,7 +48,7 @@ func _process(_delta):
 				# Hoping and praying that owner is the player
 				WorldManager.get_world_node().get_chunk_for_coordinates(owner.global_position).get_node("Objects").add_child(dropped_item)
 				dropped_item.global_position = owner.global_position
-				print("Dropped item at ", dropped_item.global_position, WorldManager.get_world_node().get_chunk_for_coordinates(owner.global_position).chunk_coordinates, owner.name)
+				#print("Dropped item at ", dropped_item.global_position, WorldManager.get_world_node().get_chunk_for_coordinates(owner.global_position).chunk_coordinates, owner.name)
 				get_node("Held Item Icon").set_item(null)
 
 

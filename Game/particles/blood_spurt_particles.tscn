@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://dkifjyoej11nw"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ye610"]
+direction = Vector3(1, 1, 1)
+spread = 180.0
+initial_velocity_min = 2.0
+initial_velocity_max = 2.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pmiba"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_4vy7s"]
+material = SubResource("StandardMaterial3D_pmiba")
+size = Vector3(0.025, 0.025, 0.025)
+
+[node name="Blood Spurt Particles" type="GPUParticles3D"]
+emitting = false
+amount = 16
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_ye610")
+draw_pass_1 = SubResource("BoxMesh_4vy7s")

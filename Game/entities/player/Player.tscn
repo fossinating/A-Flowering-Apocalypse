@@ -57,7 +57,7 @@ _data = {
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_t0q5i"]
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "mesh", "block_indicator", "scent_emitter", "hit_detection", "hotbar", "arm_animator")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "mesh", "block_indicator", "scent_emitter", "hit_detection", "block_hit_detection", "hotbar", "arm_animator")]
 collision_layer = 16
 collision_mask = 2147483705
 axis_lock_angular_x = true
@@ -69,6 +69,7 @@ mesh = NodePath("Mesh")
 block_indicator = NodePath("Block Indicator")
 scent_emitter = NodePath("ScentEmitter")
 hit_detection = NodePath("Mesh/Camera3D/Hit Detection")
+block_hit_detection = NodePath("Mesh/Camera3D/Block Hit Detection")
 hotbar = NodePath("Mesh/Camera3D/Control/Hotbar")
 arm_animator = NodePath("Mesh/Camera3D/Node3D/Arm Animator")
 
@@ -87,6 +88,10 @@ current = true
 [node name="Hit Detection" type="RayCast3D" parent="Mesh/Camera3D"]
 target_position = Vector3(0, 0, -4)
 collision_mask = 44
+collide_with_areas = true
+
+[node name="Block Hit Detection" type="RayCast3D" parent="Mesh/Camera3D"]
+target_position = Vector3(0, 0, -4)
 collide_with_areas = true
 
 [node name="Control" type="Control" parent="Mesh/Camera3D"]

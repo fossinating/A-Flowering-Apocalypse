@@ -18,6 +18,8 @@ func save_data():
 
 func load_data(entity_data):
 	health = entity_data["health"]
+	if health == 0 and get_parent().has_method("die"):
+		get_parent().die()
 
 
 func entity_attacked(attacker: Node, attacked: Node, damage: float):

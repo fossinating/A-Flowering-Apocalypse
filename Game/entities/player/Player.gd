@@ -15,6 +15,7 @@ const ACCEL = MAX_WALK_SPEED / 0.2
 @export var block_indicator: BlockIndicator
 @export var scent_emitter: ScentEmitter
 @export var hit_detection: RayCast3D
+@export var block_hit_detection: RayCast3D
 @export var hotbar: Control
 @export var arm_animator: AnimationPlayer
 var ui_open = false
@@ -94,7 +95,7 @@ func _physics_process(delta):
 	# Highlight the block the player is looking at
 	var facing_raycast_result = tool.raycast(camera.global_transform.origin, -camera.global_transform.basis.z, 5, 1)
 	
-	block_indicator.show_raycast(tool, facing_raycast_result if not hit_detection.is_colliding() else null)
+	block_indicator.show_raycast(tool, facing_raycast_result if block_hit_detection.is_colliding() and not hit_detection.is_colliding() else null)
 
 	if not ui_open:
 		if not arm_animator.is_playing():
@@ -109,7 +110,7 @@ func _physics_process(delta):
 				if hit_detection.is_colliding():
 					Signals.entity_attacked.emit(self, hit_detection.get_collider(), 1)
 					attack_cooldown.start()
-		if interact_cooldown.is_stopped() and not hit_detection.is_colliding() and facing_raycast_result != null and Input.is_action_pressed("interact"):
+		if interact_cooldown.is_stopped() and block_hit_detection.is_colliding() and not hit_detection.is_colliding() and facing_raycast_result != null and Input.is_action_pressed("interact"):
 			Signals.block_interacted.emit(facing_raycast_result, self)
 			arm_animator.play("swing")
 			interact_cooldown.start()

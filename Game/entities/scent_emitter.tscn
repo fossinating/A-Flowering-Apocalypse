@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://entities/scent_emitter.gd" id="1_6lom8"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_bktdh"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_33o48"]
 
 [node name="ScentEmitter" type="Area3D"]
 collision_layer = 1073741824
@@ -11,4 +11,4 @@ monitoring = false
 script = ExtResource("1_6lom8")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("SphereShape3D_bktdh")
+shape = SubResource("SphereShape3D_33o48")

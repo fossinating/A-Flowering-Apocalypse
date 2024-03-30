@@ -5,6 +5,7 @@ extends VoxelCharacterBody3D
 @export var skeleton: Skeleton3D
 @export var scent_detector: Area3D
 @export var rotator: Node3D
+@export var ik_nodes: Array[SkeletonIK3D]
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -14,12 +15,15 @@ const MAX_WALK_SPEED = 4.0
 const SPRINT_MULT := 1.7
 const ACCEL = MAX_WALK_SPEED / 0.2
 
+var dead = false
+
 var idle_timer = null
 
 func _ready():
 	skeleton.physical_bones_start_simulation(["upperarm.L", "lowerarm.L", "hand.L", "upperarm.R", "lowerarm.R", "hand.R"])
 	# TODO: Move this to something where the signal manager sends this directly to the impacted entities if it has a SignalListener node (this will be part of a full rework to events rather than signals so that I can handle priority and canceling of events, will probably be done as part of the multiplayer implementation whenever that happens)
 	Signals.entity_attacked.connect(entity_attacked)
+	Signals.entity_killed.connect(entity_killed)
 
 
 func entity_attacked(attacker:Node, attacked: Node, _damage: float):
@@ -35,6 +39,20 @@ func entity_attacked(attacker:Node, attacked: Node, _damage: float):
 		if "scent_emitter" in attacker:
 			attacker.scent_emitter.add_scent(.5)
 		# TODO: maybe red tint?
+
+
+
+func die():
+	skeleton.physical_bones_start_simulation()
+	$CollisionShape3D.disabled = true
+	dead = true
+	for ik_node in ik_nodes:
+		ik_node.stop()
+
+
+func entity_killed(_attacker:Node, killed: Node):
+	if killed == self:
+		die()
 
 
 var was_on_floor = true
@@ -70,56 +88,57 @@ func _physics_process(delta):
  
 	
 
-	# Apply velocity
-
-	var detected_scent_level := 0
-	var greatest_offender = null
-	var greatest_observed_scent = -INF
-
-	for scent_emitter in scent_detector.get_overlapping_areas():
-		var observed_scent = scent_emitter.scent / scent_emitter.global_position.distance_to(global_position)
-		detected_scent_level += observed_scent
-		if greatest_observed_scent < detected_scent_level:
-			greatest_observed_scent = detected_scent_level
-			greatest_offender = scent_emitter
-
 	# Generate flat_velocity
 
 	var flat_velocity = Vector3(velocity.x, 0, velocity.z)
-	var sprinting = false
+
+	if not dead:
+		# Apply velocity
+
+		var detected_scent_level := 0
+		var greatest_offender = null
+		var greatest_observed_scent = -INF
+
+		for scent_emitter in scent_detector.get_overlapping_areas():
+			var observed_scent = scent_emitter.scent / scent_emitter.global_position.distance_to(global_position)
+			detected_scent_level += observed_scent
+			if greatest_observed_scent < detected_scent_level:
+				greatest_observed_scent = detected_scent_level
+				greatest_offender = scent_emitter
+		var sprinting = false
 
 
-	if detected_scent_level > 0:
-		# move towards scent
-		var target_vector = -global_position.direction_to(greatest_offender.global_position)
-		target_vector.y = 0
-		var target_basis = Basis.looking_at(target_vector)
-		rotator.basis = rotator.basis.slerp(target_basis, 2*delta)
+		if detected_scent_level > 0:
+			# move towards scent
+			var target_vector = -global_position.direction_to(greatest_offender.global_position)
+			target_vector.y = 0
+			var target_basis = Basis.looking_at(target_vector)
+			rotator.basis = rotator.basis.slerp(target_basis, 2*delta)
 
-		#print((target_basis.x - rotator.basis.x).length_squared(), " | ",( target_basis.z - rotator.basis.z).length_squared())
+			#print((target_basis.x - rotator.basis.x).length_squared(), " | ",( target_basis.z - rotator.basis.z).length_squared())
 
-		# Make zombie slump a bit
-		skeleton.rotation_degrees.x = lerp(skeleton.rotation_degrees.x, 15.0, 0.5)
+			# Make zombie slump a bit
+			skeleton.rotation_degrees.x = lerp(skeleton.rotation_degrees.x, 15.0, 0.5)
 
-		# Only move the zombie if it is looking vaguely at target
-		if (target_basis.x - rotator.basis.x).length_squared() < .08 and (target_basis.z - rotator.basis.z).length_squared() < .08:
-			# Generate acceleration_vector from current facing direction, converted into global coordinates
-			var acceleration_vector = rotator.basis * Vector3(0, 0, 1) * ACCEL * (SPRINT_MULT if sprinting else 1.0)
+			# Only move the zombie if it is looking vaguely at target
+			if (target_basis.x - rotator.basis.x).length_squared() < .08 and (target_basis.z - rotator.basis.z).length_squared() < .08:
+				# Generate acceleration_vector from current facing direction, converted into global coordinates
+				var acceleration_vector = rotator.basis * Vector3(0, 0, 1) * ACCEL * (SPRINT_MULT if sprinting else 1.0)
+				
+				# apply the acceleration but reduced if in air / water
+				flat_velocity += acceleration_vector * min(delta * (0.8 if is_in_water else (1.0 if is_on_floor() else 0.4)), max(MAX_WALK_SPEED - flat_velocity.length(), 0))
+		else:
+			# Make zombie slump a lot
+			skeleton.rotation_degrees.x = lerp(skeleton.rotation_degrees.x, 30.0, 0.5)
 			
-			# apply the acceleration but reduced if in air / water
-			flat_velocity += acceleration_vector * min(delta * (0.8 if is_in_water else (1.0 if is_on_floor() else 0.4)), max(MAX_WALK_SPEED - flat_velocity.length(), 0))
-	else:
-		# Make zombie slump a lot
-		skeleton.rotation_degrees.x = lerp(skeleton.rotation_degrees.x, 30.0, 0.5)
-		
-	if is_on_floor():
-		step_container.position.z = min(flat_velocity.length(), 1)
-	if is_on_floor() != was_on_floor:
 		if is_on_floor():
-			step_container.position.z = 0
-			$LeftIKTarget.quick_step()
-			$RightIKTarget.quick_step()
-		was_on_floor = is_on_floor()
+			step_container.position.z = min(flat_velocity.length(), 1)
+		if is_on_floor() != was_on_floor:
+			if is_on_floor():
+				step_container.position.z = 0
+				$LeftIKTarget.quick_step()
+				$RightIKTarget.quick_step()
+			was_on_floor = is_on_floor()
 
 	# Apply friction
 	flat_velocity += -flat_velocity.normalized() * min(flat_velocity.length(), delta * MAX_WALK_SPEED * 3) * (1.0 if is_on_floor() else 0.5)

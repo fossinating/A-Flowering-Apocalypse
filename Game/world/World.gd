@@ -5,6 +5,14 @@ extends Node3D
 @export var chunk_manager: ChunkManager
 @export var player: Player
 @export var empty_checker: Area3D
+@export var temporary_object_holder: Node3D
+var voxel_tool
+
+
+func get_voxel_tool():
+	if voxel_tool == null:
+		voxel_tool = WorldManager.get_world_node().voxel_terrain.get_voxel_tool()
+	return voxel_tool
 
 
 func _init():
@@ -91,3 +99,8 @@ func get_chunk_for_coordinates(coordinates: Vector3):
 func is_position_loaded(position: Vector3):
 	return voxel_terrain.is_area_meshed(AABB(position, Vector3.ONE))
 	
+func add_temporary_node(node: Node3D, time_to_live=30):
+	temporary_object_holder.add_child(node)
+	await get_tree().create_timer(time_to_live).timeout
+	if is_instance_valid(node):
+		node.queue_free()

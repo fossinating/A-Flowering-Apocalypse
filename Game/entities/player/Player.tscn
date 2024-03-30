@@ -271,3 +271,6 @@ hand = NodePath("../Mesh/Camera3D/Node3D/Arm/Hand/Node3D")
 
 [node name="EntityHealthManager" parent="." instance=ExtResource("11_r6qoa")]
 max_health = 20
+passive_regen_enabled = true
+passive_regen_rate = 0.5
+passive_regen_delay = 3.0

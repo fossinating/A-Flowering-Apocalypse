@@ -32,6 +32,8 @@ func entity_attacked(attacker:Node, attacked: Node, _damage: float):
 			collision_point= attacker.hit_detection.get_collision_point()
 		velocity = -(attacker_position - collision_point).normalized() * 5
 		velocity.y = 3.5
+		if "scent_emitter" in attacker:
+			attacker.scent_emitter.add_scent(.5)
 		# TODO: maybe red tint?
 
 

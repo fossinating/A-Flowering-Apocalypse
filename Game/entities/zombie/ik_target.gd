@@ -23,9 +23,10 @@ func step():
 
 	if t != null:
 		t.kill()
-	t = get_tree().create_tween()
+	t = create_tween()
 	t.tween_property(self, "global_position", target_pos+Vector3.UP*.2, 0.8 * sec_per_step)
 	t.tween_property(self, "global_position", target_pos, 0.2 * sec_per_step)
+	print("could it be step?")
 	t.tween_callback(func(): is_stepping = false)
 
 func quick_step():
@@ -33,6 +34,7 @@ func quick_step():
 	var target_pos = step_target.global_position
 	if t != null:
 		t.kill()
-	t = get_tree().create_tween()
+	t = create_tween()
 	t.tween_property(self, "global_position", target_pos, 0.1)
+	print("or quick step?")
 	t.tween_callback(func(): is_stepping = false)

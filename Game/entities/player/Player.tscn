@@ -17,6 +17,21 @@ size = Vector3(0.6, 1.8, 0.6)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n8yfk"]
 albedo_color = Color(0.164706, 0.447059, 0, 1)
 
+[sub_resource type="Animation" id="Animation_eb43c"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mesh/Camera3D/Node3D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1.27584, 2.26893, 3.07178)]
+}
+
 [sub_resource type="Animation" id="Animation_i10c6"]
 resource_name = "swing"
 length = 0.3
@@ -32,21 +47,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
 "values": [Vector3(1.27584, 2.26893, 3.07178), Vector3(0.111701, 2.91645, 3.90954), Vector3(2.27591, 3.42608, 3.66519), Vector3(1.27584, 2.26893, 3.07178)]
-}
-
-[sub_resource type="Animation" id="Animation_eb43c"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Mesh/Camera3D/Node3D:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(1.27584, 2.26893, 3.07178)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_kq08w"]
@@ -158,7 +158,7 @@ visible = false
 layout_mode = 1
 
 [node name="Node3D" type="Node3D" parent="Mesh/Camera3D"]
-transform = Transform3D(0.0692351, -0.0686337, 0.0222691, 0.00202784, -0.0289994, -0.0956814, 0.0721276, 0.0666967, -0.018686, 0.42, -0.395, -0.393)
+transform = Transform3D(0.0692352, -0.0686338, 0.0222687, 0.00202779, -0.028999, -0.0956815, 0.0721275, 0.0666968, -0.0186858, 0.42, -0.395, -0.393)
 
 [node name="Arm" type="MeshInstance3D" parent="Mesh/Camera3D/Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)

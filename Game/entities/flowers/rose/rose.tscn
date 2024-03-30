@@ -1,13 +1,28 @@
-[gd_scene load_steps=4 format=3 uid="uid://cpouh81x005ly"]
+[gd_scene load_steps=6 format=3 uid="uid://cpouh81x005ly"]
 
 [ext_resource type="PackedScene" uid="uid://dhjhj6a8ijeqt" path="res://entities/flowers/Flower.tscn" id="1_2tgo7"]
 [ext_resource type="ArrayMesh" uid="uid://b3w86jpx80orn" path="res://entities/flowers/rose/rose.obj" id="2_1a310"]
 [ext_resource type="PackedScene" uid="uid://3phcqmumd2p8" path="res://entities/EntitySaver.tscn" id="3_dkwol"]
+[ext_resource type="PackedScene" uid="uid://df5ohce4gqyl0" path="res://entities/scent_emitter.tscn" id="4_77g8g"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uqdrw"]
+size = Vector3(0.1, 0.35, 0.1)
 
 [node name="Rose" instance=ExtResource("1_2tgo7")]
 
 [node name="MeshInstance3D" parent="." index="0"]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.045, 0, 0.015)
 mesh = ExtResource("2_1a310")
 
 [node name="EntitySaver" parent="." index="1" instance=ExtResource("3_dkwol")]
 id = "rose"
+
+[node name="ScentEmitter" parent="." index="2" instance=ExtResource("4_77g8g")]
+scent = -10.0
+
+[node name="Hitbox" type="Area3D" parent="." index="3"]
+collision_layer = 288
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.175, 0)
+shape = SubResource("BoxShape3D_uqdrw")

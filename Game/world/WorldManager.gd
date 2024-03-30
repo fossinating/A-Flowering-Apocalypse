@@ -42,6 +42,7 @@ static func get_world() -> WorldData:
 static func unload_world():
 	if world != null:
 		world._save_world()
+		print("this one")
 		world.get_tree().process_frame.connect(func():
 			world = null
 			world_data = null

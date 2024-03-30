@@ -19,6 +19,9 @@ func _on_new_save_pressed():
 
 
 func _on_load_save_pressed():
+	main_menu.find_child("Zombie").free()
+	WorldManager.world_data = null
+	WorldManager.world = null
 	WorldManager.load_world(saves[$"Saved Games List".get_selected_items()[0]]["save_name"])
 	get_tree().change_scene_to_file("res://world/World.tscn")
 

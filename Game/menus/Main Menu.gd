@@ -41,11 +41,12 @@ func change_page_to(new_page: Control):
 		node.offset_left = 0
 		node.offset_right = 0
 	
-	var t = get_tree().create_tween()
+	var t = create_tween()
 	t.tween_property(new_carrier, "anchor_left", 0, 0.5)
 	t.parallel().tween_property(new_carrier, "anchor_right", 1, 0.5)
 	t.parallel().tween_property(current_carrier, "anchor_left", target_anchor.x, 0.5)
 	t.parallel().tween_property(current_carrier, "anchor_right", target_anchor.y, 0.5)
+	print("probably not this")
 	t.tween_callback(
 		func():
 			if target_anchor == Vector2(rightside.anchor_left, rightside.anchor_right):

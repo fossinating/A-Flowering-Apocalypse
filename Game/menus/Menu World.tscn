@@ -30,6 +30,21 @@ library = ExtResource("3_75uk3")
 
 [sub_resource type="BoxMesh" id="BoxMesh_fdh8d"]
 
+[sub_resource type="Animation" id="Animation_2bg5c"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ScentEmitter:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(31.1591, 0, 0)]
+}
+
 [sub_resource type="Animation" id="Animation_sd4xk"]
 resource_name = "scent_mover"
 length = 60.0
@@ -46,21 +61,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [Vector3(16.4663, 0, -0.594132), Vector3(-15.2189, 0, -1.21218), Vector3(-0.259247, 0, -1.26909), Vector3(-0.259247, 0, 5.93284), Vector3(4.48353, 0, -1.34168), Vector3(-21.3232, 0, -3.756)]
-}
-
-[sub_resource type="Animation" id="Animation_2bg5c"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("ScentEmitter:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(31.1591, 0, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4p0dj"]

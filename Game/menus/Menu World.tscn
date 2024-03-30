@@ -115,9 +115,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.5974, -2.81827, 1.42865)
 [node name="Zombie" parent="." instance=ExtResource("3_02om8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5974, 2.81827, -1.42865)
 
-[node name="ScentEmitter" parent="." instance=ExtResource("4_bth3s")]
+[node name="ScentEmitter" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.1591, 0, 0)
-scent = 1e+06
+
+[node name="ScentEmitter" parent="ScentEmitter" instance=ExtResource("4_bth3s")]
+scent = 10000.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "scent_mover"

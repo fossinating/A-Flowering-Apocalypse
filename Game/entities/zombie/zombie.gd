@@ -122,7 +122,7 @@ func _physics_process(delta):
 			var target_vector = -global_position.direction_to(greatest_offender.global_position)
 			target_vector.y = 0
 			var target_basis = Basis.looking_at(target_vector)
-			rotator.basis = target_basis#rotator.basis.slerp(target_basis, 2*delta)
+			rotator.basis = rotator.basis.slerp(target_basis, 3*delta)
 
 			#print((target_basis.x - rotator.basis.x).length_squared(), " | ",( target_basis.z - rotator.basis.z).length_squared())
 

@@ -69,11 +69,9 @@ _data = {
 "scent_mover": SubResource("Animation_sd4xk")
 }
 
-[node name="World" type="Node3D" node_paths=PackedStringArray("voxel_terrain", "chunk_manager", "player", "empty_checker")]
+[node name="World" type="Node3D" node_paths=PackedStringArray("voxel_terrain", "empty_checker")]
 script = ExtResource("1_2uk4h")
 voxel_terrain = NodePath("VoxelTerrain")
-chunk_manager = NodePath("")
-player = NodePath("")
 empty_checker = NodePath("Empty Checker")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]

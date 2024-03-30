@@ -1,4 +1,5 @@
 extends Node
+class_name EntityHealthManager
 
 
 @export var max_health: int
@@ -23,7 +24,9 @@ func load_data(entity_data):
 
 
 func entity_attacked(attacker: Node, attacked: Node, damage: float):
+	print("Entity attacked")
 	if attacked == get_parent():
+		print("parent attacked")
 		health -= damage
 		if health <= 0:
 			Signals.entity_killed.emit(attacker, attacked)

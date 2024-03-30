@@ -6,6 +6,7 @@ extends VoxelCharacterBody3D
 @export var scent_detector: Area3D
 @export var rotator: Node3D
 @export var ik_nodes: Array[SkeletonIK3D]
+@export var hit_range: Area3D
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -18,8 +19,16 @@ const ACCEL = MAX_WALK_SPEED / 0.2
 var dead = false
 
 var idle_timer = null
+var attack_cooldown: Timer
 
 func _ready():
+	attack_cooldown = Timer.new()
+	attack_cooldown.set_wait_time(.3)
+	attack_cooldown.one_shot = true
+	add_child(attack_cooldown)
+	
+
+
 	skeleton.physical_bones_start_simulation(["upperarm.L", "lowerarm.L", "hand.L", "upperarm.R", "lowerarm.R", "hand.R"])
 	# TODO: Move this to something where the signal manager sends this directly to the impacted entities if it has a SignalListener node (this will be part of a full rework to events rather than signals so that I can handle priority and canceling of events, will probably be done as part of the multiplayer implementation whenever that happens)
 	Signals.entity_attacked.connect(entity_attacked)
@@ -44,7 +53,7 @@ func entity_attacked(attacker:Node, attacked: Node, _damage: float):
 
 func die():
 	skeleton.physical_bones_start_simulation()
-	$CollisionShape3D.disabled = true
+	$CollisionShape3D.set_deferred("disabled", true)
 	dead = true
 	for ik_node in ik_nodes:
 		ik_node.stop()
@@ -104,7 +113,7 @@ func _physics_process(delta):
 			detected_scent_level += observed_scent
 			if greatest_observed_scent < detected_scent_level:
 				greatest_observed_scent = detected_scent_level
-				greatest_offender = scent_emitter
+				greatest_offender = scent_emitter.get_parent()
 		var sprinting = false
 
 
@@ -113,12 +122,12 @@ func _physics_process(delta):
 			var target_vector = -global_position.direction_to(greatest_offender.global_position)
 			target_vector.y = 0
 			var target_basis = Basis.looking_at(target_vector)
-			rotator.basis = rotator.basis.slerp(target_basis, 2*delta)
+			rotator.basis = target_basis#rotator.basis.slerp(target_basis, 2*delta)
 
 			#print((target_basis.x - rotator.basis.x).length_squared(), " | ",( target_basis.z - rotator.basis.z).length_squared())
 
 			# Make zombie slump a bit
-			skeleton.rotation_degrees.x = lerp(skeleton.rotation_degrees.x, 15.0, 0.5)
+			skeleton.rotation_degrees.x = lerp(skeleton.rotation_degrees.x, 15.0, 0.5*delta)
 
 			# Only move the zombie if it is looking vaguely at target
 			if (target_basis.x - rotator.basis.x).length_squared() < .08 and (target_basis.z - rotator.basis.z).length_squared() < .08:
@@ -127,9 +136,13 @@ func _physics_process(delta):
 				
 				# apply the acceleration but reduced if in air / water
 				flat_velocity += acceleration_vector * min(delta * (0.8 if is_in_water else (1.0 if is_on_floor() else 0.4)), max(MAX_WALK_SPEED - flat_velocity.length(), 0))
+			
+			if attack_cooldown.is_stopped() and greatest_offender in hit_range.get_overlapping_bodies():
+				Signals.entity_attacked.emit(self, greatest_offender, 1)
+				attack_cooldown.start()
 		else:
 			# Make zombie slump a lot
-			skeleton.rotation_degrees.x = lerp(skeleton.rotation_degrees.x, 30.0, 0.5)
+			skeleton.rotation_degrees.x = lerp(skeleton.rotation_degrees.x, 30.0, 0.5*delta)
 			
 		if is_on_floor():
 			step_container.position.z = min(flat_velocity.length(), 1)

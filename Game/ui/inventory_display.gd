@@ -6,6 +6,7 @@ extends Control
 @export var main_inventory: Control
 @export var hotbar: Control
 @export var inventory: EntityInventory
+@export var hud: Control
 var held_item: ItemStack
 
 
@@ -32,6 +33,7 @@ func _process(_delta):
 		get_node("Held Item Icon").position = get_global_mouse_position() - Vector2(25,25)
 	if Input.is_action_just_pressed("inventory"):
 		visible = !visible
+		hud.visible = !visible
 		owner.ui_open = visible
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if visible else Input.MOUSE_MODE_CAPTURED
 		if visible:

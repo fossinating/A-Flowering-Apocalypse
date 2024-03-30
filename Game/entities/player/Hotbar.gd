@@ -33,9 +33,6 @@ func _process(_delta):
 		selected_index = (selected_index + 6) % 7
 	if Input.is_action_just_released("scroll_right"):
 		selected_index = (selected_index + 1) % 7
-		
-	if Input.is_action_just_pressed("inventory"):
-		hotbar.visible = !hotbar.visible
 	for child in hotbar.get_node("Hotbar Items").get_children():
 		child.set_selected(child.name == "Hotbar Slot " + str(selected_index+1))
 		child.update()

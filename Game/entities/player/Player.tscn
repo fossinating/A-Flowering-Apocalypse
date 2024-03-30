@@ -98,7 +98,7 @@ block_indicator = NodePath("Block Indicator")
 scent_emitter = NodePath("ScentEmitter")
 hit_detection = NodePath("Mesh/Camera3D/Hit Detection")
 block_hit_detection = NodePath("Mesh/Camera3D/Block Hit Detection")
-hotbar = NodePath("Mesh/Camera3D/Control/Hotbar")
+hotbar = NodePath("Mesh/Camera3D/Control/Heads Up Display/Hotbar")
 arm_animator = NodePath("Mesh/Camera3D/Node3D/Arm Animator")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -131,7 +131,16 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="HealthDisplay" type="ColorRect" parent="Mesh/Camera3D/Control" node_paths=PackedStringArray("health_manager")]
+[node name="Heads Up Display" type="Control" parent="Mesh/Camera3D/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="HealthDisplay" type="ColorRect" parent="Mesh/Camera3D/Control/Heads Up Display" node_paths=PackedStringArray("health_manager")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -140,9 +149,9 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.72549, 0, 0.0862745, 0)
 script = ExtResource("2_c5qx2")
-health_manager = NodePath("../../../../EntityHealthManager")
+health_manager = NodePath("../../../../../EntityHealthManager")
 
-[node name="Catchup Health Bar" type="ProgressBar" parent="Mesh/Camera3D/Control/HealthDisplay"]
+[node name="Catchup Health Bar" type="ProgressBar" parent="Mesh/Camera3D/Control/Heads Up Display/HealthDisplay"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.02
@@ -154,7 +163,7 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_1p8xx")
 value = 70.0
 show_percentage = false
 
-[node name="Live Health Bar" type="ProgressBar" parent="Mesh/Camera3D/Control/HealthDisplay"]
+[node name="Live Health Bar" type="ProgressBar" parent="Mesh/Camera3D/Control/Heads Up Display/HealthDisplay"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.02
@@ -166,7 +175,7 @@ theme_override_styles/background = SubResource("StyleBoxEmpty_vuli3")
 theme_override_styles/fill = SubResource("StyleBoxFlat_bes26")
 value = 50.0
 
-[node name="Cursor" type="CenterContainer" parent="Mesh/Camera3D/Control"]
+[node name="Cursor" type="CenterContainer" parent="Mesh/Camera3D/Control/Heads Up Display"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -174,20 +183,20 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="Mesh/Camera3D/Control/Cursor"]
+[node name="ColorRect" type="ColorRect" parent="Mesh/Camera3D/Control/Heads Up Display/Cursor"]
 custom_minimum_size = Vector2(5, 5)
 layout_mode = 2
 mouse_filter = 1
 color = Color(0, 0, 0, 1)
 
-[node name="Hotbar" type="Control" parent="Mesh/Camera3D/Control"]
+[node name="Hotbar" type="Control" parent="Mesh/Camera3D/Control/Heads Up Display"]
 layout_mode = 1
 anchor_left = 0.5
 anchor_top = 0.85
 anchor_right = 0.95
 anchor_bottom = 0.95
 
-[node name="Hotbar Items" type="HBoxContainer" parent="Mesh/Camera3D/Control/Hotbar"]
+[node name="Hotbar Items" type="HBoxContainer" parent="Mesh/Camera3D/Control/Heads Up Display/Hotbar"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -196,31 +205,32 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Hotbar Slot 1" parent="Mesh/Camera3D/Control/Hotbar/Hotbar Items" instance=ExtResource("2_6uqo6")]
+[node name="Hotbar Slot 1" parent="Mesh/Camera3D/Control/Heads Up Display/Hotbar/Hotbar Items" instance=ExtResource("2_6uqo6")]
 layout_mode = 2
 
-[node name="Hotbar Slot 2" parent="Mesh/Camera3D/Control/Hotbar/Hotbar Items" instance=ExtResource("2_6uqo6")]
+[node name="Hotbar Slot 2" parent="Mesh/Camera3D/Control/Heads Up Display/Hotbar/Hotbar Items" instance=ExtResource("2_6uqo6")]
 layout_mode = 2
 
-[node name="Hotbar Slot 3" parent="Mesh/Camera3D/Control/Hotbar/Hotbar Items" instance=ExtResource("2_6uqo6")]
+[node name="Hotbar Slot 3" parent="Mesh/Camera3D/Control/Heads Up Display/Hotbar/Hotbar Items" instance=ExtResource("2_6uqo6")]
 layout_mode = 2
 
-[node name="Hotbar Slot 4" parent="Mesh/Camera3D/Control/Hotbar/Hotbar Items" instance=ExtResource("2_6uqo6")]
+[node name="Hotbar Slot 4" parent="Mesh/Camera3D/Control/Heads Up Display/Hotbar/Hotbar Items" instance=ExtResource("2_6uqo6")]
 layout_mode = 2
 
-[node name="Hotbar Slot 5" parent="Mesh/Camera3D/Control/Hotbar/Hotbar Items" instance=ExtResource("2_6uqo6")]
+[node name="Hotbar Slot 5" parent="Mesh/Camera3D/Control/Heads Up Display/Hotbar/Hotbar Items" instance=ExtResource("2_6uqo6")]
 layout_mode = 2
 
-[node name="Hotbar Slot 6" parent="Mesh/Camera3D/Control/Hotbar/Hotbar Items" instance=ExtResource("2_6uqo6")]
+[node name="Hotbar Slot 6" parent="Mesh/Camera3D/Control/Heads Up Display/Hotbar/Hotbar Items" instance=ExtResource("2_6uqo6")]
 layout_mode = 2
 
-[node name="Hotbar Slot 7" parent="Mesh/Camera3D/Control/Hotbar/Hotbar Items" instance=ExtResource("2_6uqo6")]
+[node name="Hotbar Slot 7" parent="Mesh/Camera3D/Control/Heads Up Display/Hotbar/Hotbar Items" instance=ExtResource("2_6uqo6")]
 layout_mode = 2
 
-[node name="InventoryDisplay" parent="Mesh/Camera3D/Control" node_paths=PackedStringArray("inventory") instance=ExtResource("2_gsy57")]
+[node name="InventoryDisplay" parent="Mesh/Camera3D/Control" node_paths=PackedStringArray("inventory", "hud") instance=ExtResource("2_gsy57")]
 visible = false
 layout_mode = 1
 inventory = NodePath("../../../../EntityInventory")
+hud = NodePath("../Heads Up Display")
 
 [node name="Pause Menu" parent="Mesh/Camera3D/Control" instance=ExtResource("2_23g2y")]
 visible = false
@@ -266,7 +276,7 @@ inventory_slots = 28
 [node name="Hotbar Manager" type="Node" parent="." node_paths=PackedStringArray("inventory", "hotbar", "hand")]
 script = ExtResource("2_e1gav")
 inventory = NodePath("../EntityInventory")
-hotbar = NodePath("../Mesh/Camera3D/Control/Hotbar")
+hotbar = NodePath("../Mesh/Camera3D/Control/Heads Up Display/Hotbar")
 hand = NodePath("../Mesh/Camera3D/Node3D/Arm/Hand/Node3D")
 
 [node name="EntityHealthManager" parent="." instance=ExtResource("11_r6qoa")]

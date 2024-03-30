@@ -281,6 +281,7 @@ anim_player = NodePath("../AnimationPlayer")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
 [node name="ScentEmitter" parent="." instance=ExtResource("5_cxg1r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="EntityInventory" parent="." instance=ExtResource("7_qj2r3")]
 inventory_slots = 28

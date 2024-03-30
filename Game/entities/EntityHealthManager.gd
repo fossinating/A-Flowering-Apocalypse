@@ -17,10 +17,11 @@ var health: float
 func _ready():
 	Signals.entity_attacked.connect(entity_attacked)
 	health = max_health
-	passive_regen_timer = Timer.new()
-	passive_regen_timer.set_wait_time(passive_regen_delay)
-	passive_regen_timer.one_shot = true
-	add_child(passive_regen_timer)
+	if passive_regen_enabled:
+		passive_regen_timer = Timer.new()
+		passive_regen_timer.set_wait_time(passive_regen_delay)
+		passive_regen_timer.one_shot = true
+		add_child(passive_regen_timer)
 
 
 func _process(delta):
@@ -42,7 +43,8 @@ func load_data(entity_data):
 
 func entity_attacked(attacker: Node, attacked: Node, damage: float):
 	if attacked == get_parent():
-		passive_regen_timer.start()
+		if passive_regen_enabled:
+			passive_regen_timer.start()
 		health -= damage
 		if health <= 0:
 			Signals.entity_killed.emit(attacker, attacked)

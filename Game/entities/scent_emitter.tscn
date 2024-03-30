@@ -1,8 +1,36 @@
-[gd_scene load_steps=3 format=3 uid="uid://df5ohce4gqyl0"]
+[gd_scene load_steps=8 format=3 uid="uid://df5ohce4gqyl0"]
 
 [ext_resource type="Script" path="res://entities/scent_emitter.gd" id="1_6lom8"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_33o48"]
+
+[sub_resource type="Curve" id="Curve_m1jw4"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.688312, 0.715789), -1.232, -1.232, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_cs1x3"]
+curve = SubResource("Curve_m1jw4")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_04lip"]
+emission_shape = 1
+emission_sphere_radius = 0.5
+direction = Vector3(0, 1, 0)
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 1.5
+scale_curve = SubResource("CurveTexture_cs1x3")
+turbulence_enabled = true
+turbulence_noise_strength = 0.3
+turbulence_influence_min = 0.01
+turbulence_influence_max = 0.05
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_huf7b"]
+transparency = 1
+albedo_color = Color(0, 0.678431, 0.317647, 0.780392)
+
+[sub_resource type="BoxMesh" id="BoxMesh_seqtt"]
+material = SubResource("StandardMaterial3D_huf7b")
+size = Vector3(0.1, 0.1, 0.1)
 
 [node name="ScentEmitter" type="Area3D"]
 collision_layer = 1073741824
@@ -12,3 +40,9 @@ script = ExtResource("1_6lom8")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_33o48")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+emitting = false
+lifetime = 3.0
+process_material = SubResource("ParticleProcessMaterial_04lip")
+draw_pass_1 = SubResource("BoxMesh_seqtt")

@@ -13,11 +13,11 @@ func _ready():
 
 func update():
     $CollisionShape3D.disabled = scent == 0
-    particles.emitting = scent != 0
+    particles.emitting = scent >= 13
     if scent != 0:
         $CollisionShape3D.shape.radius = abs(scent)
-    elif scent > 0:
-        particles.amount = min(int(floor(max(scent-10, 0) / 3)), 32)
+    if scent > 0:
+        particles.amount = clamp(int(floor(max(scent-10, 0) / 3)), 1, 32)
 
 func set_scent(new_scent):
     #print(get_parent().name, " has been set to ", new_scent)

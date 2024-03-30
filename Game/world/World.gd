@@ -7,6 +7,9 @@ extends Node3D
 @export var empty_checker: Area3D
 
 
+func _init():
+	WorldManager.register_world(self)
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var stream = voxel_terrain.stream
@@ -15,7 +18,6 @@ func _ready():
 	Signals.block_damaged.connect(block_damaged)
 	Signals.block_broken.connect(block_broken)
 	Signals.block_placed.connect(block_placed)
-	WorldManager.register_world(self)
 
 
 func block_placed(block_position: Vector3i, block_id: int, _player: Player):

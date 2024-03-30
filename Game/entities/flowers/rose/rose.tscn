@@ -18,7 +18,7 @@ mesh = ExtResource("2_1a310")
 id = "rose"
 
 [node name="ScentEmitter" parent="." index="2" instance=ExtResource("4_77g8g")]
-scent = -10.0
+scent = -5.0
 
 [node name="Hitbox" type="Area3D" parent="." index="3"]
 collision_layer = 288

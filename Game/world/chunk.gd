@@ -4,6 +4,7 @@ extends Node3D
 var chunk_coordinates: Vector3i
 @export var object_carrier: Node
 @onready var zombie_scene = preload("res://entities/zombie/zombie.tscn")
+@onready var rose_scene = preload("res://entities/flowers/rose/rose.tscn")
 
 
 # Called when the node enters the scene tree for the first time.
@@ -31,7 +32,7 @@ func _ready():
 
 # TODO: change this to be something that only generates zombies at certain structures or something like that?
 func generate():
-	#print(get_parent().get_zombie_map_at(chunk_coordinates))
+	# Generate zombie (if in the right chunk for it)
 	if abs(get_parent().get_zombie_map_at(chunk_coordinates)) > .75:
 		var rand = RandomNumberGenerator.new()
 		rand.seed = hash(WorldManager.get_world().world_seed) ^ 13*chunk_coordinates.x ^ 31 * chunk_coordinates.z
@@ -40,6 +41,21 @@ func generate():
 		zombie.position = Vector3(rand.randi_range(0, 15), 0, rand.randi_range(0,15))
 		#print(WorldManager.get_world().get_height_at(zombie.global_position.x, zombie.global_position.z))
 		zombie.global_position.y = WorldManager.get_world().get_height_at(zombie.global_position.x, zombie.global_position.z) + 2
+	
+	# Take random sample of 20 locations and try to spawn roses(only spawn when number is above .5 and the spot is clear)
+	var rand = RandomNumberGenerator.new()
+	rand.seed = hash(WorldManager.get_world().world_seed) ^ 13*chunk_coordinates.x ^ 31 * chunk_coordinates.z
+
+	for i in 35:
+		var spawn_position = Vector3(rand.randf_range(0,16), 0, rand.randf_range(0,16)) + Vector3(16*chunk_coordinates)
+		#print("Spawn position ", spawn_position, " has a value of ", abs(get_parent().flower_map.get_noise_2d(spawn_position.x, spawn_position.z)))
+		if abs(get_parent().flower_map.get_noise_2d(spawn_position.x, spawn_position.z)) > .5:
+			spawn_position.y = WorldManager.get_world().get_height_at(int(floor(spawn_position.x)), int(floor(spawn_position.z))) + 1
+			if get_parent().get_voxel_tool().get_voxel(Vector3i(spawn_position.floor())) == 0:
+				var flower = rose_scene.instantiate()
+				object_carrier.add_child(flower)
+				flower.global_position = spawn_position
+
 	save()
 
 

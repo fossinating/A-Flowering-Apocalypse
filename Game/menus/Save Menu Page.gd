@@ -9,9 +9,10 @@ func _ready():
 	for directory in DirAccess.get_directories_at("user://saves"):
 		if FileAccess.file_exists("user://saves/" + directory + "/world.dat"):
 			var save_file = FileAccess.open("user://saves/" + directory + "/world.dat", FileAccess.READ)
-			saves.append(save_file.get_var())
+			var save_data = save_file.get_var()
+			saves.append(save_data)
 			save_file.close()
-			$"Saved Games List".add_item(directory)
+			$"Saved Games List".add_item(save_data["display_name"])
 
 
 func _on_new_save_pressed():

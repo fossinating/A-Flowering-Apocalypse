@@ -25,6 +25,10 @@ func _init():
 	add_item(BlockItemData.new(6))
 	add_item(BlockItemData.new(7))
 
+	# Actual items
+
+	add_item(ModelItemData.new("rose", "res://entities/flowers/rose/rose.obj"))
+
 
 func add_item(item: ItemData):
 	items[item.id] = item
@@ -60,3 +64,18 @@ class BlockItemData extends ItemData:
 		var item_node = load("res://items/block_item.tscn").instantiate()
 		item_node.load_data(self)
 		return item_node
+
+class ModelItemData extends ItemData:
+	var model_path: String
+
+	func _init(init_id: String, init_model_path: String, init_mss: int = 99):
+		super(init_id, init_mss)
+		self.model_path = init_model_path
+
+	func get_node():
+		var item_node = load("res://items/model_item.tscn").instantiate()
+		item_node.load_data(self)
+		return item_node
+
+# TODO: Object items
+#class ObjectItemData extends ModelItemData:

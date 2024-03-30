@@ -87,6 +87,7 @@ current = true
 [node name="Hit Detection" type="RayCast3D" parent="Mesh/Camera3D"]
 target_position = Vector3(0, 0, -4)
 collision_mask = 44
+collide_with_areas = true
 
 [node name="Control" type="Control" parent="Mesh/Camera3D"]
 layout_mode = 3

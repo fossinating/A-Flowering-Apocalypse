@@ -1,5 +1,8 @@
-[gd_scene format=3 uid="uid://dhjhj6a8ijeqt"]
+[gd_scene load_steps=2 format=3 uid="uid://dhjhj6a8ijeqt"]
+
+[ext_resource type="Script" path="res://entities/flowers/Flower.gd" id="1_0wfhr"]
 
 [node name="Flower" type="Node3D"]
+script = ExtResource("1_0wfhr")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

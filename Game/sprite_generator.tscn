@@ -2,10 +2,11 @@
 
 [ext_resource type="VoxelBlockyLibrary" uid="uid://saonctilrpa5" path="res://world/blocks/BlockLibrary.tres" id="1_ghkyc"]
 [ext_resource type="Script" path="res://sprite_generator.gd" id="1_ye63k"]
+[ext_resource type="ArrayMesh" uid="uid://b3w86jpx80orn" path="res://entities/flowers/rose/rose.obj" id="3_kpwug"]
 
 [sub_resource type="VoxelGeneratorGraph" id="VoxelGeneratorGraph_ck4ec"]
 graph_data = {
-"connections": [[9, 0, 11, 1], [1, 0, 7, 0], [10, 0, 6, 0], [2, 0, 8, 0], [3, 0, 9, 0], [7, 0, 12, 0], [8, 0, 12, 1], [11, 0, 10, 2], [12, 0, 11, 0]],
+"connections": [[1, 0, 7, 0], [2, 0, 8, 0], [10, 0, 6, 0], [3, 0, 9, 0], [11, 0, 10, 2], [12, 0, 11, 0], [7, 0, 12, 0], [8, 0, 12, 1], [9, 0, 11, 1]],
 "nodes": {
 "1": {
 "gui_position": Vector2(240, 60),
@@ -57,8 +58,6 @@ graph_data = {
 [sub_resource type="VoxelMesherBlocky" id="VoxelMesherBlocky_cjski"]
 library = ExtResource("1_ghkyc")
 
-[sub_resource type="SphereMesh" id="SphereMesh_vthns"]
-
 [sub_resource type="ViewportTexture" id="ViewportTexture_as71s"]
 viewport_path = NodePath("SubViewport")
 
@@ -98,9 +97,9 @@ omni_attenuation = 0.203064
 requires_collisions = false
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="SubViewport"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)
 visible = false
-mesh = SubResource("SphereMesh_vthns")
+mesh = ExtResource("3_kpwug")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 0

@@ -157,7 +157,7 @@ func _physics_process(delta):
 	scent_emitter.add_scent(0.0002*pow(flat_velocity.length(), 4.3)*delta)
 	if is_in_water:
 		scent_emitter.add_scent(-1*delta)
-	print("Scent: ", scent_emitter.scent)
+	#print("Scent: ", scent_emitter.scent)
 
 	#print(flat_velocity.length())
 	

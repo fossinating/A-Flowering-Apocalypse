@@ -14,3 +14,15 @@ func _process(_delta):
 				viewport.set_update_mode(SubViewport.UPDATE_ONCE)
 				await RenderingServer.frame_post_draw
 			viewport.get_texture().get_image().save_png("res://textures/" + block_data.text_id + ".png")
+		
+		$SubViewport/VoxelTerrain.visible = false
+		$SubViewport/MeshInstance3D.visible = true
+		for item_data in [
+			{"id": "rose", "model": "res://entities/flowers/rose/rose.obj"}
+		]:
+			$SubViewport/MeshInstance3D.mesh = load(item_data["model"])
+			for i in 5:
+				viewport.set_update_mode(SubViewport.UPDATE_ONCE)
+				await RenderingServer.frame_post_draw
+			viewport.get_texture().get_image().save_png("res://textures/" + item_data["id"] + ".png")
+		print("done!")

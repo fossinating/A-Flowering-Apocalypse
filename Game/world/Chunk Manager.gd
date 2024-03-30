@@ -5,11 +5,20 @@ class_name ChunkManager
 @export var player: Player
 @onready var chunk_source = preload("res://world/chunk.tscn")
 var zombie_map = preload("res://generator/zombie_map_noise.tres")
+var flower_map = preload("res://generator/flower_map_noise.tres")
+var voxel_tool
+
+
+func get_voxel_tool():
+	if voxel_tool == null:
+		voxel_tool = WorldManager.get_world_node().voxel_terrain.get_voxel_tool()
+	return voxel_tool
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	zombie_map.seed = 13 ^ hash(WorldManager.get_world().world_seed)
+	flower_map.seed = 17 ^ hash(WorldManager.get_world().world_seed)
 	load_around_player()
 
 

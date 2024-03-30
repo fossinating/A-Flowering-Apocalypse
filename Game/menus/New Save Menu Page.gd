@@ -41,9 +41,9 @@ func _on_save_name_input_text_changed(_new_text):
 	var save_name = get_save_name()
 	if save_name == null:
 		$"Save Name Message".text = "Invalid save name"
-	elif save_name != $"Save Name Input".text:
-		$"Save Name Message".text = "Will be saved as `" + save_name + "`"
 	elif DirAccess.dir_exists_absolute("user://saves/"+save_name):
 		$"Save Name Message".text = "Save location occupied"
+	elif save_name != $"Save Name Input".text:
+		$"Save Name Message".text = "Will be saved as `" + save_name + "`"
 	else:
 		$"Save Name Message".text = ""

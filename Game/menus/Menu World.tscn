@@ -1,9 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://dtqci11hd2hru"]
+[gd_scene load_steps=16 format=3 uid="uid://dtqci11hd2hru"]
 
 [ext_resource type="Script" path="res://menus/Menu World.gd" id="1_2uk4h"]
+[ext_resource type="PackedScene" uid="uid://dvkuyk7kpqm3e" path="res://entities/zombie/zombie.tscn" id="3_02om8"]
 [ext_resource type="VoxelBlockyLibrary" uid="uid://saonctilrpa5" path="res://world/blocks/BlockLibrary.tres" id="3_75uk3"]
-[ext_resource type="Script" path="res://world/Chunk Manager.gd" id="4_5ith6"]
-[ext_resource type="PackedScene" uid="uid://54w7q676m52k" path="res://entities/player/Player.tscn" id="4_iypta"]
+[ext_resource type="PackedScene" uid="uid://df5ohce4gqyl0" path="res://entities/scent_emitter.tscn" id="4_bth3s"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fvce7"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -30,11 +30,50 @@ library = ExtResource("3_75uk3")
 
 [sub_resource type="BoxMesh" id="BoxMesh_fdh8d"]
 
+[sub_resource type="Animation" id="Animation_sd4xk"]
+resource_name = "scent_mover"
+length = 60.0
+loop_mode = 1
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ScentEmitter:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 20, 30, 40, 50, 60),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector3(16.4663, 0, -0.594132), Vector3(-15.2189, 0, -1.21218), Vector3(-0.259247, 0, -1.26909), Vector3(-0.259247, 0, 5.93284), Vector3(4.48353, 0, -1.34168), Vector3(-21.3232, 0, -3.756)]
+}
+
+[sub_resource type="Animation" id="Animation_2bg5c"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ScentEmitter:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(31.1591, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4p0dj"]
+_data = {
+"RESET": SubResource("Animation_2bg5c"),
+"scent_mover": SubResource("Animation_sd4xk")
+}
+
 [node name="World" type="Node3D" node_paths=PackedStringArray("voxel_terrain", "chunk_manager", "player", "empty_checker")]
 script = ExtResource("1_2uk4h")
 voxel_terrain = NodePath("VoxelTerrain")
-chunk_manager = NodePath("Chunk Manager")
-player = NodePath("Player")
+chunk_manager = NodePath("")
+player = NodePath("")
 empty_checker = NodePath("Empty Checker")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -52,9 +91,6 @@ gi_mode = 1
 collision_mask = 15
 run_stream_in_editor = false
 
-[node name="Player" parent="." instance=ExtResource("4_iypta")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 128, 0)
-
 [node name="Empty Checker" type="Area3D" parent="."]
 collision_layer = 0
 collision_mask = 20
@@ -64,11 +100,6 @@ monitorable = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
 shape = SubResource("BoxShape3D_5hhsu")
 
-[node name="Chunk Manager" type="Node3D" parent="." node_paths=PackedStringArray("player")]
-script = ExtResource("4_5ith6")
-render_distance = 2
-player = NodePath("../Player")
-
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 3)
 projection = 2
@@ -77,4 +108,21 @@ size = 0.1
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(37.625, 0, 0, 0, 20.695, 0, 0, 0, 1, 0, 3, -8)
+visible = false
 mesh = SubResource("BoxMesh_fdh8d")
+
+[node name="VoxelViewer" type="VoxelViewer" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.5974, -2.81827, 1.42865)
+
+[node name="Zombie" parent="." instance=ExtResource("3_02om8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5974, 2.81827, -1.42865)
+
+[node name="ScentEmitter" parent="." instance=ExtResource("4_bth3s")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.1591, 0, 0)
+scent = 1e+06
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "scent_mover"
+libraries = {
+"": SubResource("AnimationLibrary_4p0dj")
+}

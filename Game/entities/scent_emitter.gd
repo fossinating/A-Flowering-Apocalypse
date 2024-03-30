@@ -4,6 +4,9 @@ class_name ScentEmitter
 @export var scent := 0.0
 var scent_modified = false
 
+func _ready():
+    $CollisionShape3D.shape.radius = abs(scent)
+
 func set_scent(new_scent):
     scent_modified = true
     scent = new_scent

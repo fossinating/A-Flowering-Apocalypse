@@ -58,6 +58,12 @@ func _ready():
 			for child_name in data["children_data"]:
 				var child = find_child(child_name)
 				child.load_data(data["children_data"][child_name])
+	Signals.entity_killed.connect(entity_killed)
+
+
+func entity_killed(_killer: Node, killed: Node):
+	if killed == self:
+		die()
 
 
 func _init():
@@ -191,9 +197,9 @@ func die():
 	death_screen.visible = true
 
 func respawn():
-	dead = false
 	death_screen.visible = false
 	for child in get_children():
 		if child.has_method("reset"):
 			child.reset()
+	dead = false
 	position = Vector3(0,128,0)

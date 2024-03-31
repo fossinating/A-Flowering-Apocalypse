@@ -15,7 +15,12 @@ func entity_attacked(attacker: Node, attacked: Node, _damage: float):
 	add_child(blood_spurt)
 	blood_spurt.emitting = true
 	blood_spurt.global_position = attacker.hit_detection.get_collision_point() if "hit_detection" in attacker else attacked.global_position + Vector3.UP
-	await get_tree().create_timer(1.5).timeout
+	var timer := Timer.new()
+	timer.one_shot = true
+	timer.wait_time = 1.5
+	add_child(timer)
+	timer.start()
+	await timer.timeout
 	blood_spurt.queue_free()
 
 

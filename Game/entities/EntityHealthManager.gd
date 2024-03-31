@@ -37,6 +37,7 @@ func save_data():
 
 func load_data(entity_data):
 	health = entity_data["health"]
+	# At some point i should not be having this be called in such a reaching way but eh
 	if health <= 0 and get_parent().has_method("die") and not get_parent().dead:
 		get_parent().die()
 

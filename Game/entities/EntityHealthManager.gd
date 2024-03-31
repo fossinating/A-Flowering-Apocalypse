@@ -25,7 +25,7 @@ func _ready():
 
 
 func _process(delta):
-	if passive_regen_enabled and passive_regen_timer.is_stopped():
+	if health > 0 and passive_regen_enabled and passive_regen_timer.is_stopped():
 		health = min(max_health, health + passive_regen_rate*delta)
 
 
@@ -37,7 +37,7 @@ func save_data():
 
 func load_data(entity_data):
 	health = entity_data["health"]
-	if health == 0 and get_parent().has_method("die"):
+	if health <= 0 and get_parent().has_method("die") and not get_parent().dead:
 		get_parent().die()
 
 
@@ -48,3 +48,6 @@ func entity_attacked(attacker: Node, attacked: Node, damage: float):
 		health -= damage
 		if health <= 0:
 			Signals.entity_killed.emit(attacker, attacked)
+
+func reset():
+	health = max_health

@@ -104,3 +104,6 @@ func add_temporary_node(node: Node3D, time_to_live=30):
 	await get_tree().create_timer(time_to_live).timeout
 	if is_instance_valid(node):
 		node.queue_free()
+
+func respawn_player():
+	player.respawn()

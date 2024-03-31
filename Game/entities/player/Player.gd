@@ -18,7 +18,9 @@ const ACCEL = MAX_WALK_SPEED / 0.2
 @export var block_hit_detection: RayCast3D
 @export var hotbar: Control
 @export var arm_animator: AnimationPlayer
+@export var death_screen: Control
 var ui_open = false
+var dead = false
 
 const swim_blocks = [4,5]
 
@@ -63,19 +65,22 @@ func _init():
 
 
 func _unhandled_input(event):
-	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+	if not dead and event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		mesh.rotate_y(-event.relative.x * mouse_sensitivity)
 		camera.rotate_x(-event.relative.y * mouse_sensitivity)
 		camera.rotation.x = clamp(camera.rotation.x, -1.5, 1.5)
 
 
-func _process(_delta):
+func _process(delta):
 	var tool = $"../VoxelTerrain".get_voxel_tool()
 	
 	# Highlight the block the player is looking at
 	var facing_raycast_result = tool.raycast(camera.global_transform.origin, -camera.global_transform.basis.z, 5, 1)
 	
-	block_indicator.show_raycast(tool, facing_raycast_result if not hit_detection.is_colliding() else null)
+	if not dead:
+		block_indicator.show_raycast(tool, facing_raycast_result if not hit_detection.is_colliding() else null)
+	if dead:
+		death_screen.color.a = lerp(death_screen.color.a, 160.0/255, 0.5*delta)
 
 
 
@@ -97,7 +102,7 @@ func _physics_process(delta):
 	
 	block_indicator.show_raycast(tool, facing_raycast_result if block_hit_detection.is_colliding() and not hit_detection.is_colliding() else null)
 
-	if not ui_open:
+	if not dead and not ui_open:
 		if not arm_animator.is_playing():
 			# Give option for player to attack the block
 			if not hit_detection.is_colliding() and facing_raycast_result != null and Input.is_action_pressed("attack"):
@@ -125,12 +130,13 @@ func _physics_process(delta):
 				velocity.y = max(velocity.y - (0 if Input.is_action_pressed("jump") else 0.5*gravity*delta), -gravity*.1)
 		else:		
 			velocity.y -= gravity * delta
-	# Handle Jump.
-	if Input.is_action_pressed("jump") and not is_in_water and (is_on_floor()):
-		velocity.y = JUMP_VELOCITY
-	
-	if Input.is_action_pressed("jump") and is_in_water:
-		velocity.y = clamp(velocity.y + 1.2*JUMP_VELOCITY*delta, -.25*JUMP_VELOCITY, 0.5*JUMP_VELOCITY)
+	if not dead:
+		# Handle Jump.
+		if Input.is_action_pressed("jump") and not is_in_water and (is_on_floor()):
+			velocity.y = JUMP_VELOCITY
+		
+		if Input.is_action_pressed("jump") and is_in_water:
+			velocity.y = clamp(velocity.y + 1.2*JUMP_VELOCITY*delta, -.25*JUMP_VELOCITY, 0.5*JUMP_VELOCITY)
  
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
@@ -139,11 +145,12 @@ func _physics_process(delta):
 
 	var flat_velocity := Vector3(velocity.x, 0, velocity.z)
 
-	# Generate acceleration_vector from input dir, converted into global coordinates
-	var acceleration_vector = mesh.global_transform.basis * Vector3(input_dir.x, 0, input_dir.y).normalized() * ACCEL * (SPRINT_MULT if Input.is_action_pressed("sprint") else 1.0)
+	if not dead:
+		# Generate acceleration_vector from input dir, converted into global coordinates
+		var acceleration_vector = mesh.global_transform.basis * Vector3(input_dir.x, 0, input_dir.y).normalized() * ACCEL * (SPRINT_MULT if Input.is_action_pressed("sprint") else 1.0)
 
-	# apply the acceleration but reduced if in air
-	flat_velocity += acceleration_vector * delta * (0.8 if is_in_water else (1.0 if is_on_floor() else 0.4))
+		# apply the acceleration but reduced if in air
+		flat_velocity += acceleration_vector * delta * (0.8 if is_in_water else (1.0 if is_on_floor() else 0.4))
 
 	# Apply friction
 	flat_velocity += -flat_velocity.normalized() * min(flat_velocity.length(), delta * MAX_WALK_SPEED * 3) * (1.0 if is_on_floor() else 0.5)
@@ -178,3 +185,15 @@ func save():
 			data["children_data"][child.name] = child.save_data()
 	save_file.store_var(data)
 	save_file.close()
+	
+func die():
+	dead = true
+	death_screen.visible = true
+
+func respawn():
+	dead = false
+	death_screen.visible = false
+	for child in get_children():
+		if child.has_method("reset"):
+			child.reset()
+	position = Vector3(0,128,0)

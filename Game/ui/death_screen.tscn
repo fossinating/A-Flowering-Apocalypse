@@ -1,0 +1,49 @@
+[gd_scene load_steps=2 format=3 uid="uid://dpy1hv1qmu5h0"]
+
+[ext_resource type="Script" path="res://ui/death_screen.gd" id="1_h02cm"]
+
+[node name="Death Screen" type="ColorRect"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.529412, 0, 0.109804, 0.627451)
+script = ExtResource("1_h02cm")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.05
+anchor_right = 1.0
+anchor_bottom = 0.05
+theme_type_variation = &"HeaderLarge"
+text = "You Died!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Respawn Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.42
+anchor_top = 0.45
+anchor_right = 0.58
+anchor_bottom = 0.5
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Respawn"
+
+[node name="Quit Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.42
+anchor_top = 0.55
+anchor_right = 0.58
+anchor_bottom = 0.6
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Save and Quit"
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="pressed" from="Respawn Button" to="." method="_on_respawn_button_pressed"]
+[connection signal="pressed" from="Quit Button" to="." method="_on_quit_button_pressed"]

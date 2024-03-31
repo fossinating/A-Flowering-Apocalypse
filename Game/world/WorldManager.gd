@@ -53,3 +53,9 @@ static func register_world(new_world):
 	
 static func get_world_node():
 	return world
+	
+static func save_and_quit():
+	if world != null:
+		WorldManager.unload_world()
+		world.get_tree().change_scene_to_file("res://menus/Main Menu.tscn")
+		world.get_tree().paused = false

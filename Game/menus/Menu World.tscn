@@ -117,6 +117,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5974, 2.81827, -1.42865)
 
 [node name="ScentEmitter" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.1591, 0, 0)
+visible = false
 
 [node name="ScentEmitter" parent="ScentEmitter" instance=ExtResource("4_bth3s")]
 scent = 10000.0

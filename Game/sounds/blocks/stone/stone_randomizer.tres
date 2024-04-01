@@ -1,0 +1,20 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=6 format=3 uid="uid://cel4h110xknvh"]
+
+[ext_resource type="AudioStream" uid="uid://cv7ixd7httu0r" path="res://sounds/blocks/stone/stone-01.wav" id="1_762kw"]
+[ext_resource type="AudioStream" uid="uid://c1gdtnde6hsxb" path="res://sounds/blocks/stone/stone-02.wav" id="2_eokst"]
+[ext_resource type="AudioStream" uid="uid://p4ululcc6tc" path="res://sounds/blocks/stone/stone-03.wav" id="3_mxjba"]
+[ext_resource type="AudioStream" uid="uid://dfl71sfv24tnl" path="res://sounds/blocks/stone/stone-05.wav" id="4_nc6jd"]
+[ext_resource type="AudioStream" uid="uid://dyjh4tifokf16" path="res://sounds/blocks/stone/stone-06.wav" id="5_y18q6"]
+
+[resource]
+streams_count = 5
+stream_0/stream = ExtResource("1_762kw")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("2_eokst")
+stream_1/weight = 1.0
+stream_2/stream = ExtResource("3_mxjba")
+stream_2/weight = 1.0
+stream_3/stream = ExtResource("4_nc6jd")
+stream_3/weight = 1.0
+stream_4/stream = ExtResource("5_y18q6")
+stream_4/weight = 1.0

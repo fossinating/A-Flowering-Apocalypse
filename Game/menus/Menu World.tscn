@@ -101,7 +101,6 @@ shape = SubResource("BoxShape3D_5hhsu")
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 3)
 projection = 2
-current = true
 size = 0.1
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

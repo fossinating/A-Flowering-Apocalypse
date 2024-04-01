@@ -1,0 +1,20 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=6 format=3 uid="uid://2gr4gbmfet4m"]
+
+[ext_resource type="AudioStream" uid="uid://bj328sg5ppwd8" path="res://sounds/blocks/leaves/leaves-01.wav" id="1_x31ah"]
+[ext_resource type="AudioStream" uid="uid://1ni03wtmkccg" path="res://sounds/blocks/leaves/leaves-02.wav" id="2_1yvjr"]
+[ext_resource type="AudioStream" uid="uid://crqsf3gdrw1w2" path="res://sounds/blocks/leaves/leaves-03.wav" id="3_vl34y"]
+[ext_resource type="AudioStream" uid="uid://b24lyib24q5dd" path="res://sounds/blocks/leaves/leaves-04.wav" id="4_xdx4b"]
+[ext_resource type="AudioStream" uid="uid://c7pyweeadnbfn" path="res://sounds/blocks/leaves/leaves-05.wav" id="5_d2dk7"]
+
+[resource]
+streams_count = 5
+stream_0/stream = ExtResource("1_x31ah")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("2_1yvjr")
+stream_1/weight = 1.0
+stream_2/stream = ExtResource("3_vl34y")
+stream_2/weight = 1.0
+stream_3/stream = ExtResource("4_xdx4b")
+stream_3/weight = 1.0
+stream_4/stream = ExtResource("5_d2dk7")
+stream_4/weight = 1.0

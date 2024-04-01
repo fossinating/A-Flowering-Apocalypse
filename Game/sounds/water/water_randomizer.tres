@@ -1,0 +1,23 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=7 format=3 uid="uid://doy6n1ctldepo"]
+
+[ext_resource type="AudioStream" uid="uid://bgmmx8uennfj5" path="res://sounds/water/water-01.wav" id="1_51x2v"]
+[ext_resource type="AudioStream" uid="uid://baobyckbgwmol" path="res://sounds/water/water-02.wav" id="2_1v8tt"]
+[ext_resource type="AudioStream" uid="uid://ctx5h3sh8d0ot" path="res://sounds/water/water-03.wav" id="3_455dl"]
+[ext_resource type="AudioStream" uid="uid://t5w4bsfgwo46" path="res://sounds/water/water-04.wav" id="4_5kdfv"]
+[ext_resource type="AudioStream" uid="uid://dcvxhx8oaje8u" path="res://sounds/water/water-05.wav" id="5_6mrdl"]
+[ext_resource type="AudioStream" uid="uid://dcxgbbcnq1ptw" path="res://sounds/water/water-06.wav" id="6_xx1xc"]
+
+[resource]
+streams_count = 6
+stream_0/stream = ExtResource("1_51x2v")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("2_1v8tt")
+stream_1/weight = 1.0
+stream_2/stream = ExtResource("3_455dl")
+stream_2/weight = 1.0
+stream_3/stream = ExtResource("4_5kdfv")
+stream_3/weight = 1.0
+stream_4/stream = ExtResource("5_6mrdl")
+stream_4/weight = 1.0
+stream_5/stream = ExtResource("6_xx1xc")
+stream_5/weight = 1.0

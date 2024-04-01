@@ -34,7 +34,7 @@ library = ExtResource("1_7t3me")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ycx4h"]
 
-[node name="World" type="Node3D" node_paths=PackedStringArray("voxel_terrain", "chunk_manager", "player", "empty_checker", "temporary_object_holder")]
+[node name="World2" type="Node3D" node_paths=PackedStringArray("voxel_terrain", "chunk_manager", "player", "empty_checker", "temporary_object_holder")]
 script = ExtResource("1_7re28")
 voxel_terrain = NodePath("VoxelTerrain")
 chunk_manager = NodePath("Chunk Manager")

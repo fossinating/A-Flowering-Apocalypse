@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://cluhw54c6vf6a"]
+
+[ext_resource type="Script" path="res://entities/Step Sounds.gd" id="1_x50jq"]
+
+[node name="Step Sounds" type="AudioStreamPlayer3D"]
+script = ExtResource("1_x50jq")
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -313,5 +313,6 @@ passive_regen_delay = 3.0
 bus = "Player"
 
 [node name="Hurt Sounds" parent="." instance=ExtResource("16_4wj0b")]
-stream = ExtResource("18_c5gjj")
+hurt_stream = ExtResource("18_c5gjj")
+dead_stream = ExtResource("18_c5gjj")
 bus = "Player"

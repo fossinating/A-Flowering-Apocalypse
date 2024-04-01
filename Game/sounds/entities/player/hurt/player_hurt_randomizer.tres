@@ -5,6 +5,7 @@
 
 [resource]
 streams_count = 2
+playback_mode = 1
 stream_0/stream = ExtResource("1_mqag6")
 stream_0/weight = 1.0
 stream_1/stream = ExtResource("2_7migl")

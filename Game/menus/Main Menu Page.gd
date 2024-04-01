@@ -13,7 +13,7 @@ func _on_play_multiplayer_pressed():
 
 
 func _on_settings_pressed():
-	pass # Replace with function body.
+	main_menu.change_page_to(main_menu.settings_page)
 
 
 func _on_quit_pressed():

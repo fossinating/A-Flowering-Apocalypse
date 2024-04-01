@@ -4,6 +4,7 @@ extends Control
 @export var save_page: Control
 @export var new_save_page: Control
 @export var credits_page: Control
+@export var settings_page: Control
 
 
 @export var leftside: Control
@@ -14,6 +15,9 @@ extends Control
 @export var new_carrier: Control
 
 
+@onready var page_stack = [main_page]
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass
@@ -21,6 +25,7 @@ func _ready():
 	#get_tree().change_scene_to_file("res://world/World.tscn")
 
 func change_page_to(new_page: Control):
+	page_stack.append(new_page)
 	var target_anchor
 	if leftside.is_ancestor_of(new_page):
 		new_carrier.anchor_left = leftside.anchor_left
@@ -54,3 +59,9 @@ func change_page_to(new_page: Control):
 				current_carrier.get_child(0).reparent(leftside)
 			new_page.reparent(current)
 	)
+
+func back():
+	print(page_stack)
+	page_stack.remove_at(page_stack.size() - 1)
+	print(page_stack)
+	change_page_to(page_stack.pop_back())

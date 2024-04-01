@@ -1,6 +1,11 @@
 extends ColorRect
 
 
+func back():
+	get_node("Main Pause Page").visible = true
+	get_node("Settings Page").visible = false
+
+
 func close():
 	get_tree().paused = false
 	visible = false
@@ -16,3 +21,8 @@ func _process(_delta):
 		visible = !visible
 		get_tree().paused = visible
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if visible else Input.MOUSE_MODE_CAPTURED
+
+
+func _on_options_button_pressed():
+	get_node("Main Pause Page").visible = false
+	get_node("Settings Page").visible = true

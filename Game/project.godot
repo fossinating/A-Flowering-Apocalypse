@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 Signals="*res://events/Signals.gd"
 Globals="*res://Globals.gd"
+Settings="*res://settings.gd"
 
 [input]
 

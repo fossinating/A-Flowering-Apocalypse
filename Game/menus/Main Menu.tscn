@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://5g4r3st6wedh"]
+[gd_scene load_steps=8 format=3 uid="uid://5g4r3st6wedh"]
 
 [ext_resource type="Script" path="res://menus/Main Menu.gd" id="1_4b3w0"]
 [ext_resource type="Script" path="res://menus/Main Menu Page.gd" id="1_oqu34"]
@@ -6,8 +6,9 @@
 [ext_resource type="Script" path="res://menus/Save Menu Page.gd" id="2_pqikd"]
 [ext_resource type="Script" path="res://menus/New Save Menu Page.gd" id="3_x7hvy"]
 [ext_resource type="Script" path="res://menus/CreditsPage.gd" id="5_7l3vm"]
+[ext_resource type="PackedScene" uid="uid://gd7na0d1dwvu" path="res://menus/settings_page.tscn" id="7_l6hwf"]
 
-[node name="Main Menu" type="Control" node_paths=PackedStringArray("main_page", "save_page", "new_save_page", "credits_page", "leftside", "current", "rightside", "current_carrier", "new_carrier")]
+[node name="Main Menu" type="Control" node_paths=PackedStringArray("main_page", "save_page", "new_save_page", "credits_page", "settings_page", "leftside", "current", "rightside", "current_carrier", "new_carrier")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,6 +20,7 @@ main_page = NodePath("Current Menu/Main Menu")
 save_page = NodePath("Rightside Menus/Save Menu")
 new_save_page = NodePath("Rightside Menus/New Save Menu")
 credits_page = NodePath("Rightside Menus/Credits")
+settings_page = NodePath("Rightside Menus/Settings Page")
 leftside = NodePath("Leftside Menus")
 current = NodePath("Current Menu")
 rightside = NodePath("Rightside Menus")
@@ -82,7 +84,6 @@ text = "Play Multiplayer"
 
 [node name="Settings" type="Button" parent="Current Menu/Main Menu/VBoxContainer"]
 layout_mode = 2
-disabled = true
 text = "Settings
 "
 
@@ -309,6 +310,11 @@ text = "[center]
 
 [/center]"
 deselect_on_focus_loss_enabled = false
+
+[node name="Settings Page" parent="Rightside Menus" instance=ExtResource("7_l6hwf")]
+layout_mode = 1
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="Current Carrier" type="Control" parent="."]
 layout_mode = 1

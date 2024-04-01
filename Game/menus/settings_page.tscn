@@ -1,0 +1,180 @@
+[gd_scene load_steps=3 format=3 uid="uid://gd7na0d1dwvu"]
+
+[ext_resource type="Script" path="res://menus/settings_page.gd" id="1_c6eqa"]
+[ext_resource type="Script" path="res://menus/slider_link.gd" id="2_vd6xn"]
+
+[node name="Settings Page" type="Panel"]
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.05
+anchor_right = 0.95
+anchor_bottom = 0.95
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_c6eqa")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.1
+text = "Settings"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.01
+anchor_top = 0.11
+anchor_right = 0.99
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Controls" type="Control" parent="TabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="Mouse Sensitivity Label" type="Label" parent="TabContainer/Controls" node_paths=PackedStringArray("slider")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.1
+anchor_right = 0.29
+anchor_bottom = 0.15
+text = "Mouse Sensitivity: 100"
+horizontal_alignment = 2
+vertical_alignment = 1
+script = ExtResource("2_vd6xn")
+slider = NodePath("../Mouse Sensitivity Slider")
+title = "Mouse Sensitivity"
+
+[node name="Mouse Sensitivity Slider" type="HSlider" parent="TabContainer/Controls"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.31
+anchor_top = 0.1
+anchor_right = 0.9
+anchor_bottom = 0.15
+min_value = 10.0
+max_value = 200.0
+value = 100.0
+
+[node name="Audio" type="Control" parent="TabContainer"]
+layout_mode = 2
+
+[node name="Master Volume Label" type="Label" parent="TabContainer/Audio" node_paths=PackedStringArray("slider")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.1
+anchor_right = 0.29
+anchor_bottom = 0.15
+text = "Master Volume: 100"
+horizontal_alignment = 2
+vertical_alignment = 1
+script = ExtResource("2_vd6xn")
+slider = NodePath("../Master Volume Slider")
+title = "Master Volume"
+
+[node name="Master Volume Slider" type="HSlider" parent="TabContainer/Audio"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.31
+anchor_top = 0.1
+anchor_right = 0.9
+anchor_bottom = 0.15
+value = 100.0
+
+[node name="Player Volume Label" type="Label" parent="TabContainer/Audio" node_paths=PackedStringArray("slider")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.2
+anchor_right = 0.29
+anchor_bottom = 0.25
+text = "Player Volume: 100"
+horizontal_alignment = 2
+vertical_alignment = 1
+script = ExtResource("2_vd6xn")
+slider = NodePath("../Player Volume Slider")
+title = "Player Volume"
+
+[node name="Player Volume Slider" type="HSlider" parent="TabContainer/Audio"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.31
+anchor_top = 0.2
+anchor_right = 0.9
+anchor_bottom = 0.25
+value = 100.0
+
+[node name="Entities Volume Label" type="Label" parent="TabContainer/Audio" node_paths=PackedStringArray("slider")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.3
+anchor_right = 0.29
+anchor_bottom = 0.35
+text = "Entities Volume: 100"
+horizontal_alignment = 2
+vertical_alignment = 1
+script = ExtResource("2_vd6xn")
+slider = NodePath("../Entities Volume Slider")
+title = "Entities Volume"
+
+[node name="Entities Volume Slider" type="HSlider" parent="TabContainer/Audio"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.31
+anchor_top = 0.3
+anchor_right = 0.9
+anchor_bottom = 0.35
+value = 100.0
+
+[node name="Blocks Volume Label" type="Label" parent="TabContainer/Audio" node_paths=PackedStringArray("slider")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.4
+anchor_right = 0.29
+anchor_bottom = 0.45
+text = "Blocks Volume: 100"
+horizontal_alignment = 2
+vertical_alignment = 1
+script = ExtResource("2_vd6xn")
+slider = NodePath("../Blocks Volume Slider")
+title = "Blocks Volume"
+
+[node name="Blocks Volume Slider" type="HSlider" parent="TabContainer/Audio"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.31
+anchor_top = 0.4
+anchor_right = 0.9
+anchor_bottom = 0.45
+value = 100.0
+
+[node name="Back Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.35
+anchor_top = 0.91
+anchor_right = 0.49
+anchor_bottom = 0.99
+grow_horizontal = 2
+grow_vertical = 2
+text = "Back"
+
+[node name="Save Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.51
+anchor_top = 0.91
+anchor_right = 0.65
+anchor_bottom = 0.99
+text = "Save"
+
+[connection signal="pressed" from="Back Button" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="Save Button" to="." method="_on_save_button_pressed"]

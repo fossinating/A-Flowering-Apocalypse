@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://byaxij4bpww4o"]
+[gd_scene load_steps=4 format=3 uid="uid://byaxij4bpww4o"]
 
 [ext_resource type="Script" path="res://menus/Pause Menu.gd" id="1_dfjaj"]
 [ext_resource type="Script" path="res://menus/Main Pause Page.gd" id="2_wcc7d"]
+[ext_resource type="PackedScene" uid="uid://gd7na0d1dwvu" path="res://menus/settings_page.tscn" id="3_ryqhy"]
 
 [node name="Pause Menu" type="ColorRect"]
 process_mode = 3
@@ -50,8 +51,7 @@ anchor_left = 0.4
 anchor_top = 0.49
 anchor_right = 0.6
 anchor_bottom = 0.56
-disabled = true
-text = "Options"
+text = "Settings"
 
 [node name="Save and Quit Button" type="Button" parent="Main Pause Page"]
 layout_mode = 1
@@ -62,5 +62,10 @@ anchor_right = 0.6
 anchor_bottom = 0.65
 text = "Save and Quit"
 
+[node name="Settings Page" parent="." instance=ExtResource("3_ryqhy")]
+visible = false
+layout_mode = 1
+
 [connection signal="pressed" from="Main Pause Page/Resume Game Button" to="Main Pause Page" method="_on_resume_game_button_pressed"]
+[connection signal="pressed" from="Main Pause Page/Options Button" to="." method="_on_options_button_pressed"]
 [connection signal="pressed" from="Main Pause Page/Save and Quit Button" to="Main Pause Page" method="_on_save_and_quit_button_pressed"]

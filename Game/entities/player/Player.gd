@@ -34,6 +34,7 @@ var attack_cooldown = null
 var interact_cooldown = null
 
 func _ready():
+	super()
 	attack_cooldown = Timer.new()
 	attack_cooldown.set_wait_time(.3)
 	attack_cooldown.one_shot = true
@@ -90,18 +91,18 @@ func _process(delta):
 
 
 
-func _is_in_water(tool: VoxelTool):
-	for direction in [Vector3.UP, Vector3.DOWN]:
-		for offset in [Vector3(1, 0, 1), Vector3(1, 0, -1), Vector3(-1, 0, -1), Vector3(-1, 0, 1)]:
-			var result = tool.raycast(global_transform.origin + 0.3*offset - 0.95*direction, direction, 1, 2)
-			if result != null:
-				return true
-	return false
+
+
+var was_in_water = false
 
 
 func _physics_process(delta):
 	var tool = $"../VoxelTerrain".get_voxel_tool()
 	var is_in_water = _is_in_water(tool)
+	if was_in_water != is_in_water:
+		was_in_water = is_in_water
+		if is_in_water:
+			pass# Play water splash
 	
 	# Highlight the block the player is looking at
 	var facing_raycast_result = tool.raycast(camera.global_transform.origin, -camera.global_transform.basis.z, 5, 1)

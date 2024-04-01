@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://b68pot8uy28b5"]
+
+[ext_resource type="Script" path="res://sounds/entities/ambient_sounds.gd" id="1_6tgyo"]
+
+[node name="Ambient Sounds" type="Node3D"]
+script = ExtResource("1_6tgyo")
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

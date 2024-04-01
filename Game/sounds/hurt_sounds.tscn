@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bituuvn35n812"]
+
+[ext_resource type="Script" path="res://sounds/hurt_sounds.gd" id="1_1d0tt"]
+
+[node name="Hurt Sounds" type="Node3D"]
+script = ExtResource("1_1d0tt")

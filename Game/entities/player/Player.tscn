@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://54w7q676m52k"]
+[gd_scene load_steps=27 format=3 uid="uid://54w7q676m52k"]
 
 [ext_resource type="Script" path="res://entities/player/Player.gd" id="1_1jc5x"]
 [ext_resource type="PackedScene" uid="uid://cc5uucrmplw6b" path="res://ui/inventory_slot.tscn" id="2_6uqo6"]
@@ -15,6 +15,8 @@
 [ext_resource type="PackedScene" uid="uid://ccgwyw4r8mvar" path="res://entities/EntityInventory.tscn" id="7_qj2r3"]
 [ext_resource type="PackedScene" uid="uid://capk2g11v3q4p" path="res://entities/entity_health_manager.tscn" id="11_r6qoa"]
 [ext_resource type="PackedScene" uid="uid://cluhw54c6vf6a" path="res://entities/step_sounds.tscn" id="15_3wmlx"]
+[ext_resource type="PackedScene" uid="uid://bituuvn35n812" path="res://sounds/hurt_sounds.tscn" id="16_4wj0b"]
+[ext_resource type="AudioStream" uid="uid://b28rameehkqsu" path="res://sounds/entities/player/hurt/player_hurt_randomizer.tres" id="18_c5gjj"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ib0ka"]
 size = Vector3(0.6, 1.8, 0.6)
@@ -308,4 +310,8 @@ passive_regen_delay = 3.0
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 
 [node name="Step Sounds" parent="." instance=ExtResource("15_3wmlx")]
+bus = "Player"
+
+[node name="Hurt Sounds" parent="." instance=ExtResource("16_4wj0b")]
+stream = ExtResource("18_c5gjj")
 bus = "Player"

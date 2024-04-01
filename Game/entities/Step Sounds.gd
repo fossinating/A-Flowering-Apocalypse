@@ -2,6 +2,9 @@ extends AudioStreamPlayer3D
 
 
 @onready var timer: Timer = get_node("Timer")
+@onready var streams: Dictionary = {
+	
+}
 
 
 func _ready():
@@ -18,4 +21,7 @@ func _physics_process(delta):
 
 
 func _on_timer_timeout():
-	pass # Replace with function body.
+	if get_parent().is_on_floor():
+		stream = streams[BlockDataRegistry.get_block_data(
+			WorldManager.get_world_node().get_voxel_tool().get_voxel(
+				get_parent().get_voxel_position() - Vector3i.DOWN)).step_sound_id]

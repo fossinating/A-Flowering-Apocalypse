@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://entities/Step Sounds.gd" id="1_x50jq"]
 
 [node name="Step Sounds" type="AudioStreamPlayer3D"]
+bus = &"Entities"
 script = ExtResource("1_x50jq")
 
 [node name="Timer" type="Timer" parent="."]

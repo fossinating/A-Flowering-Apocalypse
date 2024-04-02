@@ -51,6 +51,10 @@ class CraftingRecipe:
 
 
 var recipes = [
+	CraftingRecipe.new(ItemStack.from_id("flower_paste", 1), {
+		ItemRegistry.get_registry().get_item("log"): 1,
+		ItemRegistry.get_registry().get_item("rose"): 5
+	}),
 	CraftingRecipe.new(ItemStack.from_id("wooden_pickaxe", 1), {
 		ItemRegistry.get_registry().get_item("log"): 4
 	}),

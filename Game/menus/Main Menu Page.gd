@@ -1,4 +1,4 @@
-extends HBoxContainer
+extends Control
 
 
 @onready var main_menu = owner

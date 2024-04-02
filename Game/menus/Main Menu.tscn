@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://5g4r3st6wedh"]
+[gd_scene load_steps=9 format=3 uid="uid://5g4r3st6wedh"]
 
 [ext_resource type="Script" path="res://menus/Main Menu.gd" id="1_4b3w0"]
 [ext_resource type="Script" path="res://menus/Main Menu Page.gd" id="1_oqu34"]
 [ext_resource type="PackedScene" uid="uid://dtqci11hd2hru" path="res://menus/Menu World.tscn" id="2_bsx7i"]
 [ext_resource type="Script" path="res://menus/Save Menu Page.gd" id="2_pqikd"]
 [ext_resource type="Script" path="res://menus/New Save Menu Page.gd" id="3_x7hvy"]
+[ext_resource type="Texture2D" uid="uid://cria7e34tjq0w" path="res://Logo.png" id="4_fiqo6"]
 [ext_resource type="Script" path="res://menus/CreditsPage.gd" id="5_7l3vm"]
 [ext_resource type="PackedScene" uid="uid://gd7na0d1dwvu" path="res://menus/settings_page.tscn" id="7_l6hwf"]
 
@@ -16,7 +17,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_4b3w0")
-main_page = NodePath("Current Menu/Main Menu")
+main_page = NodePath("")
 save_page = NodePath("Rightside Menus/Save Menu")
 new_save_page = NodePath("Rightside Menus/New Save Menu")
 credits_page = NodePath("Rightside Menus/Credits")
@@ -58,42 +59,86 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Main Menu" type="HBoxContainer" parent="Current Menu"]
+[node name="Main Menu" type="Control" parent="Current Menu"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-alignment = 1
 script = ExtResource("1_oqu34")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Current Menu/Main Menu"]
-custom_minimum_size = Vector2(300, 0)
-layout_mode = 2
-alignment = 1
-
-[node name="Play Singleplayer" type="Button" parent="Current Menu/Main Menu/VBoxContainer"]
-layout_mode = 2
+[node name="Play Singleplayer" type="Button" parent="Current Menu/Main Menu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.35
+anchor_top = 0.5
+anchor_right = 0.65
+anchor_bottom = 0.55
 text = "Play Singleplayer"
 
-[node name="Play Multiplayer" type="Button" parent="Current Menu/Main Menu/VBoxContainer"]
-layout_mode = 2
+[node name="Play Multiplayer" type="Button" parent="Current Menu/Main Menu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.35
+anchor_top = 0.56
+anchor_right = 0.65
+anchor_bottom = 0.62
 disabled = true
 text = "Play Multiplayer"
 
-[node name="Settings" type="Button" parent="Current Menu/Main Menu/VBoxContainer"]
-layout_mode = 2
+[node name="Settings" type="Button" parent="Current Menu/Main Menu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.35
+anchor_top = 0.63
+anchor_right = 0.65
+anchor_bottom = 0.68
 text = "Settings
 "
 
-[node name="Credits" type="Button" parent="Current Menu/Main Menu/VBoxContainer"]
-layout_mode = 2
+[node name="Credits" type="Button" parent="Current Menu/Main Menu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.35
+anchor_top = 0.69
+anchor_right = 0.65
+anchor_bottom = 0.74
 text = "Credits"
 
-[node name="Quit" type="Button" parent="Current Menu/Main Menu/VBoxContainer"]
-layout_mode = 2
+[node name="Quit" type="Button" parent="Current Menu/Main Menu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.35
+anchor_top = 0.75
+anchor_right = 0.65
+anchor_bottom = 0.8
 text = "Quit Game"
+
+[node name="TextureRect2" type="TextureRect" parent="Current Menu/Main Menu"]
+modulate = Color(0, 0, 0, 0.627451)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.2
+anchor_right = 0.8
+anchor_bottom = 0.4
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 3.0
+offset_bottom = 3.0
+texture = ExtResource("4_fiqo6")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="TextureRect" type="TextureRect" parent="Current Menu/Main Menu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.2
+anchor_right = 0.8
+anchor_bottom = 0.4
+texture = ExtResource("4_fiqo6")
+expand_mode = 2
+stretch_mode = 5
 
 [node name="Rightside Menus" type="Control" parent="."]
 layout_mode = 1
@@ -334,11 +379,11 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[connection signal="pressed" from="Current Menu/Main Menu/VBoxContainer/Play Singleplayer" to="Current Menu/Main Menu" method="_on_play_singleplayer_pressed"]
-[connection signal="pressed" from="Current Menu/Main Menu/VBoxContainer/Play Multiplayer" to="Current Menu/Main Menu" method="_on_play_multiplayer_pressed"]
-[connection signal="pressed" from="Current Menu/Main Menu/VBoxContainer/Settings" to="Current Menu/Main Menu" method="_on_settings_pressed"]
-[connection signal="pressed" from="Current Menu/Main Menu/VBoxContainer/Credits" to="Current Menu/Main Menu" method="_on_credits_pressed"]
-[connection signal="pressed" from="Current Menu/Main Menu/VBoxContainer/Quit" to="Current Menu/Main Menu" method="_on_quit_pressed"]
+[connection signal="pressed" from="Current Menu/Main Menu/Play Singleplayer" to="Current Menu/Main Menu" method="_on_play_singleplayer_pressed"]
+[connection signal="pressed" from="Current Menu/Main Menu/Play Multiplayer" to="Current Menu/Main Menu" method="_on_play_multiplayer_pressed"]
+[connection signal="pressed" from="Current Menu/Main Menu/Settings" to="Current Menu/Main Menu" method="_on_settings_pressed"]
+[connection signal="pressed" from="Current Menu/Main Menu/Credits" to="Current Menu/Main Menu" method="_on_credits_pressed"]
+[connection signal="pressed" from="Current Menu/Main Menu/Quit" to="Current Menu/Main Menu" method="_on_quit_pressed"]
 [connection signal="item_selected" from="Rightside Menus/Save Menu/Saved Games List" to="Rightside Menus/Save Menu" method="_on_saved_games_list_item_selected"]
 [connection signal="pressed" from="Rightside Menus/Save Menu/New Save" to="Rightside Menus/Save Menu" method="_on_new_save_pressed"]
 [connection signal="pressed" from="Rightside Menus/Save Menu/Load Save" to="Rightside Menus/Save Menu" method="_on_load_save_pressed"]

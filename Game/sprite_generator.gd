@@ -20,6 +20,8 @@ func _process(_delta):
 		for item in ItemRegistry.get_registry().items.values():
 			if item is ItemRegistry.ToolItemData or item is ItemRegistry.WeaponItemData:
 				$SubViewport/MeshInstance3D.scale = 0.4*Vector3.ONE
+			elif item.id == "flower_paste":
+				$SubViewport/MeshInstance3D.scale = 0.7*Vector3.ONE
 			else:
 				$SubViewport/MeshInstance3D.scale = Vector3.ONE
 			if not item is ItemRegistry.BlockItemData:

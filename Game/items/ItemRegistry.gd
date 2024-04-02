@@ -28,6 +28,7 @@ func _init():
 	# Actual items
 
 	add_item(ModelItemData.new("rose", "res://entities/flowers/rose/rose.obj"))
+	add_item(ModelItemData.new("flower_paste", "res://items/flower_paste.obj"))
 
 	# Weapons
 	add_item(WeaponItemData.new("wooden_sword", "res://items/wooden_sword.obj", 2))

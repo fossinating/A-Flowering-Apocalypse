@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://ctnbw0j6xrvdr"]
+[gd_scene load_steps=4 format=3 uid="uid://ctnbw0j6xrvdr"]
 
 [ext_resource type="Script" path="res://ui/inventory_display.gd" id="1_tl5ud"]
 [ext_resource type="PackedScene" uid="uid://cnawpwcwivk8p" path="res://items/item_icon.tscn" id="2_eqpp7"]
+[ext_resource type="PackedScene" uid="uid://c8suf31n273b2" path="res://ui/inventory/crafting.tscn" id="2_f18gd"]
 
 [node name="InventoryDisplay" type="Control" node_paths=PackedStringArray("main_inventory", "hotbar")]
 layout_mode = 3
@@ -33,10 +34,9 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 2
 
-[node name="VBoxContainer" type="Control" parent="Inventory/VBoxContainer"]
+[node name="Crafting" parent="Inventory/VBoxContainer" node_paths=PackedStringArray("inventory_display") instance=ExtResource("2_f18gd")]
 layout_mode = 2
-size_flags_vertical = 3
-size_flags_stretch_ratio = 3.0
+inventory_display = NodePath("../../..")
 
 [node name="Player Inventory" type="VBoxContainer" parent="Inventory/VBoxContainer"]
 layout_mode = 2

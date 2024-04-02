@@ -26,6 +26,11 @@ func _ready():
 		main_inventory.add_child(inventory_slot)
 
 
+func update():
+	for inventory_holder in [hotbar, main_inventory]:
+		for inventory_slot in inventory_holder.get_children():
+			inventory_slot.update()
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
@@ -36,12 +41,7 @@ func _process(_delta):
 		hud.visible = !visible
 		owner.ui_open = visible
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if visible else Input.MOUSE_MODE_CAPTURED
-		if visible:
-			for slot in hotbar.get_children():
-				slot.update()
-			for slot in main_inventory.get_children():
-				slot.update()
-		else:
+		if not visible:
 			if held_item != null:
 				var dropped_item = dropped_item_scene.instantiate()
 				dropped_item.item_stack = held_item
@@ -52,6 +52,9 @@ func _process(_delta):
 				dropped_item.global_position = owner.global_position
 				#print("Dropped item at ", dropped_item.global_position, WorldManager.get_world_node().get_chunk_for_coordinates(owner.global_position).chunk_coordinates, owner.name)
 				get_node("Held Item Icon").set_item(null)
+	# TODO: change this to something that only updates when the underlying inventory updates
+	if visible:
+		update()
 
 
 func on_click(slot: InventorySlot):

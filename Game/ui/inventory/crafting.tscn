@@ -1,0 +1,75 @@
+[gd_scene load_steps=3 format=3 uid="uid://c8suf31n273b2"]
+
+[ext_resource type="Script" path="res://ui/inventory/crafting.gd" id="1_2l24g"]
+[ext_resource type="PackedScene" uid="uid://cnawpwcwivk8p" path="res://items/item_icon.tscn" id="2_ywx06"]
+
+[node name="Crafting" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 3.0
+script = ExtResource("1_2l24g")
+
+[node name="Recipe Selector" type="ItemList" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.3
+anchor_bottom = 1.0
+fixed_icon_size = Vector2i(50, 50)
+
+[node name="Item Icon" parent="." instance=ExtResource("2_ywx06")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.32
+anchor_top = 0.02
+anchor_right = 0.48
+anchor_bottom = 0.3
+
+[node name="Item Name" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.02
+anchor_right = 0.99
+anchor_bottom = 0.3
+theme_type_variation = &"HeaderSmall"
+text = "Item Name"
+vertical_alignment = 1
+
+[node name="Requires Label" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.32
+anchor_top = 0.32
+anchor_right = 0.99
+anchor_bottom = 0.36
+text = "Requires:"
+horizontal_alignment = 1
+
+[node name="Recipe Ingredients" type="ItemList" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.32
+anchor_top = 0.38
+anchor_right = 0.99
+anchor_bottom = 0.85
+allow_search = false
+fixed_icon_size = Vector2i(50, 50)
+
+[node name="Craft Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.7
+anchor_top = 0.86
+anchor_right = 0.99
+anchor_bottom = 0.99
+text = "Craft"
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="item_selected" from="Recipe Selector" to="." method="_on_recipe_selector_item_selected"]
+[connection signal="pressed" from="Craft Button" to="." method="_on_craft_button_pressed"]

@@ -33,14 +33,15 @@ func _process(_delta):
 		selected_index = (selected_index + 6) % 7
 	if Input.is_action_just_released("scroll_right"):
 		selected_index = (selected_index + 1) % 7
-	for child in hotbar.get_node("Hotbar Items").get_children():
-		child.set_selected(child.name == "Hotbar Slot " + str(selected_index+1))
-		child.update()
+	
 	
 	for i in 7:
 		if Input.is_action_just_pressed("slot " + str(i+1)):
 			selected_index = i
-			
+	
+	for child in hotbar.get_node("Hotbar Items").get_children():
+		child.set_selected(child.name == "Hotbar Slot " + str(selected_index+1))
+		child.update()
 	if old_hand != inventory.inventory[selected_index]:
 		update_hand()
 		old_hand = inventory.inventory[selected_index]

@@ -143,16 +143,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Heads Up Display" type="Control" parent="Mesh/Camera3D/Control"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="Scent Tint" type="ColorRect" parent="Mesh/Camera3D/Control/Heads Up Display" node_paths=PackedStringArray("scent_emitter")]
+[node name="Scent Tint" type="ColorRect" parent="Mesh/Camera3D/Control" node_paths=PackedStringArray("scent_emitter")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -161,7 +152,16 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.227451, 0.45098, 0, 0)
 script = ExtResource("2_p4pmh")
-scent_emitter = NodePath("../../../../../ScentEmitter")
+scent_emitter = NodePath("../../../../ScentEmitter")
+
+[node name="Heads Up Display" type="Control" parent="Mesh/Camera3D/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [node name="HealthDisplay" type="ColorRect" parent="Mesh/Camera3D/Control/Heads Up Display" node_paths=PackedStringArray("health_manager")]
 layout_mode = 1

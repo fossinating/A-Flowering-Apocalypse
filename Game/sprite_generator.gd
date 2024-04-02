@@ -17,12 +17,15 @@ func _process(_delta):
 		
 		$SubViewport/VoxelTerrain.visible = false
 		$SubViewport/MeshInstance3D.visible = true
-		for item_data in [
-			{"id": "rose", "model": "res://entities/flowers/rose/rose.obj"}
-		]:
-			$SubViewport/MeshInstance3D.mesh = load(item_data["model"])
-			for i in 5:
-				viewport.set_update_mode(SubViewport.UPDATE_ONCE)
-				await RenderingServer.frame_post_draw
-			viewport.get_texture().get_image().save_png("res://textures/" + item_data["id"] + ".png")
+		for item in ItemRegistry.get_registry().items.values():
+			if item is ItemRegistry.ToolItemData or item is ItemRegistry.WeaponItemData:
+				$SubViewport/MeshInstance3D.scale = 0.4*Vector3.ONE
+			else:
+				$SubViewport/MeshInstance3D.scale = Vector3.ONE
+			if not item is ItemRegistry.BlockItemData:
+				$SubViewport/MeshInstance3D.mesh = load(item.model_path)
+				for i in 1:
+					viewport.set_update_mode(SubViewport.UPDATE_ONCE)
+					await RenderingServer.frame_post_draw
+				viewport.get_texture().get_image().save_png("res://textures/" + item.id + ".png")
 		print("done!")

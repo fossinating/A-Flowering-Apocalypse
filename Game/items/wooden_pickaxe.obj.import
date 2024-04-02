@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://be03frdllqsrt"
+path="res://.godot/imported/wooden_pickaxe.obj-5af76ff67e74d44a7f42f6ada03e8a0b.mesh"
+
+[deps]
+
+files=["res://.godot/imported/wooden_pickaxe.obj-5af76ff67e74d44a7f42f6ada03e8a0b.mesh"]
+
+source_file="res://items/wooden_pickaxe.obj"
+dest_files=["res://.godot/imported/wooden_pickaxe.obj-5af76ff67e74d44a7f42f6ada03e8a0b.mesh", "res://.godot/imported/wooden_pickaxe.obj-5af76ff67e74d44a7f42f6ada03e8a0b.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

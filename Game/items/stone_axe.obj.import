@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://h8kqkd5gbn6c"
+path="res://.godot/imported/stone_axe.obj-30158f1a5209a18cb6fd5f15f3f55d5e.mesh"
+
+[deps]
+
+files=["res://.godot/imported/stone_axe.obj-30158f1a5209a18cb6fd5f15f3f55d5e.mesh"]
+
+source_file="res://items/stone_axe.obj"
+dest_files=["res://.godot/imported/stone_axe.obj-30158f1a5209a18cb6fd5f15f3f55d5e.mesh", "res://.godot/imported/stone_axe.obj-30158f1a5209a18cb6fd5f15f3f55d5e.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

@@ -96,7 +96,7 @@ streams_count = 1
 stream_0/stream = ExtResource("15_6i5gq")
 stream_0/weight = 1.0
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "mesh", "block_indicator", "scent_emitter", "hit_detection", "block_hit_detection", "hotbar", "arm_animator", "death_screen")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "mesh", "block_indicator", "scent_emitter", "hit_detection", "block_hit_detection", "arm_animator", "death_screen", "hotbar_controller")]
 collision_layer = 16
 collision_mask = 2147483705
 axis_lock_angular_x = true
@@ -109,9 +109,9 @@ block_indicator = NodePath("Block Indicator")
 scent_emitter = NodePath("ScentEmitter")
 hit_detection = NodePath("Mesh/Camera3D/Hit Detection")
 block_hit_detection = NodePath("Mesh/Camera3D/Block Hit Detection")
-hotbar = NodePath("Mesh/Camera3D/Control/Heads Up Display/Hotbar")
 arm_animator = NodePath("Mesh/Camera3D/Node3D/Arm Animator")
 death_screen = NodePath("Mesh/Camera3D/Control/Death Screen")
+hotbar_controller = NodePath("Hotbar Manager")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
@@ -278,7 +278,7 @@ cast_shadow = 0
 mesh = ExtResource("3_1i8fn")
 
 [node name="Node3D" type="Node3D" parent="Mesh/Camera3D/Node3D/Arm/Hand"]
-transform = Transform3D(1, 1.49012e-07, -1.49012e-07, 1.19209e-07, 1, -3.72529e-08, -1.49012e-07, 1.86265e-07, 1, -0.157222, -1.98328, -0.709604)
+transform = Transform3D(-1, -8.74228e-08, 3.82137e-15, 0, -4.37114e-08, -1, 8.74228e-08, -1, 4.37114e-08, -0.157223, -1.98328, -0.709603)
 
 [node name="Arm Animator" type="AnimationPlayer" parent="Mesh/Camera3D/Node3D"]
 root_node = NodePath("../../../..")

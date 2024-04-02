@@ -51,9 +51,27 @@ class CraftingRecipe:
 
 
 var recipes = [
-	CraftingRecipe.new(ItemStack.from_id("leaves", 1), {
-		ItemRegistry.get_registry().get_item("log"): 3
-	})
+	CraftingRecipe.new(ItemStack.from_id("wooden_pickaxe", 1), {
+		ItemRegistry.get_registry().get_item("log"): 4
+	}),
+	CraftingRecipe.new(ItemStack.from_id("wooden_axe", 1), {
+		ItemRegistry.get_registry().get_item("log"): 4
+	}),
+	CraftingRecipe.new(ItemStack.from_id("wooden_sword", 1), {
+		ItemRegistry.get_registry().get_item("log"): 4
+	}),
+	CraftingRecipe.new(ItemStack.from_id("stone_pickaxe", 1), {
+		ItemRegistry.get_registry().get_item("log"): 2,
+		ItemRegistry.get_registry().get_item("stone"): 2
+	}),
+	CraftingRecipe.new(ItemStack.from_id("stone_axe", 1), {
+		ItemRegistry.get_registry().get_item("log"): 2,
+		ItemRegistry.get_registry().get_item("stone"): 2
+	}),
+	CraftingRecipe.new(ItemStack.from_id("stone_sword", 1), {
+		ItemRegistry.get_registry().get_item("log"): 2,
+		ItemRegistry.get_registry().get_item("stone"): 2
+	}),
 ]
 
 

@@ -2,7 +2,7 @@
 
 [ext_resource type="VoxelBlockyLibrary" uid="uid://saonctilrpa5" path="res://world/blocks/BlockLibrary.tres" id="1_ghkyc"]
 [ext_resource type="Script" path="res://sprite_generator.gd" id="1_ye63k"]
-[ext_resource type="ArrayMesh" uid="uid://b3w86jpx80orn" path="res://entities/flowers/rose/rose.obj" id="3_kpwug"]
+[ext_resource type="ArrayMesh" uid="uid://h8kqkd5gbn6c" path="res://items/stone_axe.obj" id="3_rji2x"]
 
 [sub_resource type="VoxelGeneratorGraph" id="VoxelGeneratorGraph_ck4ec"]
 graph_data = {
@@ -99,7 +99,7 @@ requires_collisions = false
 [node name="MeshInstance3D" type="MeshInstance3D" parent="SubViewport"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)
 visible = false
-mesh = ExtResource("3_kpwug")
+mesh = ExtResource("3_rji2x")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 0

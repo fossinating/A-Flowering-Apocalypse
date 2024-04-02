@@ -16,9 +16,9 @@ const ACCEL = MAX_WALK_SPEED / 0.2
 @export var scent_emitter: ScentEmitter
 @export var hit_detection: RayCast3D
 @export var block_hit_detection: RayCast3D
-@export var hotbar: Control
 @export var arm_animator: AnimationPlayer
 @export var death_screen: Control
+@export var hotbar_controller: Node
 var ui_open = false
 var dead = false
 
@@ -113,14 +113,25 @@ func _physics_process(delta):
 		if not arm_animator.is_playing():
 			# Give option for player to attack the block
 			if not hit_detection.is_colliding() and facing_raycast_result != null and Input.is_action_pressed("attack"):
-				Signals.block_damaged.emit(facing_raycast_result.position, self, 1)
+				var damage = 1
+				print(hotbar_controller.inventory.inventory[hotbar_controller.selected_index].item is ItemRegistry.ToolItemData)
+				if hotbar_controller.inventory.inventory[hotbar_controller.selected_index] != null and \
+						hotbar_controller.inventory.inventory[hotbar_controller.selected_index].item is ItemRegistry.ToolItemData:
+					var block_id = tool.get_voxel(facing_raycast_result.position)
+					print(BlockDataRegistry.get_block_data(block_id).harvest_flags, "|", hotbar_controller.inventory.inventory[hotbar_controller.selected_index].item.harvest_flags, "|", BlockDataRegistry.get_block_data(block_id).harvest_flags & hotbar_controller.inventory.inventory[hotbar_controller.selected_index].item.harvest_flags)
+					if BlockDataRegistry.get_block_data(block_id).harvest_flags & hotbar_controller.inventory.inventory[hotbar_controller.selected_index].item.harvest_flags:
+						damage = hotbar_controller.inventory.inventory[hotbar_controller.selected_index].item.damage
+				Signals.block_damaged.emit(facing_raycast_result.position, self, damage)
 				arm_animator.play("swing")
 				scent_emitter.add_scent(0.1)
 			elif Input.is_action_just_pressed("attack"):
 				arm_animator.play("swing")
 				scent_emitter.add_scent(0.1)
 				if hit_detection.is_colliding():
-					Signals.entity_attacked.emit(self, hit_detection.get_collider(), 1)
+					Signals.entity_attacked.emit(self, hit_detection.get_collider(), 
+						1 if hotbar_controller.inventory.inventory[hotbar_controller.selected_index] != null and \
+						not hotbar_controller.inventory.inventory[hotbar_controller.selected_index].item is ItemRegistry.WeaponItemData else
+						hotbar_controller.inventory.inventory[hotbar_controller.selected_index].item.damage)
 					attack_cooldown.start()
 				else:
 					get_node("Whiff Sound").play()

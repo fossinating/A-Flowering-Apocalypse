@@ -122,6 +122,8 @@ func _physics_process(delta):
 				if hit_detection.is_colliding():
 					Signals.entity_attacked.emit(self, hit_detection.get_collider(), 1)
 					attack_cooldown.start()
+				else:
+					get_node("Whiff Sound").play()
 		if interact_cooldown.is_stopped() and block_hit_detection.is_colliding() and not hit_detection.is_colliding() and facing_raycast_result != null and Input.is_action_pressed("interact"):
 			Signals.block_interacted.emit(facing_raycast_result, self)
 			arm_animator.play("swing")
